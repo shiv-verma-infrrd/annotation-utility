@@ -1,0 +1,46 @@
+<div class="editing-page-body">
+    <div class="navbar-1">
+      Infrrd
+    </div>
+    <div class="navbar-2">
+    </div>
+    <div class="page-left-section">
+      <img src="assets/bill.jpeg">
+      <svg width="720" height="1280">
+        <rect #r *ngFor="let i of coordinate_array; let x=index" id={{i.id}} [attr.x]="i.startX" [attr.y]="i.startY" [attr.height]="i.endY-i.startY" [attr.width]="i.endX-i.startX" (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="token_click(x)"/>
+      </svg>
+    </div>
+    <div class="page-right-section">
+      <div class="page-right-section-top">
+        <button (click)="next_button_click()" class="next-button">></button>
+        <button (click)="submit_entity()" class="add-entity-button">Add {{entity_type_button}}</button>
+        <input (click)="select_input('header')" (keydown.backspace)="clear_input('h')" #header_input_ref class="header-input" placeholder="Header Entitiy">
+        <input (click)="select_input('question')" (keydown.backspace)="clear_input('q')" #question_input_ref class="question-input" placeholder="Question Entitiy">
+        <input (click)="select_input('answer')" (keydown.backspace)="clear_input('a')" #answer_input_ref class="answer-input" placeholder="Answer Entitiy">
+      </div>
+      <div class="page-right-section-bottom">
+          <div class="display-qa-entity" *ngFor="let i of question_array;let x2=index;">     
+            <div class="entity-cell-structure question-entity">
+              <div class="entity-cell-type">Q</div>
+              <div class="entity-cell-data">{{i}}</div>
+              <!-- <div class="entity-cell-delete">x</div> -->
+            </div>
+            <div class="entity-cell-structure answer-entity">
+              <div class="entity-cell-type">A</div>
+              <div class="entity-cell-data">{{answer_array[x2]}}</div>
+              <!-- <div class="entity-cell-delete">x</div> -->
+            </div>
+            <div (click)="delete_entity(x2,'Q')" class="delete-entity">X</div>
+          </div>
+          
+          <div class="display-header-entity" *ngFor="let i of header_array; let x=index;">
+            <div class="entity-cell-structure header-entity">
+              <div class="entity-cell-type">H</div>
+              <div class="entity-cell-data">{{i}}</div>
+              <!-- <div class="entity-cell-delete">x</div> -->
+            </div>
+            <div (click)="delete_entity(x,'H')" class="delete-entity">X</div>
+          </div>
+      </div>
+    </div>
+</div>

@@ -14,10 +14,10 @@
 <div class="row">
     <div class="col">
         <div class="doc-container" *ngFor="let doc of docs">
-            <div class="doc-thumbnail">
+            <div class="doc-thumbnail" routerLink="/editing-page">
                 <img [src]="doc.thumbnail" alt="dash">
             </div>
-            <div class="doc-name">{{doc.name}}</div>
+            <div class="doc-name" routerLink="/editing-page">{{doc.name}}</div>
         </div>
 
     </div>

@@ -14,7 +14,7 @@ export class DocumentsComponent implements OnInit {
   }
 
   docs=[
-    {name:'doc 1',thumbnail:"../../assets/images/1.jpg"},
+    {name:'doc 1',thumbnail:"../../assets/images/1.jpeg"},
     {name:'doc 2',thumbnail:"../../assets/images/2.jpg"},
     {name:'doc 3',thumbnail:"../../assets/images/3.jpg"},
     {name:'doc 4',thumbnail:"../../assets/images/4.jpg"},

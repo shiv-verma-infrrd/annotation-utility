@@ -8,13 +8,15 @@ import { DocumentsComponent } from './documents/documents.component';
 import { FormsModule } from '@angular/forms';
 import { formatCurrency } from '@angular/common';
 import { NavbarComponent } from './navbar/navbar.component';
+import { EditingPageComponent } from './editing-page/editing-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     DocumentsComponent,
-    NavbarComponent
+    NavbarComponent,
+    EditingPageComponent
   ],
   imports: [
     BrowserModule,
