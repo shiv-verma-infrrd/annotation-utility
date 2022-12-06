@@ -14,7 +14,9 @@ export class DashboardComponent implements OnInit {
   }
 
   batches=[
-    {name:'batch 1',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"}
+    {name:'batch 1',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
+    // {name:'batch 2',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
+    // {name:'batch 2',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
     // {name:'batch 2',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
     // {name:'batch 3',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
     // {name:'batch 4',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},

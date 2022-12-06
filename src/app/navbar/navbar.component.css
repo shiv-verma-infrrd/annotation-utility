@@ -1,18 +1,19 @@
 .navbar-1{
+    overflow: hidden;
     height: 10%;
     width: 100%;
     font-size: 3rem;
     text-align: left;
     color: white;
     background-color: #39a87a;
-    /* position: absolute;
-    top: 0; */
+    position: absolute;
+    top: 0%;
 }
 .navbar-2{
-    margin-top: 10px;
+    overflow: hidden;
     height: 5%;
     width: 100%;
     background-color: black;
-    /* position: absolute; */
-    /* top: 10%; */
+    position: absolute;
+    top: 10%;
 }

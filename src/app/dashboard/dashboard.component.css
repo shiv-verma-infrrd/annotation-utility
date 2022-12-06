@@ -1,8 +1,53 @@
-dash-container{
-    margin: 20% auto;
+.batch-body
+{
+    height:85%;
+    width: 100%;
+    overflow-x: auto;
+    position: absolute;
+    top: 15%;
 }
-.dash-thumbnail{
-    height: 40px;
-    width: 40px;
-    display: flex;
+.filter-bar
+{
+    height:10%;
+    width: 100%;
+    background-color: grey;
+    /* border: 1px solid red; */
+    position: absolute;
+    top:0%;
+}
+.batch-container{
+    height: 50%;
+    width:15%;
+    border-radius: 1rem;
+    border: 3px solid black;
+    position:absolute;
+    top: 12.5%;
+    left: 4%;
+}
+.batch-cell-thumbnail{
+    height: 80%;
+    width: 100%;
+    position: absolute;
+    top: 0%;
+}
+.batch-cell-name
+{
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.25rem;
+    position: absolute;
+    top:80%;
+}
+.batch-cell-status
+{
+    height: 10%;
+    width: 100%;
+    color: white;
+    border-radius: 0 0 1rem 1rem;
+    background-color:#dc3545;
+    text-align: center;
+    font-size: 1.25rem;
+    position: absolute;
+    top:90%;
 }

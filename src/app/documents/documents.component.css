@@ -1,23 +1,76 @@
-.dash-container{
+/* .dash-container{
     margin: 4px 2px;
-}
-.col{
+} */
+/* .col{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr; */
     /* margin-top: 5px; */
-    column-gap: 3px;
-}
-.dash-thumbnail{
-    border: 1px solid black;
+    /* column-gap: 3px;
+} */
+/* .dash-thumbnail{
+    border: 1px solid black; */
     /* margin-top: 3px; */
-    height: 70px;
+    /* height: 70px;
     width: 70px;
     padding: 3px;
     display: flex;
-}
+} */
 
-.dash-name{
+/* .dash-name{ */
     /* display: flex; */
-    justify-content: center;
+    /* justify-content: center;
     align-items: center;
+} */
+.document-body
+{
+    height:85%;
+    width: 100%;
+    overflow-x: auto;
+    position: absolute;
+    top: 15%;
+}
+.filter-bar
+{
+    height:10%;
+    width: 100%;
+    background-color: grey;
+    /* border: 1px solid red; */
+    position: absolute;
+    top:0%;
+}
+.document-container{
+    height: 50%;
+    width:15%;
+    border-radius: 1rem;
+    border: 1px solid grey;
+    position:absolute;
+    top: 12.5%;
+    left: 4%;
+}
+.document-cell-thumbnail{
+    height: 80%;
+    width: 100%;
+    position: absolute;
+    top: 0%;
+}
+.document-cell-name
+{
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.25rem;
+    position: absolute;
+    top:80%;
+}
+.document-cell-status
+{
+    height: 10%;
+    width: 100%;
+    color: white;
+    border-radius: 0 0 1rem 1rem;
+    background-color:#dc3545;
+    text-align: center;
+    font-size: 1.25rem;
+    position: absolute;
+    top:90%;
 }
