@@ -1,23 +1,24 @@
 <app-navbar></app-navbar>
-<!-- <div class="row">
-    <div class="col"> -->
-        <!-- <div class="container" > -->
-            <!-- <div class="dash-container" *ngFor="let doc of docs">
-                <div class="dash-thumbnail">
-                    <img [src]="doc.thumbnail" alt="dash" >
-                </div>
-                <div class="dash-name">{{doc.name}}</div>
-            </div> -->
-        <!-- </div> -->
-    <!-- </div>
-</div> -->
-<div class="document-body">
+<div class="row">
     <div class="filter-bar">
+        <div class="feilds">
+            <input class="dd" type="text" placeholder="Search by filename">
+            <input class="dd" type="text" placeholder="select by date">
+            <input class="dd" type="text" placeholder="Document status">
+            <input class="dd" type="text" placeholder="Select Profile">
+            <input class="dd" type="text" placeholder="Select Api key">
+            <button class="btn" type="submit">Clear</button>
+        </div>
     </div>
-    <!-- *ngFor="let batch of batches" -->
-    <div routerLink="/documents" class="document-container">
-            <img class="document-cell-thumbnail"  [src]="docs[0].thumbnail" alt="dash">
-            <div class="document-cell-name">{{docs[0].name}}</div>
-            <div class="document-cell-status">Uncorrected</div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="doc-container" *ngFor="let doc of docs">
+            <div class="doc-thumbnail">
+                <img [src]="doc.thumbnail" alt="dash">
+            </div>
+            <div class="doc-name">{{doc.name}}</div>
+        </div>
+
     </div>
 </div>

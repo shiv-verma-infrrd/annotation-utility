@@ -21,11 +21,11 @@ export class DocumentsComponent implements OnInit {
     {name:'doc 5',thumbnail:"../../assets/images/5.jpg"},
     {name:'doc 6',thumbnail:"../../assets/images/6.jpg"},
     {name:'doc 7',thumbnail:"../../assets/images/7.jpg"},
-    {name:'doc 8',thumbnail:"../../assets/images/8.jpg"},
+    // {name:'doc 8',thumbnail:"../../assets/images/8.jpg"},
     {name:'doc 9',thumbnail:"../../assets/images/9.jpg"},
     {name:'doc 10',thumbnail:"../../assets/images/10.jpg"},
     {name:'doc 11',thumbnail:"../../assets/images/11.jpg"},
-    {name:'doc 12',thumbnail:"../../assets/images/12.jpg"},
+    // {name:'doc 12',thumbnail:"../../assets/images/12.jpg"},
     {name:'doc 13',thumbnail:"../../assets/images/13.jpg"},
     {name:'doc 14',thumbnail:"../../assets/images/14.jpg"},
     {name:'doc 15',thumbnail:"../../assets/images/15.jpg"}

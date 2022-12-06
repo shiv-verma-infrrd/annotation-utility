@@ -1,10 +1,12 @@
 <app-navbar></app-navbar>
-<div class="batch-body">
-    <div class="filter-bar">
-    </div>
-    <div routerLink="/documents" class="batch-container" *ngFor="let batch of batches">
-            <img class="batch-cell-thumbnail"  [src]="batch.thumbnail" alt="dash">
-            <div class="batch-cell-name">{{batch.name}}</div>
-            <div class="batch-cell-status">Uncorrected</div>
+
+<div class="row">
+    <div class="col">
+        <div class="dash-container" *ngFor="let batch of batches">
+            <div class="dash-thumbnail" routerLink="/documents">
+                <img [src]="batch.thumbnail" alt="dash">
+            </div>
+            <div class="dash-name">{{batch.name}}</div>
+        </div>
     </div>
 </div>
