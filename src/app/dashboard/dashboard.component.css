@@ -1,0 +1,8 @@
+dash-container{
+    margin: 20% auto;
+}
+.dash-thumbnail{
+    height: 40px;
+    width: 40px;
+    display: flex;
+}

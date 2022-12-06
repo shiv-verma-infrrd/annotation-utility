@@ -1,0 +1,23 @@
+.dash-container{
+    margin: 4px 2px;
+}
+.col{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    /* margin-top: 5px; */
+    column-gap: 3px;
+}
+.dash-thumbnail{
+    border: 1px solid black;
+    /* margin-top: 3px; */
+    height: 70px;
+    width: 70px;
+    padding: 3px;
+    display: flex;
+}
+
+.dash-name{
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+}

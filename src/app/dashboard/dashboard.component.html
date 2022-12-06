@@ -1,0 +1,7 @@
+<app-navbar></app-navbar>
+<div class="container" *ngFor="let batch of batches">
+        <div class="dash-thumbnail" routerLink="/documents">
+            <img [src]="batch.thumbnail" alt="dash">
+        </div>
+        <div class="dash-name">{{batch.name}}</div>
+</div>
