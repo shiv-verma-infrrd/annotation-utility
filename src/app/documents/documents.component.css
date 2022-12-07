@@ -70,10 +70,10 @@
 
 .doc-name{
     /* color: white; */
-    /* border-radius: 0 0 4px 4px; */
-    background-color: #39A87A;
+    border-radius: 0 0 4px 4px;
+    background-color: #ca1e1e;
     /* border: 1px solid green; */
-    height: 3vh;
+    height: 6vh;
     width: 14.85vw;
     /* display: flex; */
     margin-left: 5vw;
@@ -82,16 +82,13 @@
     align-items: center; */
 }
 
-.correction-status{
-    /* color: white; */
+/* .correction-status{
+    
     border-radius: 0 0 4px 4px;
     background-color: #39A87A;
-    /* border: 1px solid green; */
     height: 3vh;
     width: 14.85vw;
-    /* display: flex; */
     margin-left: 5vw;
     margin-bottom: 5vh;
-    /* justify-content: center; */
     align-items: center;
-}
+} */

@@ -4,9 +4,9 @@
         <div class="feilds">
             <input class="dd" name="search" [(ngModel)]="searchText" type="text" placeholder="Search by filename">
             <input class="dd" type="text" placeholder="select by date">
-            <input class="dd" type="text" placeholder="Document status">
+            <!-- <input class="dd" type="text" placeholder="Document status">
             <input class="dd" type="text" placeholder="Select Profile">
-            <input class="dd" type="text" placeholder="Select Api key">
+            <input class="dd" type="text" placeholder="Select Api key"> -->
             <button class="btn" type="submit">Clear</button>
         </div>
     </div>
@@ -18,7 +18,7 @@
                 <img [src]="doc.thumbnail" alt="dash">
             </div>
             <div class="doc-name" routerLink="/editing-page">{{doc.name}}</div>
-            <div class="correction-status">UnCorrected</div>
+            <!-- <div class="correction-status">UnCorrected</div> -->
         </div>
 
     </div>
