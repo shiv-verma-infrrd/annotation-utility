@@ -24,9 +24,7 @@ export class DashboardComponent implements OnInit {
 
   get_batch_id(id:any){
    
-    this.apiData.get_one_doc(id).subscribe((data)=>{
-      console.warn("get batch id :",data)
-    })
+   
 
   }
 }
