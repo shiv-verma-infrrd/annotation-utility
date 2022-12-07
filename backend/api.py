@@ -238,7 +238,28 @@ def get_ocr_data(id):
     except Exception as ex:
         print(ex)
     
-
+###################################################
+# @app.route("/ocrDataKvp/<Oid>/<id>",methods=["PATCH"])
+# def update_ocrDataKvp(Oid,id):
+#   try:
+#     dbResponse = db.ocrDataKvp.update_one(
+#      {"_id":"638fad525d2501fd2fa5ae41",
+#       "form.id": "0"
+#      },
+#      {
+#       "$set":{
+#       "form.$box":0,  
+#       "form.$text":"shiv",
+#       "form.$label":"shiv",
+#       "form.words":"shiv",
+#       "linking":"shiv",
+    
+#      }}
+#     )
+#     return "shiv"
+#   except Exception as ex:
+#     print(ex)  
+#     return "shiv 2"
 ###################################################
 @app.route("/pageId/<id>",methods=['POST'])
 
