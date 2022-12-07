@@ -1,0 +1,21 @@
+
+.navbar-1 span{
+    font-weight: bold;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.navbar-1{
+    overflow: hidden;
+    height: 9vh;
+    width: 100vw;
+    font-size: 1.3rem;
+    text-align: left;
+    color: white;
+    background-color: #39a87a;
+}
+
+.navbar-2{
+    overflow: hidden;
+    height: 9vh;
+    width: 100vw;
+    background-color: black;
+}
