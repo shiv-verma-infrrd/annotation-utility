@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ApiDataService } from '../services/api-data.service'; 
 
 @Component({
   selector: 'app-dashboard',
@@ -7,18 +7,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  batchID:any;
+  apiBatchdata:any;
+  thumbnail="https://cdn-icons-png.flaticon.com/512/3767/3767084.png";
+  constructor(private apiData:ApiDataService) { 
 
-  constructor() { }
+     apiData.batches().subscribe((data)=>{
+      this.apiBatchdata = data;
+      console.warn("apiBatchdata",data);
+    })
+     
+  }
 
   ngOnInit(): void {
   }
 
-  batches=[
-    {name:'batch 1',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
-    {name:'batch 2',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
-    {name:'batch 3',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
-    {name:'batch 4',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
-    {name:'batch 5',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"},
-    {name:'batch 6',thumbnail:"https://cdn-icons-png.flaticon.com/512/3767/3767084.png"}
-  ];
+  get_batch_id(id:any){
+   
+    this.apiData.get_one_doc(id).subscribe((data)=>{
+      console.warn("get batch id :",data)
+    })
+
+  }
 }

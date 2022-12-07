@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // import '../../assets/images';
+import { ApiDataService } from '../services/api-data.service'; 
 
 @Component({
   selector: 'app-documents',
@@ -8,7 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentsComponent implements OnInit {
 
-  constructor() { }
+  apiDocuments:any;
+  constructor(private apiData: ApiDataService) { 
+
+    apiData.documents().subscribe((data)=>{
+      
+      // console.warn("apiDocumentData",data);
+      this.apiDocuments = data;
+    })
+  }
 
   ngOnInit(): void {
   }

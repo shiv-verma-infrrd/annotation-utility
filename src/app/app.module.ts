@@ -10,6 +10,7 @@ import { formatCurrency } from '@angular/common';
 import { NavbarComponent } from './navbar/navbar.component';
 import { EditingPageComponent } from './editing-page/editing-page.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import {HttpClientModule} from '@angular/common/http'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

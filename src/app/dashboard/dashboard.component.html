@@ -2,11 +2,11 @@
 
 <div class="row">
     <div class="col">
-        <div class="dash-container" *ngFor="let batch of batches">
+        <div class="dash-container" *ngFor="let batch of apiBatchdata" (click)="get_batch_id(batch._id)">
             <div class="dash-thumbnail" routerLink="/documents">
-                <img [src]="batch.thumbnail" alt="dash">
+                <img [src]="thumbnail" alt="dash">
             </div>
-            <div class="dash-name">{{batch.name}}</div>
+            <div class="dash-name">{{batch.batchName}}</div>
         </div>
     </div>
 </div>
