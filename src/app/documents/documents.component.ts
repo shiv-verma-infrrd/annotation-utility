@@ -13,6 +13,8 @@ export class DocumentsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  searchText:string='';
+
   docs=[
     {name:'doc 1',thumbnail:"../../assets/images/1.jpeg"},
     {name:'doc 2',thumbnail:"../../assets/images/2.jpg"},

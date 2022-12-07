@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { formatCurrency } from '@angular/common';
 import { NavbarComponent } from './navbar/navbar.component';
 import { EditingPageComponent } from './editing-page/editing-page.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { EditingPageComponent } from './editing-page/editing-page.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    Ng2SearchPipeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
