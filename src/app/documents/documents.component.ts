@@ -14,7 +14,7 @@ export class DocumentsComponent implements OnInit {
 
     apiData.documents().subscribe((data)=>{
       
-      // console.warn("apiDocumentData",data);
+      console.warn("apiDocumentData",data);
       this.apiDocuments = data;
     })
   }

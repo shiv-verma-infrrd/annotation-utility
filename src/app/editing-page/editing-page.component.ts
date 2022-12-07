@@ -1,6 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import cord1 from 'src/assets/page1.json';
-
+import { ApiDataService } from '../services/api-data.service';
 @Component({
   selector: 'app-editing-page',
   templateUrl: './editing-page.component.html',
@@ -11,6 +11,17 @@ export class EditingPageComponent
   @ViewChild('header_input_ref') header_input_ref:any;
   @ViewChild('question_input_ref') question_input_ref:any;
   @ViewChild('answer_input_ref') answer_input_ref:any;
+
+  // apiDocuments:any;
+  constructor(private apiData: ApiDataService) { 
+    
+    apiData.get_ocr_data("638fad525d2501fd2fa5ae41").subscribe((data)=>{
+      
+      console.warn("ocr Data : ",data);
+      // this.apiDocuments = data;
+    })
+  }
+
 
   title:string="";
   selected_input_name:string="";

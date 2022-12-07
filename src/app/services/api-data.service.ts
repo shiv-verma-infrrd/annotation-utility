@@ -22,6 +22,10 @@ export class ApiDataService {
   get_one_doc(batchId:any){
     return this.http.get(this.URL+'/documents/'+batchId)
   }
+
+  get_ocr_data(data:any){
+    return this.http.get(this.URL+'/ocrDataKvp/'+data)
+  }
 }
 
 
