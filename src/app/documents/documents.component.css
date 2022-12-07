@@ -30,11 +30,11 @@
     background-color: white;
 }
 
-.doc-container{
+/* .doc-container{
     /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
     /* padding-left: 10px; 
     margin: 4px 4px;  */
-}
+
 .col{
     
     display: grid;
@@ -69,9 +69,9 @@
 }
 
 .doc-name{
-    /* color: white; */
+    color: white;
     border-radius: 0 0 4px 4px;
-    background-color: #ca1e1e;
+    background-color: #2f80ed;
     /* border: 1px solid green; */
     height: 6vh;
     width: 14.85vw;
