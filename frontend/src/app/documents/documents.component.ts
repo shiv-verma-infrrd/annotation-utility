@@ -13,23 +13,15 @@ export class DocumentsComponent implements OnInit {
   apiDocuments:any;
   
   constructor(private apiData: ApiDataService) { 
-
-    this.batchId = this.apiData.batchData;
-    apiData.get_one_doc(this.batchId).subscribe((data)=>{
-      this.apiDocuments = data;
-      console.warn("apiDocumentData",data);  
-      
-    })
-
-    console.log("array data "+ this.apiDocuments.documentList);
-    
   }
 
 
   ngOnInit(): void {
     
-    console.log("doc batch id "+ this.batchId);
-    
+    this.batchId = this.apiData.batchData;
+    this.apiData.get_one_doc(this.batchId).subscribe((data)=>{
+      this.apiDocuments = data[0].documentList; 
+    });
   }
 
   searchText:string='';

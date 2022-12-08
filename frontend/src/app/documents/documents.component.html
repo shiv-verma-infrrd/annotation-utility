@@ -30,13 +30,24 @@
 
 
 <!-- Trial code -->
-<div class="row">
+<!-- <div class="row">
     <div class="col">
         <div class="doc-container" *ngFor="let doc of apiDocuments.DocumentList| filter:searchText">
             <div class="doc-thumbnail" routerLink="/editing-page">
                 <img [src]="doc.thumbnailUrl" alt="dash">
             </div>
             <div class="doc-name" routerLink="/editing-page">{{doc.DocumentList[0].thumbnailUrl}}</div>
+        </div>
+
+    </div>
+</div> -->
+<div class="row">
+    <div class="col">
+        <div class="doc-container" *ngFor="let i of apiDocuments">
+            <div class="doc-thumbnail" routerLink="/editing-page">
+                <img [src]="i.thumbnailUrl" alt="dash">
+            </div>
+            <div class="doc-name" routerLink="/editing-page">{{i.DocumentId}}</div>
         </div>
 
     </div>

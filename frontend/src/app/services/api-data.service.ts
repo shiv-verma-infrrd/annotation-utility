@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class ApiDataService {
     return this.http.get(this.URL+'/documents')
   }
 
-  get_one_doc(batchId:any){
+  get_one_doc(batchId:any):Observable<any>{
     return this.http.get(this.URL+'/documents/'+batchId)
   }
 
