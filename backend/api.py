@@ -64,7 +64,6 @@
 
 # if __name__ == '__main__':
 #     app.run(host="localhost", debug=True)
-
 from flask import Flask,Response,request,jsonify
 import pymongo
 import json
@@ -89,13 +88,16 @@ try:
     serverSelectionTimeoutMS = 100
     )
   
-  db = mongo.TestIDP
+  db = mongo.CorrectionUI
+
   mongo.server_info()
 
 except:
  print("Error - cannot connet to db")
 
 ###################################################
+
+#Fetching all batches
 
 @app.route('/batches',methods=["GET"])
 
@@ -128,12 +130,9 @@ def get_batches():
 @app.route("/documents",methods=['GET'])
 
 def get_documents():
-    # print("************")
-    # print(request.get_json())
-    # print("************")
+   
     try:
       data = list(db.documents.find())
-      #print(data)
       
       for document in data:
         document['_id'] = str(document["_id"])
@@ -148,14 +147,12 @@ def get_documents():
     
 ###################################################
 
-# Fetch Single Document
+# Fetch Documents list using batchId
 
 @app.route("/documents/<id>",methods=["GET"])
 
 def get_single_documents(id):
-    # print("************")
-    # print(request.get_json())
-    # print("************")
+  
     try:
       data = list(db.documents.find({"batchId":id}))
       #print(data)
@@ -173,59 +170,14 @@ def get_single_documents(id):
     
 ###################################################
 
-#  Fetch All Images
+#Fetching pages using document Id
 
-@app.route("/images",methods=['GET'])
+@app.route("/pages/<id>",methods=["GET"])
 
-def get_images():
+def get_kvp_data(id):
    
     try:
-      data = list(db.images.find())
-      #print(data)
-      
-      for image in data:
-        image['_id'] = str(image["_id"])
-
-      return Response(
-          response= json.dumps(data),
-          status=200,
-          mimetype="application/json"
-      )
-    except Exception as ex:
-        print(ex)
-    
-###################################################
-
-# Fetch Single Image
-
-@app.route("/images/<id>",methods=["GET"])
-
-def get_single_image(id):
-   
-    try:
-      data = list(db.images.find({"documentId":id}))
-      #print(data)
-      
-      for image in data:
-        image['_id'] = str(image["_id"])
-
-      return Response(
-          response= json.dumps(data),
-          status=200,
-          mimetype="application/json"
-      )
-    except Exception as ex:
-        print(ex)
-    
-###################################################
-
-@app.route("/ocrDataKvp/<id>",methods=["GET"])
-
-def get_ocr_data(id):
-   
-    try:
-      data = list(db.ocrDataKvp.find({"_id":ObjectId(id)}))
-      #print(data)
+      data = list(db.pages.find({"documentId":id}))
       
       for ocrDataKvpUid in data:
         ocrDataKvpUid ['_id'] = str(ocrDataKvpUid ["_id"])
@@ -239,46 +191,39 @@ def get_ocr_data(id):
         print(ex)
     
 ###################################################
-# @app.route("/ocrDataKvp/<Oid>/<id>",methods=["PATCH"])
-# def update_ocrDataKvp(Oid,id):
-#   try:
-#     dbResponse = db.ocrDataKvp.update_one(
-#      {"_id":"638fad525d2501fd2fa5ae41",
-#       "form.id": "0"
-#      },
-#      {
-#       "$set":{
-#       "form.$box":0,  
-#       "form.$text":"shiv",
-#       "form.$label":"shiv",
-#       "form.words":"shiv",
-#       "linking":"shiv",
-    
-#      }}
-#     )
-#     return "shiv"
-#   except Exception as ex:
-#     print(ex)  
-#     return "shiv 2"
-###################################################
-@app.route("/pageId/<id>",methods=['POST'])
 
-def get_image(id):
-   file = request.files['name']
-   file.save(f"images/{file.filename}")
-   dbResponse = db.uploadedImages.insert(
-    {
-    "imageId":id,
-    "imagePath":file.filename
-    }
-    )
-  
-   return f"{file.filename} image saved to db"
-@app.route('/file/<filename>')
-def file(filename):
-  return db.uploadedImages.send_file(filename)   
-  
+# updating page using raw data
+
+@app.route("/pages",methods=["PUT"])
+def put_ocr_data():
+
+ try:    
+    raw_data = request.json
+    db.testingPagesUpdates.replace_one({"_id":ObjectId(raw_data['_id'])},{
+         "documentId": raw_data['documentId'],
+         "isCorrected": raw_data['isCorrected'] ,
+         "imageStatus": raw_data['imageStatus'] ,
+         "imagePath": raw_data['imageStatus'] ,
+         'kvpData':raw_data['kvpData'],
+         "correctedData": raw_data['correctedData'] ,
+         "correctedBy": raw_data['correctedBy'] ,
+         "correctedOn": raw_data['correctedOn'] 
+    })
+    return Response(
+          response= json.dumps({"Message": "Record Updated Sucessfully"}),
+          status=200,
+          mimetype="application/json"
+      )
+
+ except Exception as ex:
+  print(ex)
+  return  Response(
+          response= json.dumps({"Message": "record not updated"}),
+          status=500,
+          mimetype="application/json"
+      )   
 
 ###################################################
+
 if __name__ == "__main__":
     app.run(port=80,debug=True)
