@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 export class ApiDataService {
   batchData:any;
-  
+  docData:any;
   URL = "http://127.0.0.1:80/";
 
   constructor(private http:HttpClient) {}
@@ -26,8 +26,10 @@ export class ApiDataService {
     return this.http.get(this.URL+'/documents/'+batchId)
   }
 
-  get_ocr_data(data:any){
-    return this.http.get(this.URL+'/ocrDataKvp/'+data)
+
+  get_pages(docId:any):Observable<any>{
+    return this.http.get(this.URL+'/pages/'+docId)
+
   }
 }
 

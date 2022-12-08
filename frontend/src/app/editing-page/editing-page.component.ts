@@ -1,12 +1,12 @@
-import { AfterViewInit, Component,ViewChild } from '@angular/core';
-import cord1 from 'src/assets/page1.json';
+import { AfterViewInit, Component,ViewChild,OnInit } from '@angular/core';
+// import cord1 from 'src/assets/page1.json'; /*****comented initializing array in constructor*******/
 import { ApiDataService } from '../services/api-data.service';
 @Component({
   selector: 'app-editing-page',
   templateUrl: './editing-page.component.html',
   styleUrls: ['./editing-page.component.css']
 })
-export class EditingPageComponent implements AfterViewInit
+export class EditingPageComponent implements AfterViewInit,OnInit
 {
   @ViewChild('header_input_ref') header_input_ref:any;
   @ViewChild('question_input_ref') question_input_ref:any;
@@ -15,19 +15,18 @@ export class EditingPageComponent implements AfterViewInit
   @ViewChild('sv') svg_ref: any;
   @ViewChild('entity_rect_ref') entity_rect_ref:any;
 
-  constructor(private apiData: ApiDataService) { 
-    
-    apiData.get_ocr_data("638fad525d2501fd2fa5ae41").subscribe((data)=>{
-      
-      console.warn("ocr Data : ",data);
-      // this.apiDocuments = data;
-    })
-  }
+  
+  constructor(private apiData: ApiDataService) { }
+
+  apiPageData:any=[];
+  coordinate_array:any;
+  cord1:any;
 
   title:string="";
   selected_input_name:string="";
   entity_type_button:string="Header";
-  coordinate_array:any=cord1.form;
+  // coordinate_array:any=cord1.form;  
+  
 
   img_length: number=0;
   img_width: number=0;
@@ -49,13 +48,65 @@ export class EditingPageComponent implements AfterViewInit
   header_input_index:number[][]=[];
   header_array:string[]=[];
 
-  ngAfterViewInit(): void{
+  ngOnInit(): void {
+    
+    /********************api calls initializing arrays*****************/
+
+    this.apiData.docData = localStorage.getItem('global_doc_id')
+
+    this.apiData.get_pages(this.apiData.docData).subscribe((data)=>{
+          
+      this.apiPageData = data;
+
+      this.cord1 = data[0].kvpData;
+
+      this.coordinate_array = data[0].kvpData.form;
+         
+  });
+  /*******************************************************************/
+  
    
+  }
+
+  ngAfterViewInit(): void{
+
     setTimeout(()=>{
       this.img_length=this.img_ref.nativeElement.offsetHeight;
       this.img_width=this.img_ref.nativeElement.offsetWidth;
       this.l=this.img_ref.nativeElement.offsetHeight;
       this.c=this.img_ref.nativeElement.offsetWidth;
+      
+      // console.log(this.cord1.form)
+      /**************************************************************************** */ 
+      /********************Code edited (needs correction)************************** */
+      /*****************pre-populating arrays with api data*************************/
+      /*************************************************************************** */
+      for (let i = 0; i < this.coordinate_array.length; i++){
+        if( this.coordinate_array[i].label.toLowerCase( ) === 'header'){
+             this.header_array.push(this.coordinate_array[i].text)
+             this.header_input_index.push([i])
+        }
+        else if( this.coordinate_array[i].label.toLowerCase( ) === 'question'){
+             this.question_array.push(this.coordinate_array[i].text)
+             this.question_input_index.push([i])
+        }
+        else if( this.coordinate_array[i].label.toLowerCase( ) === 'answer'){
+             this.answer_array.push(this.coordinate_array[i].text)
+             this.answer_input_index.push([i])
+        }
+        else{
+           
+            // this.others_array.push(this.coordinate_array[i].text)
+           
+        }
+
+      }
+   
+      // console.log("h"+this.header_array)
+
+      /************************************************************************/
+      /***********************************************************************/
+  
     },1000);
   }
 
@@ -153,7 +204,7 @@ export class EditingPageComponent implements AfterViewInit
       }
       else
       {
-        // console.log(this.header_input_index);
+        console.log(this.header_input_index);
         this.header_array.push(this.header_input_ref.nativeElement.value);
         this.header_input_index.push(this.temp_array_1);
 
@@ -223,10 +274,10 @@ export class EditingPageComponent implements AfterViewInit
     this.img_width = this.c * this.times;
 
     for (let i = 0; i < this.coordinate_array.length; i++) {
-      this.coordinate_array[i].box[0] = (cord1.form[i].box[0]/(this.times-0.2)) * this.times;
-      this.coordinate_array[i].box[1] = (cord1.form[i].box[1]/(this.times-0.2)) * this.times;
-      this.coordinate_array[i].box[2] = (cord1.form[i].box[2]/(this.times-0.2)) * this.times;
-      this.coordinate_array[i].box[3]= (cord1.form[i].box[3]/(this.times-0.2)) * this.times;
+      this.coordinate_array[i].box[0] = (this.cord1.form[i].box[0]/(this.times-0.2)) * this.times;
+      this.coordinate_array[i].box[1] = (this.cord1.form[i].box[1]/(this.times-0.2)) * this.times;
+      this.coordinate_array[i].box[2] = (this.cord1.form[i].box[2]/(this.times-0.2)) * this.times;
+      this.coordinate_array[i].box[3]= (this.cord1.form[i].box[3]/(this.times-0.2)) * this.times;
     }
   }
 
@@ -242,10 +293,10 @@ export class EditingPageComponent implements AfterViewInit
 
    
     for (let i = 0; i < this.coordinate_array.length; i++) {
-      this.coordinate_array[i].box[0] = (cord1.form[i].box[0]/(this.times+0.2)) * this.times;
-      this.coordinate_array[i].box[1] = (cord1.form[i].box[1]/(this.times+0.2)) * this.times;
-      this.coordinate_array[i].box[2] = (cord1.form[i].box[2]/(this.times+0.2)) * this.times;
-      this.coordinate_array[i].box[3]= (cord1.form[i].box[3]/(this.times+0.2)) * this.times;
+      this.coordinate_array[i].box[0] = (this.cord1.form[i].box[0]/(this.times+0.2)) * this.times;
+      this.coordinate_array[i].box[1] = (this.cord1.form[i].box[1]/(this.times+0.2)) * this.times;
+      this.coordinate_array[i].box[2] = (this.cord1.form[i].box[2]/(this.times+0.2)) * this.times;
+      this.coordinate_array[i].box[3]= (this.cord1.form[i].box[3]/(this.times+0.2)) * this.times;
     }
   }
 

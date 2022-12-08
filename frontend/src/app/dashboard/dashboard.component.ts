@@ -14,21 +14,23 @@ export class DashboardComponent implements OnInit {
   
   constructor(private apiData:ApiDataService) { 
 
-     apiData.batches().subscribe((data)=>{
-      this.apiBatchdata = data;
-      console.warn("apiBatchdata",data);
-    })
+    
      
   }
 
   ngOnInit(): void {
 
+    this.apiData.batches().subscribe((data)=>{
+      this.apiBatchdata = data;
+      // console.warn("apiBatchdata",data);
+    })
+
   }
 
   get_batch_id(id:any){
    this.apiData.batchData = id;
-
-   console.log( "this is batch data " + this.apiData.batchData);
+   localStorage.setItem('global_batch_id',id)
+  //  console.log( "this is batch data " + this.apiData.batchData);
    
   }
 }
