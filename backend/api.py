@@ -199,8 +199,8 @@ def put_ocr_data():
 
  try:    
     raw_data = request.json
-    db.testingPagesUpdates.replace_one({"_id":ObjectId(raw_data['_id'])},{
-         "documentId": raw_data['documentId'],
+    db.testingPagesUpdates.update_one({"_id":ObjectId(raw_data['_id'])},{"$set":{
+        #  "documentId": raw_data['documentId'],
          "isCorrected": raw_data['isCorrected'] ,
          "imageStatus": raw_data['imageStatus'] ,
          "imagePath": raw_data['imageStatus'] ,
@@ -208,7 +208,7 @@ def put_ocr_data():
          "correctedData": raw_data['correctedData'] ,
          "correctedBy": raw_data['correctedBy'] ,
          "correctedOn": raw_data['correctedOn'] 
-    })
+     }})
     return Response(
           response= json.dumps({"Message": "Record Updated Sucessfully"}),
           status=200,
