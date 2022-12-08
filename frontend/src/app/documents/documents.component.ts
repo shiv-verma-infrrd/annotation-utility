@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import '../../assets/images';
 import { ApiDataService } from '../services/api-data.service'; 
 
 @Component({
@@ -9,17 +8,28 @@ import { ApiDataService } from '../services/api-data.service';
 })
 export class DocumentsComponent implements OnInit {
 
+  batchId:any;
+
   apiDocuments:any;
+  
   constructor(private apiData: ApiDataService) { 
 
-    apiData.documents().subscribe((data)=>{
-      
-      console.warn("apiDocumentData",data);
+    this.batchId = this.apiData.batchData;
+    apiData.get_one_doc(this.batchId).subscribe((data)=>{
       this.apiDocuments = data;
+      console.warn("apiDocumentData",data);  
+      
     })
+
+    console.log("array data "+ this.apiDocuments.documentList);
+    
   }
 
+
   ngOnInit(): void {
+    
+    console.log("doc batch id "+ this.batchId);
+    
   }
 
   searchText:string='';

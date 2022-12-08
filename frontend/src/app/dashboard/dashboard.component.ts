@@ -6,6 +6,7 @@ import { ApiDataService } from '../services/api-data.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
   batchID:any;
   apiBatchdata:any;
@@ -20,11 +21,13 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   get_batch_id(id:any){
-   
-   
+   this.apiData.batchData = id;
 
+   console.log( "this is batch data " + this.apiData.batchData);
+   
   }
 }

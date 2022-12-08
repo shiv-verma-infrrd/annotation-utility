@@ -11,14 +11,32 @@
         </div>
     </div>
 </div>
-<div class="row">
+
+
+
+<!-- original code (commented) -->
+
+<!-- <div class="row">
     <div class="col">
         <div class="doc-container" *ngFor="let doc of docs | filter:searchText">
             <div class="doc-thumbnail" routerLink="/editing-page">
                 <img [src]="doc.thumbnail" alt="dash">
             </div>
             <div class="doc-name" routerLink="/editing-page">{{doc.name}}</div>
-            <!-- <div class="correction-status">UnCorrected</div> -->
+        </div>
+
+    </div>
+</div> -->
+
+
+<!-- Trial code -->
+<div class="row">
+    <div class="col">
+        <div class="doc-container" *ngFor="let doc of apiDocuments.DocumentList| filter:searchText">
+            <div class="doc-thumbnail" routerLink="/editing-page">
+                <img [src]="doc.thumbnailUrl" alt="dash">
+            </div>
+            <div class="doc-name" routerLink="/editing-page">{{doc.DocumentList[0].thumbnailUrl}}</div>
         </div>
 
     </div>
