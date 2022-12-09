@@ -1,4 +1,4 @@
-from flask import Flask, Response, request, jsonify
+from flask import Flask, Response, request, jsonify, send_file
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 import pymongo
 import json
@@ -129,6 +129,13 @@ def get_kvp_data(id):
     except Exception as ex:
         print(ex)
     
+###################################################
+
+@app.route('/image/<batchId>/<image>')
+def myapp(batchId, image):
+    image = "./assets/" + str(batchId) + "/" + str(image)
+    return send_file(image, mimetype='image/jpg')
+
 ###################################################
 
 # updating page using raw data
