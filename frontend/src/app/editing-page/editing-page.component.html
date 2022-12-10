@@ -7,9 +7,7 @@
     <div  (click)="zoom_out()" class="zoom_out_button">-</div>
   </div>
   <div class="page-left-section">
-    <span *ngFor="let i of apiPageData">
-    <img #i_r [src]="i.imagePath" >
-  </span>
+    <img #i_r src={{apiPageData[0].imagePath}}>
     <svg #sv [attr.height]="img_length" [attr.width]="img_width">
       <rect #r class="image_rect" *ngFor="let i of coordinate_array; let x=index" id={{i.id}} [attr.x]="i.box[0]" [attr.y]="i.box[1]" [attr.height]="i.box[3]-i.box[1]" [attr.width]="i.box[2]-i.box[0]" (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="token_click(x)"/>
       <rect class="entity_rect" #entity_rect_ref x="" y="" height="" width="" />
@@ -22,40 +20,59 @@
       <input (click)="select_input('header')" (keydown.backspace)="clear_input('h')" #header_input_ref class="header-input" placeholder="Header Entitiy">
       <input (click)="select_input('question')" (keydown.backspace)="clear_input('q')" #question_input_ref class="question-input" placeholder="Question Entitiy">
       <input (click)="select_input('answer')" (keydown.backspace)="clear_input('a')" #answer_input_ref class="answer-input" placeholder="Answer Entitiy">
+      <!-- test other input -->
+      <input (click)="select_input('other')" (keydown.backspace)="clear_input('o')" #other_input_ref class="other-input" placeholder="Other Entity">
+
     </div>
-    <div class="page-right-section-bottom">
+    <div class="page-right-section-mid">
         <div class="display-qa-entity" *ngFor="let i of question_array;let x2=index;">     
-          <div class="entity-cell-structure question-entity" (click)="entity_click('q',x2)">
+          <div class="entity-cell-structure question-entity">
             <div class="entity-cell-type">Q</div>
             <div class="entity-cell-data">{{i}}</div>
             <!-- <div class="entity-cell-delete">x</div> -->
           </div>
-          <div class="entity-cell-structure answer-entity" (click)="entity_click('a',x2)">
+          <div class="entity-cell-structure answer-entity">
             <div class="entity-cell-type">A</div>
             <div class="entity-cell-data">{{answer_array[x2]}}</div>
             <!-- <div class="entity-cell-delete">x</div> -->
           </div>
-          <div (click)="delete_entity(x2,'Q')" class="delete-entity">
+          <div (click)="delete_entity(x2,'q')" class="delete-entity">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
             </svg>
           </div>
         </div>
-        
         <div class="display-header-entity" *ngFor="let i of header_array; let x=index;">
-          <div class="entity-cell-structure header-entity" (click)="entity_click('h',x)">
+          <div class="entity-cell-structure header-entity">
             <div class="entity-cell-type">H</div>
             <div class="entity-cell-data">{{i}}</div>
             <!-- <div class="entity-cell-delete">x</div> -->
           </div>
-          <div (click)="delete_entity(x,'H')" class="delete-entity">
+          <div (click)="delete_entity(x,'h')" class="delete-entity">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
             </svg>
           </div>
         </div>
+        <!-- test other -->
+        <div class="display-other-entity" *ngFor="let i of other_array; let x=index;">
+          <div class="entity-cell-structure other-entity">
+            <div class="entity-cell-type">O</div>
+            <div class="entity-cell-data">{{i}}</div>
+            <!-- <div class="entity-cell-delete">x</div> -->
+          </div>
+          <div (click)="delete_entity(x,'o')" class="delete-entity">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </div>
+        </div>
+    </div>
+    <div class="page-right-section-bottom">
+      <button class="submit-button">Submit and Next</button>
     </div>
   </div>
 </div>
