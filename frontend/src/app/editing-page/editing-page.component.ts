@@ -19,6 +19,7 @@ export class EditingPageComponent implements AfterViewInit
   apiPageData:any;
   cord1:any;
   coordinate_array:any;
+  imgUrl:any;
  
 
   title:string="";
@@ -53,15 +54,16 @@ export class EditingPageComponent implements AfterViewInit
   constructor(private apiData: ApiDataService)
   {
       this.apiData.docData = localStorage.getItem('global_doc_id')
-    
-      this.apiData.get_pages(this.apiData.docData).subscribe((data)=>{
+      this.apiData.batchData = localStorage.getItem('global_batch_id')
+      this.imgUrl = this.apiData.URL
+      this.apiData.get_pages(this.apiData.batchData,this.apiData.docData).subscribe((data)=>{
             
         this.apiPageData = data;
     
         this.cord1 = data[0].kvpData;
     
         this.coordinate_array = data[0].kvpData.form;
-        console.log(data);   
+        // console.log(data[0].kvpData);   
     });
   }
 

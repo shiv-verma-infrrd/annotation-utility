@@ -13,9 +13,9 @@
     <div class="col">
         <div class="doc-container" *ngFor="let i of apiPage | filter:searchText">
             <div class="doc-thumbnail" routerLink="/editing-page" (click)="get_docID(i.documentId)">
-                <img [src]="i.imagePath" alt="dash">
+                <img src="{{imgUrl + i.imagePath}}" alt="dash">
             </div>
-            <div class="doc-name" routerLink="/editing-page">{{i.imageStatus}}</div>
+            <div class="doc-name" routerLink="/editing-page">{{i.document_name}}</div>
         </div>
 
     </div>

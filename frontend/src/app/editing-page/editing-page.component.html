@@ -7,7 +7,7 @@
     <div  (click)="zoom_out()" class="zoom_out_button">-</div>
   </div>
   <div class="page-left-section">
-    <img #i_r src={{apiPageData[0].imagePath}}>
+    <img #i_r src="{{imgUrl+apiPageData[0].imagePath}}">
     <svg #sv [attr.height]="img_length" [attr.width]="img_width">
       <rect #r class="image_rect" *ngFor="let i of coordinate_array; let x=index" id={{i.id}} [attr.x]="i.box[0]" [attr.y]="i.box[1]" [attr.height]="i.box[3]-i.box[1]" [attr.width]="i.box[2]-i.box[0]" (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="token_click(x)"/>
       <rect class="entity_rect" #entity_rect_ref x="" y="" height="" width="" />
@@ -72,7 +72,8 @@
         </div>
     </div>
     <div class="page-right-section-bottom">
-      <button class="submit-button">Submit and Next</button>
+      <button class="submit-button">Save and Exit</button>
+      <button class="submit-button">Save and Next</button>
     </div>
   </div>
 </div>
