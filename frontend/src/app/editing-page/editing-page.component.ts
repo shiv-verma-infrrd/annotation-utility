@@ -628,8 +628,15 @@ export class EditingPageComponent implements AfterViewInit
         "imagePath":this.api_result.imagePath,
         "kvpData":this.api_result.kvpData,
         "correctedData":{result},
-          "correctedBy": "",
-          "correctedOn": ""
+        "correctedBy": "",
+        "correctedOn": ""
     }
+    console.log(final)
+    this.apiData.update_page_data(final).subscribe((data)=>{
+       console.warn(data)
+    })
+  
   }
+
+  // console.log(final)
 }
