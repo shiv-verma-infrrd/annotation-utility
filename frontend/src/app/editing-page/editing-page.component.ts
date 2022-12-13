@@ -18,6 +18,7 @@ export class EditingPageComponent implements AfterViewInit
   image_url:any;
   coordinate_array:any;
   json_input:any;
+  api_result:any;
 
   img_length: number=0;
   img_width: number=0;
@@ -58,7 +59,8 @@ export class EditingPageComponent implements AfterViewInit
         this.image_url = data[0].imagePath;
         this.json_input = data[0].kvpData.form;
         this.coordinate_array=data[0].kvpData.form;
-
+        // console.log(data);
+        this.api_result=data[0];
         this.token_label_intialization();   
     });
   }
@@ -181,7 +183,8 @@ export class EditingPageComponent implements AfterViewInit
   }
 
   zoom_in()
-  {if (this.times >= 2.5) return;
+  {
+    if (this.times >= 2.5) return;
 
     this.times += 0.2;
 
@@ -191,7 +194,8 @@ export class EditingPageComponent implements AfterViewInit
     this.img_length = this.l * this.times;
     this.img_width = this.c * this.times;
 
-    for (let i = 0; i < this.coordinate_array.length; i++) {
+    for (let i = 0; i < this.coordinate_array.length; i++) 
+    {
       this.coordinate_array[i].box[0] = (this.json_input.form[i].box[0]/(this.times-0.2)) * this.times;
       this.coordinate_array[i].box[1] = (this.json_input.form[i].box[1]/(this.times-0.2)) * this.times;
       this.coordinate_array[i].box[2] = (this.json_input.form[i].box[2]/(this.times-0.2)) * this.times;
@@ -488,374 +492,144 @@ export class EditingPageComponent implements AfterViewInit
   }
   save_all_data()
   {
-    console.log("question answer entities are \n");
-    for(let i=0;i<this.question_entity_strings.length;i++)
+    let result:any=[];
+    let a,b,c,d;
+    let t:any[]=[];
+    for(let i=0;i<this.question_entity_indexs.length;i++)
     {
-      console.log(this.question_entity_strings[i]+"' <-> '"+this.answer_entity_strings[i]+"\n");
+        a=99999;b=99999;c=-1;d=-1;
+        t=[];
+        for(let j=0;j<this.question_entity_indexs[i].length;j++)
+        {
+           if(a>this.json_input[this.question_entity_indexs[i][j]].box[0])
+           a=this.json_input[this.question_entity_indexs[i][j]].box[0];
+           
+           if(b>this.json_input[this.question_entity_indexs[i][j]].box[1])
+           b=this.json_input[this.question_entity_indexs[i][j]].box[1];
+           
+           if(c<this.json_input[this.question_entity_indexs[i][j]].box[2])
+           c=this.json_input[this.question_entity_indexs[i][j]].box[2];
+           
+           if(d<this.json_input[this.question_entity_indexs[i][j]].box[3])
+           d=this.json_input[this.question_entity_indexs[i][j]].box[3];
+
+           t.push({"box":this.json_input[this.question_entity_indexs[i][j]].box,
+           "text":this.json_input[this.question_entity_indexs[i][j]].text});
+        }
+        result.push({
+        "box":[a,b,c,d],
+        "text":this.question_entity_strings[i],
+        "label":"question",
+        "words":t,
+        "linking":[{"linking":[result.length,result.length+1]}],
+        "id":result.length
+      });
+      a=99999;b=99999;c=-1;d=-1;
+      t=[];
+      for(let j=0;j<this.answer_entity_indexs[i].length;j++)
+      {
+         if(a>this.json_input[this.answer_entity_indexs[i][j]].box[0])
+         a=this.json_input[this.answer_entity_indexs[i][j]].box[0];
+         
+         if(b>this.json_input[this.answer_entity_indexs[i][j]].box[1])
+         b=this.json_input[this.answer_entity_indexs[i][j]].box[1];
+         
+         if(c<this.json_input[this.answer_entity_indexs[i][j]].box[2])
+         c=this.json_input[this.answer_entity_indexs[i][j]].box[2];
+         
+         if(d<this.json_input[this.answer_entity_indexs[i][j]].box[3])
+         d=this.json_input[this.answer_entity_indexs[i][j]].box[3];
+
+         t.push({"box":this.json_input[this.answer_entity_indexs[i][j]].box,
+         "text":this.json_input[this.answer_entity_indexs[i][j]].text});
+      }
+      result.push({
+      "box":[a,b,c,d],
+      "text":this.answer_entity_strings[i],
+      "label":"answer",
+      "words":t,
+      "linking":[{"linking":[result.length,result.length-1]}],
+      "id":result.length
+      });
     }
-    console.log("header entities are \n");
-    for(let i=0;i<this.header_entity_strings.length;i++)
+
+    for(let i=0;i<this.header_entity_indexs.length;i++)
     {
-      console.log(this.header_entity_strings[i]+"\n");
+        a=99999;b=99999;c=-1;d=-1;
+        t=[];
+        for(let j=0;j<this.header_entity_indexs[i].length;j++)
+        {
+           if(a>this.json_input[this.header_entity_indexs[i][j]].box[0])
+           a=this.json_input[this.header_entity_indexs[i][j]].box[0];
+           
+           if(b>this.json_input[this.header_entity_indexs[i][j]].box[1])
+           b=this.json_input[this.header_entity_indexs[i][j]].box[1];
+           
+           if(c<this.json_input[this.header_entity_indexs[i][j]].box[2])
+           c=this.json_input[this.header_entity_indexs[i][j]].box[2];
+           
+           if(d<this.json_input[this.header_entity_indexs[i][j]].box[3])
+           d=this.json_input[this.header_entity_indexs[i][j]].box[3];
+
+           t.push({"box":this.json_input[this.header_entity_indexs[i][j]].box,
+           "text":this.json_input[this.header_entity_indexs[i][j]].text});
+        }
+        result.push({
+        "box":[a,b,c,d],
+        "text":this.header_entity_strings[i],
+        "label":"header",
+        "words":t,
+        "linking":[{"linking":[]}],
+        "id":result.length
+      });
     }
-    console.log("other entities are \n");
-    for(let i=0;i<this.other_entity_strings.length;i++)
+
+    for(let i=0;i<this.other_entity_indexs.length;i++)
     {
-      console.log(this.other_entity_strings[i]+"\n");
+        a=99999;b=99999;c=-1;d=-1;
+        t=[];
+        for(let j=0;j<this.other_entity_indexs[i].length;j++)
+        {
+           if(a>this.json_input[this.other_entity_indexs[i][j]].box[0])
+           a=this.json_input[this.other_entity_indexs[i][j]].box[0];
+           
+           if(b>this.json_input[this.other_entity_indexs[i][j]].box[1])
+           b=this.json_input[this.other_entity_indexs[i][j]].box[1];
+           
+           if(c<this.json_input[this.other_entity_indexs[i][j]].box[2])
+           c=this.json_input[this.other_entity_indexs[i][j]].box[2];
+           
+           if(d<this.json_input[this.other_entity_indexs[i][j]].box[3])
+           d=this.json_input[this.other_entity_indexs[i][j]].box[3];
+
+           t.push({"box":this.json_input[this.other_entity_indexs[i][j]].box,
+           "text":this.json_input[this.other_entity_indexs[i][j]].text});
+        }
+        result.push({
+        "box":[a,b,c,d],
+        "text":this.other_entity_strings[i],
+        "label":"other",
+        "words":t,
+        "linking":[{"linking":[]}],
+        "id":result.length
+      });
+    }     
+    //result contains updated kvpdata
+    
+    // console.log(this.apiData.docData);
+    let final={
+      "_id":this.api_result._id,
+        "imgid":this.api_result.imgid,
+        "documentId":this.api_result.documentId,
+        "batchName":this.api_result.batchName,
+        "document_name":this.api_result.document_name,
+        "isCorrected":"true",
+        "imageStatus":this.api_result.imageStatus,
+        "imagePath":this.api_result.imagePath,
+        "kvpData":this.api_result.kvpData,
+        "correctedData":{result},
+          "correctedBy": "",
+          "correctedOn": ""
     }
   }
 }
-
-// @ViewChild('header_input_ref') header_input_ref:any;
-// @ViewChild('question_input_ref') question_input_ref:any;
-// @ViewChild('answer_input_ref') answer_input_ref:any;
-// @ViewChild('i_r') img_ref: any;
-// @ViewChild('sv') svg_ref: any;
-// @ViewChild('entity_rect_ref') entity_rect_ref:any;
-
-
-// constructor(private apiData: ApiDataService) { }
-
-// apiPageData:any=[];
-// coordinate_array:any;
-// cord1:any;
-
-// title:string="";
-// selected_input_name:string="";
-// entity_type_button:string="Header";
-// // coordinate_array:any=cord1.form;  
-
-
-// img_length: number=0;
-// img_width: number=0;
-
-// l: number = 0;
-// c: number = 0;
-
-// times:number=1;
-
-// temp_array_1:number[]=[];
-// temp_array_2:number[]=[];
-
-// question_input_index:number[][]=[];
-// question_array:string[]=[];
-
-// answer_input_index:number[][]=[];
-// answer_array:string[]=[];
-
-// header_input_index:number[][]=[];
-// header_array:string[]=[];
-
-// ngOnInit(): void {
-  
-//   /********************api calls initializing arrays*****************/
-
-//   this.apiData.docData = localStorage.getItem('global_doc_id')
-
-//   this.apiData.get_pages(this.apiData.docData).subscribe((data)=>{
-        
-//     this.apiPageData = data;
-
-//     this.cord1 = data[0].kvpData;
-
-//     this.coordinate_array = data[0].kvpData.form;
-       
-// });
-// /*******************************************************************/
-
- 
-// }
-
-// ngAfterViewInit(): void{
-
-//   setTimeout(()=>{
-//     this.img_length=this.img_ref.nativeElement.offsetHeight;
-//     this.img_width=this.img_ref.nativeElement.offsetWidth;
-//     this.l=this.img_ref.nativeElement.offsetHeight;
-//     this.c=this.img_ref.nativeElement.offsetWidth;
-    
-    // console.log(this.cord1.form)
-    /**************************************************************************** */ 
-    /********************Code edited (needs correction)************************** */
-    /*****************pre-populating arrays with api data*************************/
-    /*************************************************************************** */
-    // for (let i = 0; i < this.coordinate_array.length; i++){
-    //   if( this.coordinate_array[i].label.toLowerCase( ) === 'header'){
-    //        this.header_array.push(this.coordinate_array[i].text)
-    //        this.header_input_index.push([i])
-    //   }
-    //   else if( this.coordinate_array[i].label.toLowerCase( ) === 'question'){
-    //        this.question_array.push(this.coordinate_array[i].text)
-    //        this.question_input_index.push([i])
-    //   }
-    //   else if( this.coordinate_array[i].label.toLowerCase( ) === 'answer'){
-    //        this.answer_array.push(this.coordinate_array[i].text)
-    //        this.answer_input_index.push([i])
-    //   }
-    //   else{
-         
-    //       // this.others_array.push(this.coordinate_array[i].text)
-         
-    //   }
-
-    // }
- 
-    // console.log("h"+this.header_array)
-
-    /************************************************************************/
-    /***********************************************************************/
-
-//   },1000);
-// }
-
-// token_mouse_enter(data:any)
-// {
-//   data.stroke="#39a87a";
-// }
-
-// token_mouse_out(data:any)
-// {
-//   data.stroke="";
-// }
-
-// token_click(data:any)
-// {
-//   if(this.selected_input_name=='header') 
-//   {
-//     if(this.header_input_ref.nativeElement.value!="")
-//     {
-//       this.temp_array_1.push(data);
-//       this.header_input_ref.nativeElement.value+= " " + this.coordinate_array[data].text;
-//     }
-//     else
-//     {
-//       this.temp_array_1=[];
-//       this.temp_array_1.push(data);
-//       this.header_input_ref.nativeElement.value+=this.coordinate_array[data].text;
-//     }
-//   }
-//   else if(this.selected_input_name=='question')
-//   {
-//     if(this.question_input_ref.nativeElement.value!="")
-//     {
-//       this.temp_array_1.push(data);
-//       this.question_input_ref.nativeElement.value+= " " + this.coordinate_array[data].text;
-//     }
-//     else
-//     {
-//       this.temp_array_1=[];
-//       this.temp_array_1.push(data);
-//       this.question_input_ref.nativeElement.value+=this.coordinate_array[data].text;
-//     }
-//   }
-//   else if(this.selected_input_name=='answer')
-//   {
-//     if(this.answer_input_ref.nativeElement.value!="")
-//     {
-//       this.temp_array_2.push(data);
-//       this.answer_input_ref.nativeElement.value+= " " + this.coordinate_array[data].text;
-//     }
-//     else
-//     {
-//       this.temp_array_2=[];
-//       this.temp_array_2.push(data);
-//       this.answer_input_ref.nativeElement.value+=this.coordinate_array[data].text;
-//     }
-//   }
-// }
-
-// next_button_click()
-// {
-//   this.selected_input_name="";// stop adding token on selecting new entity type
-
-//   if(this.entity_type_button=='Header')
-//   {
-//     this.entity_type_button='Q&A';
-//     this.question_input_ref.nativeElement.style.display="block";
-//     this.answer_input_ref.nativeElement.style.display="block";
-//     this.header_input_ref.nativeElement.style.display="none";
-//   }
-//   else
-//   {
-//     this.entity_type_button='Header';
-//     this.header_input_ref.nativeElement.style.display="block";
-//     this.question_input_ref.nativeElement.style.display="none";
-//     this.answer_input_ref.nativeElement.style.display="none";
-//   }
-// }
-
-// select_input(input_type:any)
-// {
-//   this.entity_rect_ref.nativeElement.style.height=0;
-//   this.entity_rect_ref.nativeElement.style.width=0;
-  
-//   this.selected_input_name=input_type; 
-// }
-
-// submit_entity()
-// {
-//   if(this.entity_type_button=='Header')
-//   {
-//     if(this.header_input_ref.nativeElement.value=="")
-//     {
-//       alert("make a header entity first to submit");
-//     }
-//     else
-//     {
-//       console.log(this.header_input_index);
-//       this.header_array.push(this.header_input_ref.nativeElement.value);
-//       this.header_input_index.push(this.temp_array_1);
-
-//       this.temp_array_1=[];
-//       this.header_input_ref.nativeElement.value="";
-//     }
-//   }
-//   else
-//   {
-//     if(this.question_input_ref.nativeElement.value==""||this.answer_input_ref.nativeElement.value=="")
-//     {
-//       alert("make a question and answer entity first to submit");
-//     }
-//     else
-//     {
-//       // console.log(this.question_input_index);
-//       // console.log(this.answer_input_index);
-//       this.question_array.push(this.question_input_ref.nativeElement.value);
-//       this.question_input_index.push(this.temp_array_1);
-//       this.temp_array_1=[];
-//       this.question_input_ref.nativeElement.value="";
-
-//       this.answer_array.push(this.answer_input_ref.nativeElement.value);
-//       this.answer_input_index.push(this.temp_array_2);
-//       this.temp_array_2=[];
-//       this.answer_input_ref.nativeElement.value="";
-//     }
-//   }
-// }
-// delete_entity(ind:number,t:string)
-// {
-//   this.entity_rect_ref.nativeElement.style.height=0;
-//   this.entity_rect_ref.nativeElement.style.width=0;
-
-//    if(t=='H')
-//    {
-//     this.header_array.splice(ind,1);
-//     this.header_input_index.splice(ind,1);
-//    }
-//    else
-//    {
-//     this.question_array.splice(ind,1);
-//     this.answer_array.splice(ind,1);
-//     this.question_input_index.splice(ind,1);
-//     this.answer_input_index.splice(ind,1);
-//    }
-// }
-// clear_input(type:any)
-// {
-//    if(type=='h')
-//    this.header_input_ref.nativeElement.value="";
-//    else if(type=='q')
-//    this.question_input_ref.nativeElement.value="";
-//    else
-//    this.answer_input_ref.nativeElement.value="";
-// }
-
-// zoom_in() {
-//   if (this.times >= 2.5) return;
-
-//   this.times += 0.2;
-
-//   this.img_ref.nativeElement.style.height = this.l * this.times + 'px';
-//   this.img_ref.nativeElement.style.width = this.c * this.times + 'px';
-
-//   this.img_length = this.l * this.times;
-//   this.img_width = this.c * this.times;
-
-//   for (let i = 0; i < this.coordinate_array.length; i++) {
-//     this.coordinate_array[i].box[0] = (this.cord1.form[i].box[0]/(this.times-0.2)) * this.times;
-//     this.coordinate_array[i].box[1] = (this.cord1.form[i].box[1]/(this.times-0.2)) * this.times;
-//     this.coordinate_array[i].box[2] = (this.cord1.form[i].box[2]/(this.times-0.2)) * this.times;
-//     this.coordinate_array[i].box[3]= (this.cord1.form[i].box[3]/(this.times-0.2)) * this.times;
-//   }
-// }
-
-// zoom_out() {
-
-//   this.times -= 0.2;
-
-//   this.img_ref.nativeElement.style.height = this.l * this.times + 'px';
-//   this.img_ref.nativeElement.style.width = this.c * this.times + 'px';
-
-//   this.img_length = this.l * this.times;
-//   this.img_width = this.c * this.times;
-
- 
-//   for (let i = 0; i < this.coordinate_array.length; i++) {
-//     this.coordinate_array[i].box[0] = (this.cord1.form[i].box[0]/(this.times+0.2)) * this.times;
-//     this.coordinate_array[i].box[1] = (this.cord1.form[i].box[1]/(this.times+0.2)) * this.times;
-//     this.coordinate_array[i].box[2] = (this.cord1.form[i].box[2]/(this.times+0.2)) * this.times;
-//     this.coordinate_array[i].box[3]= (this.cord1.form[i].box[3]/(this.times+0.2)) * this.times;
-//   }
-// }
-
-// entity_click(type:string,index:number)
-// {
-//   var x=999,y=999,x2=-1,y2=-1;
-//    if(type=='q')
-//    { 
-//    for(let i=0;i<this.question_input_index[index].length;i++)
-//    {
-//     if(x>this.coordinate_array[this.question_input_index[index][i]].box[0]) 
-//      x=this.coordinate_array[this.question_input_index[index][i]].box[0]; 
-    
-//     if(y>this.coordinate_array[this.question_input_index[index][i]].box[1]) 
-//      y=this.coordinate_array[this.question_input_index[index][0]].box[1];
-
-//     if(x2<this.coordinate_array[this.question_input_index[index][i]].box[2])  
-//     x2=this.coordinate_array[this.question_input_index[index][i]].box[2]
-
-//     if(y2<this.coordinate_array[this.question_input_index[index][i]].box[3])  
-//     y2=this.coordinate_array[this.question_input_index[index][i]].box[3]
-//    }
-//    }
-//    else if(type=='a')
-//    {  
-//     for(let i=0;i<this.answer_input_index[index].length;i++)
-//     {
-//      if(x>this.coordinate_array[this.answer_input_index[index][i]].box[0]) 
-//       x=this.coordinate_array[this.answer_input_index[index][i]].box[0]; 
-     
-//      if(y>this.coordinate_array[this.answer_input_index[index][i]].box[1]) 
-//       y=this.coordinate_array[this.answer_input_index[index][0]].box[1];
-
-//      if(x2<this.coordinate_array[this.answer_input_index[index][i]].box[2])  
-//      x2=this.coordinate_array[this.answer_input_index[index][i]].box[2]
-
-//      if(y2<this.coordinate_array[this.answer_input_index[index][i]].box[3])  
-//      y2=this.coordinate_array[this.answer_input_index[index][i]].box[3]
-//     }
-//    }
-//    else
-//    { 
-//     for(let i=0;i<this.header_input_index[index].length;i++)
-//     {
-//      if(x>this.coordinate_array[this.header_input_index[index][i]].box[0]) 
-//       x=this.coordinate_array[this.header_input_index[index][i]].box[0]; 
-     
-//      if(y>this.coordinate_array[this.header_input_index[index][i]].box[1]) 
-//       y=this.coordinate_array[this.header_input_index[index][0]].box[1];
-
-//      if(x2<this.coordinate_array[this.header_input_index[index][i]].box[2])  
-//      x2=this.coordinate_array[this.header_input_index[index][i]].box[2]
-
-//      if(y2<this.coordinate_array[this.header_input_index[index][i]].box[3])  
-//      y2=this.coordinate_array[this.header_input_index[index][i]].box[3]
-//     } 
-//    }
-
-//    this.entity_rect_ref.nativeElement.style.x=x;
-//    this.entity_rect_ref.nativeElement.style.y=y;
-   
-//    this.entity_rect_ref.nativeElement.style.height=y2-y;
-//    this.entity_rect_ref.nativeElement.style.width=x2-x;
-// }
