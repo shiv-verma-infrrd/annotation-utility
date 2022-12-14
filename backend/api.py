@@ -2,7 +2,7 @@ from flask import Flask,Response,request,jsonify,send_file
 import pymongo
 import json
 from bson.objectid import ObjectId
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 from werkzeug.utils import secure_filename
 import os
 from zipfile import ZipFile
@@ -35,7 +35,7 @@ try:
     serverSelectionTimeoutMS = 100
     )
   
-  db = mongo.CorrectionUIdb
+  db = mongo.CorrectionUIdb2
   user = db.Users
   mongo.server_info()
 
@@ -186,12 +186,13 @@ def put_ocr_data():
          "batchName" :raw_data['batchName'],
          "isCorrected": raw_data['isCorrected'] ,
          "imageStatus": raw_data['imageStatus'] ,
-         "imagePath": raw_data['imageStatus'] ,
+        #  "imagePath": raw_data['imageStatus'] ,
          'kvpData':raw_data['kvpData'],
          "correctedData": raw_data['correctedData'] ,
          "correctedBy": raw_data['correctedBy'] ,
          "correctedOn": raw_data['correctedOn'] 
     }})
+    
     return Response(
           response= json.dumps({"Message": "Record Updated Sucessfully"}),
           status=200,
