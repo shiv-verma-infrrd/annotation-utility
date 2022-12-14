@@ -12,7 +12,7 @@ export class DocumentsComponent implements OnInit {
   apiPage:any = [];
   
   imgUrl:any;
-  
+  searchText:string='';
   
   constructor(private apiData: ApiDataService) { 
   }
@@ -58,5 +58,9 @@ export class DocumentsComponent implements OnInit {
   }
 
 
-  searchText:string='';
+  onClear()
+  {
+    this.searchText = "";
+  }
+
 }
