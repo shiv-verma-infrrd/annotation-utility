@@ -11,6 +11,7 @@ export class EditingPageComponent implements AfterViewInit
   @ViewChild('custom_question_input_ref') custom_question_input_ref:any;
   @ViewChild('custom_answer_input_ref') custom_answer_input_ref:any;
   @ViewChild('custom_other_input_ref') custom_other_input_ref:any;
+  @ViewChild('display_entity_rect_ref') display_entity_rect_ref:any;
   @ViewChild('main_image_ref') img_ref: any;
   @ViewChild('svg_ref') svg_ref: any;
   
@@ -25,14 +26,19 @@ export class EditingPageComponent implements AfterViewInit
   times:number=1;
   l:number=0;
   c:number=0;
+
   custom_input_type:any="Header";
+
   selected_input_ref:any;//used to store ref to any selected input (add or edit input)
   selected_input_type:string="";
   selected_input_index:number=-1;
+
   custom_input_array1:number[]=[];
   custom_input_array2:number[]=[];
+
   header_entity_strings:string[]=[];
   header_entity_indexs:number[][]=[];
+
   other_entity_strings:string[]=[];
   other_entity_indexs:number[][]=[];
   
@@ -253,6 +259,16 @@ export class EditingPageComponent implements AfterViewInit
      this.selected_input_ref=ref;
      this.selected_input_type=type;
      this.selected_input_index=index; 
+
+     if(type=='cq'||type=='ca'||type=='ch'||type=='co')
+     {
+       //if any entity is getting pointed in image
+       this.display_entity_rect_ref.nativeElement.style.x=0;
+       this.display_entity_rect_ref.nativeElement.style.y=0;
+     
+       this.display_entity_rect_ref.nativeElement.style.height=0;
+       this.display_entity_rect_ref.nativeElement.style.width=0;
+     }
   }
   
   make_custom_entity()
@@ -427,6 +443,13 @@ export class EditingPageComponent implements AfterViewInit
   }
   delete_entity(type:string,index:number)
   {
+    //if any entity is getting pointed in image
+     this.display_entity_rect_ref.nativeElement.style.x=0;
+     this.display_entity_rect_ref.nativeElement.style.y=0;
+     
+     this.display_entity_rect_ref.nativeElement.style.height=0;
+     this.display_entity_rect_ref.nativeElement.style.width=0;
+
      if(type=='q')
      {
        for(let i=0;i<this.question_entity_indexs[index].length;i++)
@@ -611,6 +634,82 @@ export class EditingPageComponent implements AfterViewInit
     })
 
   }
+  entity_click(type:string,index:number)
+  {
+    var x=99999,y=99999,x2=-1,y2=-1;
+     if(type=='q')
+     { 
+     for(let i=0;i<this.question_entity_indexs[index].length;i++)
+     {
+      if(x>this.coordinate_array[this.question_entity_indexs[index][i]].box[0]) 
+       x=this.coordinate_array[this.question_entity_indexs[index][i]].box[0]; 
+      
+      if(y>this.coordinate_array[this.question_entity_indexs[index][i]].box[1]) 
+       y=this.coordinate_array[this.question_entity_indexs[index][0]].box[1];
 
-  // console.log(final)
+      if(x2<this.coordinate_array[this.question_entity_indexs[index][i]].box[2])  
+      x2=this.coordinate_array[this.question_entity_indexs[index][i]].box[2]
+
+      if(y2<this.coordinate_array[this.question_entity_indexs[index][i]].box[3])  
+      y2=this.coordinate_array[this.question_entity_indexs[index][i]].box[3]
+     }
+     }
+     else if(type=='a')
+     {  
+      for(let i=0;i<this.answer_entity_indexs[index].length;i++)
+      {
+       if(x>this.coordinate_array[this.answer_entity_indexs[index][i]].box[0]) 
+        x=this.coordinate_array[this.answer_entity_indexs[index][i]].box[0]; 
+       
+       if(y>this.coordinate_array[this.answer_entity_indexs[index][i]].box[1]) 
+        y=this.coordinate_array[this.answer_entity_indexs[index][0]].box[1];
+ 
+       if(x2<this.coordinate_array[this.answer_entity_indexs[index][i]].box[2])  
+       x2=this.coordinate_array[this.answer_entity_indexs[index][i]].box[2]
+ 
+       if(y2<this.coordinate_array[this.answer_entity_indexs[index][i]].box[3])  
+       y2=this.coordinate_array[this.answer_entity_indexs[index][i]].box[3]
+      }
+     }
+     else if(type=='h')
+     { 
+      for(let i=0;i<this.header_entity_indexs[index].length;i++)
+      {
+       if(x>this.coordinate_array[this.header_entity_indexs[index][i]].box[0]) 
+        x=this.coordinate_array[this.header_entity_indexs[index][i]].box[0]; 
+       
+       if(y>this.coordinate_array[this.header_entity_indexs[index][i]].box[1]) 
+        y=this.coordinate_array[this.header_entity_indexs[index][0]].box[1];
+ 
+       if(x2<this.coordinate_array[this.header_entity_indexs[index][i]].box[2])  
+       x2=this.coordinate_array[this.header_entity_indexs[index][i]].box[2]
+ 
+       if(y2<this.coordinate_array[this.header_entity_indexs[index][i]].box[3])  
+       y2=this.coordinate_array[this.header_entity_indexs[index][i]].box[3]
+      } 
+     }
+     else
+     {
+      for(let i=0;i<this.other_entity_indexs[index].length;i++)
+      {
+       if(x>this.coordinate_array[this.other_entity_indexs[index][i]].box[0]) 
+        x=this.coordinate_array[this.other_entity_indexs[index][i]].box[0]; 
+       
+       if(y>this.coordinate_array[this.other_entity_indexs[index][i]].box[1]) 
+        y=this.coordinate_array[this.other_entity_indexs[index][0]].box[1];
+ 
+       if(x2<this.coordinate_array[this.other_entity_indexs[index][i]].box[2])  
+       x2=this.coordinate_array[this.other_entity_indexs[index][i]].box[2]
+ 
+       if(y2<this.coordinate_array[this.other_entity_indexs[index][i]].box[3])  
+       y2=this.coordinate_array[this.other_entity_indexs[index][i]].box[3]
+      }
+     }
+
+     this.display_entity_rect_ref.nativeElement.style.x=x;
+     this.display_entity_rect_ref.nativeElement.style.y=y;
+     
+     this.display_entity_rect_ref.nativeElement.style.height=y2-y;
+     this.display_entity_rect_ref.nativeElement.style.width=x2-x;
+  }
 }

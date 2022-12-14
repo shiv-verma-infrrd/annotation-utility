@@ -12,6 +12,7 @@
       <rect #r class="image_rect" *ngFor="let i of coordinate_array;let ind=index" [attr.x]="i.box[0]"
         [attr.y]="i.box[1]" [attr.height]="i.box[3]-i.box[1]" [attr.width]="i.box[2]-i.box[0]"
         (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="image_token_click(i.id)" />
+        <rect class="entity_rect" #display_entity_rect_ref x="" y="" height="" width="" />
     </svg>
   </div>
   <div class="page-right-section">
@@ -32,7 +33,7 @@
       <!-- ****************** displaying question and answer ******************* -->
       <div class="display-entity" *ngFor="let i of question_entity_strings;let ind=index">
         <!--question part-->
-        <div class="entity-cell-structure q-entity-cell-pos">
+        <div class="entity-cell-structure q-entity-cell-pos" (click)="entity_click('q',ind)">
           <div class="entity-cell-type">Q</div>
           <input readonly #q_i_r class="entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(q_i_r,'q',ind)"/>
           <div class="entity-cell-save" (click)="clear_selected_input_ref()"></div>
@@ -40,7 +41,7 @@
         <!--end of question part-->
 
         <!--answer part-->
-        <div class="entity-cell-structure a-entity-cell-pos">
+        <div class="entity-cell-structure a-entity-cell-pos" (click)="entity_click('a',ind)">
           <div class="entity-cell-type">A</div>
           <input readonly #a_i_r class="entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(a_i_r,'a',ind)"/>
           <div class="entity-cell-save" (click)="clear_selected_input_ref()"></div>
@@ -60,7 +61,7 @@
       
       <!--****************** displaying header *******************-->
       <div class="display-entity" *ngFor="let i of header_entity_strings;let ind=index">
-        <div class="entity-cell-structure h-entity-cell-pos">
+        <div class="entity-cell-structure h-entity-cell-pos" (click)="entity_click('h',ind)">
           <div class="entity-cell-type">H</div>
           <input #h_i_r readonly class="entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(h_i_r,'h',ind)" />
           <div class="entity-cell-save" (click)="clear_selected_input_ref()"></div>
@@ -79,7 +80,7 @@
 
       <!--****************** displaying other *******************-->
       <div class="display-entity" *ngFor="let i of other_entity_strings;let ind=index">
-        <div class="entity-cell-structure o-entity-cell-pos">
+        <div class="entity-cell-structure o-entity-cell-pos" (click)="entity_click('o',ind)">
           <div class="entity-cell-type">O</div>
           <input  #o_i_r readonly class="entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(o_i_r,'o',ind)"  />
           <div class="entity-cell-save" (click)="clear_selected_input_ref()"></div>
