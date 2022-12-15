@@ -24,6 +24,7 @@ export class DocumentsComponent implements OnInit {
     
     this.apiData.batchData = localStorage.getItem('global_batch_id')
     this.apiData.get_one_doc(this.apiData.batchData).subscribe((data)=>{
+      this.apiData.docarray = data;
       this.apiPage = data; 
       console.log(data)
     });

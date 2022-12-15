@@ -11,6 +11,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { EditingPageComponent } from './editing-page/editing-page.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {HttpClientModule} from '@angular/common/http'
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {HttpClientModule} from '@angular/common/http'
     DashboardComponent,
     DocumentsComponent,
     NavbarComponent,
-    EditingPageComponent
+    EditingPageComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

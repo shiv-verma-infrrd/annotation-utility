@@ -1,4 +1,5 @@
 from flask import Flask,Response,request,jsonify,send_file
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 import pymongo
 import json
 from bson.objectid import ObjectId
@@ -15,7 +16,7 @@ app.config['ZIP_FILE_EXTRACT_DIRECTORY'] = 'assets/'
 app.config['ALLOWED_EXTENTIONS'] = '.zip' 
 app.config['FILE_JSON_DIRECTORY'] = r"assets\annotations"
 
-# jwt = JWTManager(app)
+jwt = JWTManager(app)
 
 app.config["JWT_SECRET_KEY"] = "key"
 
