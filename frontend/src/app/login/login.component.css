@@ -8,55 +8,61 @@
 .login-form {
     /* background-color: rgb(20, 19, 19); */
     position: absolute;
-    height:90%;
-    width: 90%;
+    top:15%;
+    left: 35%;
+    height:60%;
+    width: 30%;
     margin: 0;
   	font-size: 15px;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
 }
 
-form{
-    position: absolute;
-    top:35%;
-    left:40%;
-    height:50%;
-    width:40%;
-    
-}
 
 .infrrd-logo
 {
   position: absolute;
-  height: 100%;
-  width: 42%;
-  top: 20%;
-  left: 49%;
+  height: 25%;
+  width: 50%;
+  top: 5%;
+  left: 22%;
   background-image: url("https://uat.infrrd.cloud/assets/images/logos/Infrrd-Logo-Transparent3.png");
-  background-size: 35%;
+  background-size: 100%;
   background-repeat: no-repeat;
   cursor: pointer;
+  /* background-color: #39a87a; */
+}
+
+
+form{
+    position: absolute;
+    top:30%;
+    height:60%;
+    width:100%;
+    
 }
 
 .email{
     position: absolute;
-    top: 5%;
-    left: 15%;
-    width: 70%;
-    height: 13%; 
-    margin-top:2%;
+    top: 20%;
+    left: 10%;
+    width: 80%;
+    height: 20%; 
+    /* background-color: #39a87a; */
+
 }
 
 .password{
     position: absolute;
-    top: 25%;
-    left: 15%;
-    width: 70%;
-    height: 13%; 
+    top: 45%;
+    left: 10%;
+    width: 80%;
+    height: 20%; 
 }
 
 input{
     position: absolute;
     height: 100%;
-    width:  80%;
+    width:  100%;
     text-align: left;
     border-radius: 0.3rem;
     border: 0.2px solid grey;
@@ -83,17 +89,16 @@ input{
 
 
 .btn {      
-    position: absolute;  
-    font-size: 15px;
-    top: 48%;
-    left: 15%;
-    height: 55%;
-    width: 57%;
+    position: absolute; 
+    top: 78%;
+    left: 10%;
+    height: 16%;
+    width: 80%;
 }
 
 button{ 
   position: absolute;
-  height: 25%;
+  height: 100%;
   width: 100%;
   background-color: #39a87a;
   border: 0px;
