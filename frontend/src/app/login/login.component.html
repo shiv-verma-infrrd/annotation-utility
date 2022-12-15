@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="login-form">
+        <form  #f="ngForm" (ngSubmit)="onSubmit(f)">
+            <h2 class="text-center">Log in</h2>       
+            <div class="form-group">
+                <input 
+                    type="text"
+                    name="username"
+                    class="form-control" 
+                    placeholder="Username"
+                    required="required"
+                    minlength="3"
+                    ngModel>
+            </div>
+            <div class="form-group">
+                <input 
+                    type="password"
+                    name="password"
+                    class="form-control" 
+                    placeholder="Password"
+                    required="required"
+                    minlength="3"
+                    ngModel>
+            </div>
+            <div>
+                <button 
+                    type="submit" 
+                    class="btn btn-primary btn-block">Log in</button>
+            </div>     
+        </form>   
+    </div>
+</div>
