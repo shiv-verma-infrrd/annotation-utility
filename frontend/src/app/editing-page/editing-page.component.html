@@ -1,6 +1,13 @@
 <div class="editing-page-body">
+  <div class="alert-cell" #alert_ref>
+    <div class="alert-warn">Warning!</div>
+    <!--Select token first, to make an entity-->
+    <!--This token is already used -->
+    <div class="alert-message">{{alert_message}}</div>
+    <div class="alert-close" (click)="close_alert()">x</div>
+  </div>
   <div class="navbar-1">
-    <div class="logo"></div>
+    <div class="logo" routerLink="/"></div>
   </div>
   <div class="navbar-2">
     <div (click)="zoom_in()" class="zoom_in_button">+</div>
@@ -21,10 +28,10 @@
       <button class="next-button" (click)="next_button_click()">></button>
       <button class="add-entity-button" (click)="make_custom_entity()">Add {{custom_input_type}}</button>
 
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_header_input_ref,'ch',-1)" readonly #custom_header_input_ref class="custom-header-input" placeholder="Header Entitiy">
+      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_header_input_ref,'ch',-1)" readonly #custom_header_input_ref class="custom-header-input" placeholder="Header Entity">
       
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_question_input_ref,'cq',-1)" readonly #custom_question_input_ref class="custom-question-input" placeholder="Question Entitiy">
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_answer_input_ref,'ca',-1)" readonly #custom_answer_input_ref class="custom-answer-input" placeholder="Answer Entitiy">
+      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_question_input_ref,'cq',-1)" readonly #custom_question_input_ref class="custom-question-input" placeholder="Question Entity">
+      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_answer_input_ref,'ca',-1)" readonly #custom_answer_input_ref class="custom-answer-input" placeholder="Answer Entity">
       
       <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_other_input_ref,'co',-1)" readonly #custom_other_input_ref class="custom-other-input" placeholder="Other Entity">
     </div>
@@ -33,18 +40,16 @@
       <!-- ****************** displaying question and answer ******************* -->
       <div class="display-entity" *ngFor="let i of question_entity_strings;let ind=index">
         <!--question part-->
-        <div class="entity-cell-structure q-entity-cell-pos" (click)="entity_click('q',ind)">
-          <div class="entity-cell-type">Q</div>
-          <input readonly #q_i_r class="entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(q_i_r,'q',ind)"/>
-          <div class="entity-cell-save" (click)="clear_selected_input_ref()"></div>
+        <div class="qa-entity-cell-structure q-entity-cell-pos" (click)="entity_click('q',ind)">
+          <div class="qa-entity-cell-type">Q</div>
+          <input readonly #q_i_r class="qa-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(q_i_r,'q',ind)"/>
         </div>
         <!--end of question part-->
 
         <!--answer part-->
-        <div class="entity-cell-structure a-entity-cell-pos" (click)="entity_click('a',ind)">
-          <div class="entity-cell-type">A</div>
-          <input readonly #a_i_r class="entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(a_i_r,'a',ind)"/>
-          <div class="entity-cell-save" (click)="clear_selected_input_ref()"></div>
+        <div class="qa-entity-cell-structure a-entity-cell-pos" (click)="entity_click('a',ind)">
+          <div class="qa-entity-cell-type">A</div>
+          <input readonly #a_i_r class="qa-entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(a_i_r,'a',ind)"/>
         </div>
         <!--end of answer part-->
 
@@ -61,10 +66,9 @@
       
       <!--****************** displaying header *******************-->
       <div class="display-entity" *ngFor="let i of header_entity_strings;let ind=index">
-        <div class="entity-cell-structure h-entity-cell-pos" (click)="entity_click('h',ind)">
-          <div class="entity-cell-type">H</div>
-          <input #h_i_r readonly class="entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(h_i_r,'h',ind)" />
-          <div class="entity-cell-save" (click)="clear_selected_input_ref()"></div>
+        <div class="ho-entity-cell-structure h-entity-cell-pos" (click)="entity_click('h',ind)">
+          <div class="ho-entity-cell-type">H</div>
+          <input #h_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(h_i_r,'h',ind)" />
         </div>
        
         <div class="delete-entity" (click)="delete_entity('h',ind)">
@@ -80,10 +84,9 @@
 
       <!--****************** displaying other *******************-->
       <div class="display-entity" *ngFor="let i of other_entity_strings;let ind=index">
-        <div class="entity-cell-structure o-entity-cell-pos" (click)="entity_click('o',ind)">
-          <div class="entity-cell-type">O</div>
-          <input  #o_i_r readonly class="entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(o_i_r,'o',ind)"  />
-          <div class="entity-cell-save" (click)="clear_selected_input_ref()"></div>
+        <div class="ho-entity-cell-structure o-entity-cell-pos" (click)="entity_click('o',ind)">
+          <div class="ho-entity-cell-type">O</div>
+          <input  #o_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(o_i_r,'o',ind)"  />
         </div>
 
         <div class="delete-entity" (click)="delete_entity('o',ind)">
@@ -98,7 +101,9 @@
       <!--****************** end of displaying other *******************-->
     </div>
     <div class="page-right-section-bottom">
-      <button (click)="save_all_data()" class="save-button">Save and Exit</button>
+      <button  (click)="save_all_data(0)" class="save-and-exit">Save and Exit</button>
+      <button (click)="save_all_data(1)" class="save-and-next">Save and Next</button>
+      <button (click)="exit()" class="cancel-button">Cancel</button>
     </div>
   </div>
 </div>

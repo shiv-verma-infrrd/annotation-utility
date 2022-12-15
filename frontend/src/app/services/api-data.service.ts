@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class ApiDataService {
   batchData:any;
   docData:any;
+  docarray:any;
   URL = "http://127.0.0.1:80/";
 
   constructor(private http:HttpClient) {}
