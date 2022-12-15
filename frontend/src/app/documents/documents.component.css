@@ -1,11 +1,11 @@
 
 /* conditional classes */
 .corrected{
-    background-color: #32de84;
+    background-color: #39a87a;
 }
 
 .notCorrected{
-    background-color: rgb(135, 38, 38);
+    background-color: #2f80ed;
 }
 
 .filter-bar{
@@ -55,7 +55,7 @@
 .doc-thumbnail{
     border-radius: 3px 3px 0 0;
     box-sizing: border-box;
-    /* border: 1px solid black; */
+    /* border: 2px solid green; */
     margin-left: 5vw;
     /* margin-top: 3px; */
     height: 35vh;
@@ -80,7 +80,7 @@
 .doc-name{
     color: white;
     border-radius: 0 0 4px 4px;
-    /* background-color: #2f80ed; */
+    /* background-color: red; */
     /* border: 1px solid green; */
     height: 6vh;
     width: 14.85vw;
@@ -89,6 +89,14 @@
     /* margin-bottom: 5vh; */
     /* justify-content: center;
     align-items: center; */
+}
+.center-span{
+    padding-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* border: 2px solid purple; */
 }
 
 /* .correction-status{

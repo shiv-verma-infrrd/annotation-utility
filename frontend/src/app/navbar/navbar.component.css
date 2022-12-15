@@ -5,7 +5,7 @@
 }
 .navbar-1{
     overflow: hidden;
-    height: 9vh;
+    height: 7vh;
     width: 100vw;
     font-size: 1.3rem;
     text-align: left;
@@ -15,7 +15,35 @@
 
 .navbar-2{
     overflow: hidden;
-    height: 9vh;
+    height: 4vh;
     width: 100vw;
     background-color: black;
 }
+
+.logo {
+    /* position: absolute; */
+    margin-top: 10px;
+    margin-left: 12.1px;
+    height: 100%;
+    width: 20%;
+    /* top: 3%;
+    left: 1%; */
+    background-image: url("https://uat.infrrd.cloud/assets/images/logos/infrrd-logo-monotone-white-transparent@2x.png");
+    background-size: 35%;
+    background-repeat: no-repeat;
+  }
+/*
+  .logo {
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 12.1px;
+    height: 100%;
+    width: 20%;
+    /* top: 3%;
+    left: 1%; 
+    background-image: url("https://uat.infrrd.cloud/assets/images/logos/infrrd-logo-monotone-white-transparent@2x.png");
+    background-size: 35%;
+    background-repeat: no-repeat;
+  }
+
+*/

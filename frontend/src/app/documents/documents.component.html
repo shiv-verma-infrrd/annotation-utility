@@ -15,7 +15,7 @@
             <div class="doc-thumbnail" routerLink="/editing-page" (click)="get_docID(i.documentId)">
                 <img src="{{imgUrl + i.imagePath}}" alt="dash">
             </div>
-            <div class="doc-name" [ngClass]="{corrected: i.isCorrected == 'true', notCorrected: i.isCorrected == 'False'}" routerLink="/editing-page">{{i.document_name}}</div>
+            <div class="doc-name" [ngClass]="{corrected: i.isCorrected == 'true', notCorrected: i.isCorrected == 'False'}" routerLink="/editing-page"><span class="center-span">{{i.document_name}}</span></div>
         </div>
 
     </div>
