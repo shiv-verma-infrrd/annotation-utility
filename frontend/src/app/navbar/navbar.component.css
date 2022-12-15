@@ -1,9 +1,10 @@
 
-.navbar-1 span{
+/* .navbar-1 span{
     font-weight: bold;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
+} */
 .navbar-1{
+  user-select: none;
     overflow: hidden;
     height: 7vh;
     width: 100vw;
@@ -21,6 +22,7 @@
 }
 
 .logo {
+  cursor: pointer;
     /* position: absolute; */
     margin-top: 10px;
     margin-left: 12.1px;

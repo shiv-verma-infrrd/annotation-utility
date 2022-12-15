@@ -21,9 +21,10 @@
     margin: 10px 20px;
 }
 .dash-thumbnail{
+    user-select: none;
     /* background-color: #fff; */
     /* border: 1px solid black; */
-    
+    cursor: pointer;
     justify-content: center;
     height: 70px;
     width: 96%;
@@ -33,6 +34,8 @@
 }
 
 .dash-name{
+    user-select: none;
+    cursor: pointer;
     /* display: flex; */
     /* margin: auto; */
     /* border: 1px solid red; */
