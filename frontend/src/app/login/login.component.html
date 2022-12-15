@@ -1,32 +1,22 @@
 <div class="card">
     <div class="login-form">
+
+        <div class="infrrd-logo"></div>  
+
         <form  #f="ngForm" (ngSubmit)="onSubmit(f)">
-            <h2 class="text-center">Log in</h2>       
-            <div class="form-group">
-                <input 
-                    type="text"
-                    name="username"
-                    class="form-control" 
-                    placeholder="Username"
-                    required="required"
-                    minlength="3"
-                    ngModel>
+
+            <div class="email">
+                <input   type="text" name="username"  placeholder="Email ID" required="required" minlength="3" ngModel>
             </div>
-            <div class="form-group">
-                <input 
-                    type="password"
-                    name="password"
-                    class="form-control" 
-                    placeholder="Password"
-                    required="required"
-                    minlength="3"
-                    ngModel>
+
+            <div class="password">
+                <input type="password" name="password" placeholder="Password" required="required" minlength="3"ngModel>
             </div>
-            <div>
-                <button 
-                    type="submit" 
-                    class="btn btn-primary btn-block" routerLink="/batches">Log in</button>
+
+            <div class="btn">
+                <button type="submit" routerLink="/batches">Sign in</button>
             </div>     
+
         </form>   
     </div>
 </div>
