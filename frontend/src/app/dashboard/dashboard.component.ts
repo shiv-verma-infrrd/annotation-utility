@@ -10,7 +10,8 @@ import { ApiDataService } from '../services/api-data.service';
 export class DashboardComponent implements OnInit {
   batchID:any;
   apiBatchdata:any;
-  thumbnail="https://cdn-icons-png.flaticon.com/512/3767/3767084.png";
+  // thumbnail="https://cdn-icons-png.flaticon.com/512/3767/3767084.png";
+  thumbnail = "../../assets/dimg.png"
   
   constructor(private apiData:ApiDataService) { 
 

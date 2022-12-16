@@ -12,6 +12,7 @@ import { EditingPageComponent } from './editing-page/editing-page.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {HttpClientModule} from '@angular/common/http'
 import { LoginComponent } from './login/login.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     Ng2SearchPipeModule,
     HttpClientModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
