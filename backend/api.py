@@ -11,10 +11,21 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-app.config['ZIP_FILE_UPLOAD_DIRECTORY'] = 'uploads/'
-app.config['ZIP_FILE_EXTRACT_DIRECTORY'] = 'assets/'
-app.config['ALLOWED_EXTENTIONS'] = '.zip' 
-app.config['FILE_JSON_DIRECTORY'] = r"assets\annotations"
+app.config["ENV"] = "development"
+
+print(app.config["ENV"])
+
+if app.config['ENV'] == "production":
+   app.config.from_object("config.ProductionConfig")
+elif app.config['ENV'] == 'testing':
+   app.config.from_object("config.TestingConfig")
+else:
+   app.config.from_object("config.DevelopmentConfig")   
+
+# app.config['ZIP_FILE_UPLOAD_DIRECTORY'] = 'uploads/'
+# app.config['ZIP_FILE_EXTRACT_DIRECTORY'] = 'assets/'
+# app.config['ALLOWED_EXTENTIONS'] = '.zip' 
+# app.config['FILE_JSON_DIRECTORY'] = r"assets\annotations"
 
 jwt = JWTManager(app)
 
@@ -31,7 +42,7 @@ CORS(app, resources={
 
 try:
   mongo = pymongo.MongoClient(
-    host="mongodb+srv://admin:1234@cluster0.p6bfznx.mongodb.net/test",
+    host=app.config["HOST"],
     port=27017,
     serverSelectionTimeoutMS = 100
     )
@@ -42,6 +53,7 @@ try:
 
 except:
  print("Error - cannot connet to db")
+
 
 
 @app.route("/login", methods=["POST"])
