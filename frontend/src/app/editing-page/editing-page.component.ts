@@ -698,7 +698,7 @@ export class EditingPageComponent implements AfterViewInit {
   }
 
   exit() {
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/batches');
   }
 
   entity_click(type: string, index: number) {
