@@ -94,10 +94,18 @@ export class EditingPageComponent implements AfterViewInit {
       .get_pages(this.apiData.batchData, this.apiData.docData)
       .subscribe((data) => {
         this.image_url = data[0].imagePath;
+
+        if(data[0].isCorrected == 'true')
+        {
+          this.json_input = JSON.parse(JSON.stringify(data[0].correctedData.result));
+          this.coordinate_array = JSON.parse(JSON.stringify(data[0].correctedData.result));
+        }
+
+        else
+        {
         this.json_input = JSON.parse(JSON.stringify(data[0].kvpData.form));
-        this.coordinate_array = JSON.parse(
-          JSON.stringify(data[0].kvpData.form)
-        );
+        this.coordinate_array = JSON.parse(JSON.stringify(data[0].kvpData.form));
+        }
         this.api_result = data[0];
 
         console.log(data);
