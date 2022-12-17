@@ -18,7 +18,23 @@
             <div class="doc-name"
                 [ngClass]="{corrected: i.isCorrected == 'true', notCorrected: i.isCorrected == 'False'}"
                 routerLink="/editing-page">
+<<<<<<< Updated upstream
                 <fa-icon style="font-size: small; margin: 5px 5px;" [icon]="docCheck"></fa-icon>
+=======
+                
+                <!-- icon show issue -->
+
+                <div *ngIf="i.isCorrected=='true'; then thenblock else showThiss"></div>
+
+                <ng-template #thenblock>
+                <fa-icon style="font-size: small; margin: 5px 5px;"  [icon]="docCheck" ></fa-icon>
+                </ng-template>
+        
+                <ng-template #showThiss>
+                    <fa-icon style="font-size: small; margin: 5px 5px;" [icon]="docNotCheck"></fa-icon>
+                </ng-template>
+                
+>>>>>>> Stashed changes
                 <span class="center-span">
                     {{i.document_name}}
                 </span>
