@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiDataService } from '../services/api-data.service'; 
-import {faCircleCheck} from '@fortawesome/free-solid-svg-icons'
+import {faCircleCheck, faCircleXmark} from '@fortawesome/free-solid-svg-icons'
 
 @Component({
   selector: 'app-documents',
@@ -15,6 +15,7 @@ export class DocumentsComponent implements OnInit {
   imgUrl:any;
   searchText:string='';
   docCheck = faCircleCheck;
+  docNotCheck = faCircleXmark;
   constructor(private apiData: ApiDataService) { 
   }
 
