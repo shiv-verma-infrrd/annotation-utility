@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
@@ -11,6 +11,9 @@ import { TokenStorageService } from '../services/token-storage.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('alert_ref') alert_ref: any;
+
+  alert_message: string = 'Invalid Credentials.\nTry again';
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -23,6 +26,10 @@ export class LoginComponent implements OnInit {
       this.roles = this.tokenStorage.getUser().roles;
       this.router.navigate(['batches'])
     }
+  }
+
+  close_alert() {
+    this.alert_ref.nativeElement.style.display = 'none';
   }
 
   onSubmit(form: NgForm) {
@@ -40,12 +47,13 @@ export class LoginComponent implements OnInit {
       error: err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
-        this.reloadPage();
+        this.alert_ref.nativeElement.style.display = 'flex';
+
+        setTimeout(() => {
+          this.alert_ref.nativeElement.style.display = 'none';
+        }, 5000);
+        form.resetForm()
       }
     })
-  }
-
-  reloadPage(): void {
-    window.location.reload();
   }
 }
