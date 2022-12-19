@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private logout:TokenStorageService) { }
 
   ngOnInit(): void {
   }
 
+  onLogout(){
+    console.log("storage cleared");
+    this.logout.signOut();
+  }
 }
