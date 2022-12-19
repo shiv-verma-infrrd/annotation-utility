@@ -152,8 +152,8 @@ svg {
 }
 .entity_rect {
   fill: transparent;
-  stroke: red;
-  stroke-width: 2px;
+  stroke: #39a87a;
+  stroke-width: 1.5px;
 }
 .page-right-section {
   height: 89%;
@@ -301,7 +301,7 @@ svg {
 }
 .ho-entity-cell-data {
   height: 100%;
-  width: 90%;
+  width: 96%;
   font-size: 1rem;
   border: none;
   position: absolute;

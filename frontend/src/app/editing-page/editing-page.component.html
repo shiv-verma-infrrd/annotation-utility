@@ -13,13 +13,13 @@
     <div (click)="zoom_in()" class="zoom_in_button">+</div>
     <div (click)="zoom_out()" class="zoom_out_button">-</div>
   </div>
-  <div class="page-left-section">
+  <div class="page-left-section" (scroll)="entity_connector_line.position()">
     <img #main_image_ref src={{imgUrl+image_url}}>
     <svg #svg_ref [attr.height]="img_length" [attr.width]="img_width">
       <rect #r class="image_rect" *ngFor="let i of coordinate_array;let ind=index" [attr.x]="i.box[0]"
         [attr.y]="i.box[1]" [attr.height]="i.box[3]-i.box[1]" [attr.width]="i.box[2]-i.box[0]"
         (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="image_token_click(i.id)" />
-        <rect class="entity_rect" #display_entity_rect_ref x="" y="" height="" width="" />
+        <rect class="entity_rect" #display_entity_rect_ref x="0" y="0" height="0" width="0" />
     </svg>
   </div>
   <div class="page-right-section">
@@ -36,18 +36,18 @@
       <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_other_input_ref,'co',-1)" readonly #custom_other_input_ref class="custom-other-input" placeholder="Other Entity">
     </div>
 
-    <div class="page-right-section-mid">
+    <div class="page-right-section-mid" (scroll)="entity_connector_line.position()">
       <!-- ****************** displaying question and answer ******************* -->
       <div class="display-entity" *ngFor="let i of question_entity_strings;let ind=index">
         <!--question part-->
-        <div class="qa-entity-cell-structure q-entity-cell-pos" (click)="entity_click('q',ind)">
+        <div #q_struct_ref class="qa-entity-cell-structure q-entity-cell-pos" (click)="entity_click('q',ind,q_struct_ref)">
           <div class="qa-entity-cell-type">Q</div>
           <input readonly #q_i_r class="qa-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(q_i_r,'q',ind)"/>
         </div>
         <!--end of question part-->
 
         <!--answer part-->
-        <div class="qa-entity-cell-structure a-entity-cell-pos" (click)="entity_click('a',ind)">
+        <div #a_struct_ref class="qa-entity-cell-structure a-entity-cell-pos" (click)="entity_click('a',ind,a_struct_ref)">
           <div class="qa-entity-cell-type">A</div>
           <input readonly #a_i_r class="qa-entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(a_i_r,'a',ind)"/>
         </div>
@@ -66,7 +66,7 @@
       
       <!--****************** displaying header *******************-->
       <div class="display-entity" *ngFor="let i of header_entity_strings;let ind=index">
-        <div class="ho-entity-cell-structure h-entity-cell-pos" (click)="entity_click('h',ind)">
+        <div #h_struct_ref class="ho-entity-cell-structure h-entity-cell-pos" (click)="entity_click('h',ind,h_struct_ref)">
           <div class="ho-entity-cell-type">H</div>
           <input #h_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(h_i_r,'h',ind)" />
         </div>
@@ -84,7 +84,7 @@
 
       <!--****************** displaying other *******************-->
       <div class="display-entity" *ngFor="let i of other_entity_strings;let ind=index">
-        <div class="ho-entity-cell-structure o-entity-cell-pos" (click)="entity_click('o',ind)">
+        <div #o_struct_ref class="ho-entity-cell-structure o-entity-cell-pos" (click)="entity_click('o',ind,o_struct_ref)">
           <div class="ho-entity-cell-type">O</div>
           <input  #o_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(o_i_r,'o',ind)"  />
         </div>

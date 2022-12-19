@@ -1,6 +1,11 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import 'leader-line';
 import { ApiDataService } from '../services/api-data.service';
+import { PlatformLocation } from '@angular/common' 
+
+
+declare let LeaderLine: any;
 @Component({
   selector: 'app-editing-page',
   templateUrl: './editing-page.component.html',
@@ -53,110 +58,180 @@ export class EditingPageComponent implements AfterViewInit {
   answer_entity_strings: string[] = [];
   answer_entity_indexs: number[][] = [];
   used_token_map = new Map();
+  link_map = new Map();
 
-  constructor(private apiData: ApiDataService, private router: Router) {
+  entity_connector_line:any=undefined;
+
+
+  // image portrait adjustment variables
+  offset_length : number = 0;
+  offset_width : number = 0;
+  change_image_height : number = 0;
+  change_image_width : number = 0;
+   
+
+  constructor(private apiData: ApiDataService, private router: Router, location:PlatformLocation) {
     this.apiData.docData = localStorage.getItem('global_doc_id');
     this.apiData.batchData = localStorage.getItem('global_batch_id');
     this.imgUrl = this.apiData.URL;
 
     this.doc_id_index = localStorage.getItem('global_doc_id');
-    this.doc_id_index -= 1;
-    this.alldoc = this.apiData.docarray;
+    // this.doc_id_index -= 1;
 
-    this.image_cord_recieving();
-  }
 
-  image_cord_recieving() {
-    this.img_length = 0;
-    this.img_width = 0;
-    this.times = 1;
-    this.l = 0;
-    this.c = 0;
-    this.custom_input_type = 'Header';
-    this.selected_input_ref = undefined; //used to store ref to any selected input (add or edit input)
-    this.selected_input_type = '';
-    this.selected_input_index = -1;
-    this.custom_input_array1 = [];
-    this.custom_input_array2 = [];
-    this.header_entity_strings = [];
-    this.header_entity_indexs = [];
-    this.other_entity_strings = [];
-    this.other_entity_indexs = [];
-
-    this.question_entity_strings = [];
-    this.question_entity_indexs = [];
-
-    this.answer_entity_strings = [];
-    this.answer_entity_indexs = [];
-    this.used_token_map = new Map();
-
+    
     this.apiData
       .get_pages(this.apiData.batchData, this.apiData.docData)
       .subscribe((data) => {
         this.image_url = data[0].imagePath;
-
-        if(data[0].isCorrected == 'true')
-        {
-          this.json_input = JSON.parse(JSON.stringify(data[0].correctedData.result));
-          this.coordinate_array = JSON.parse(JSON.stringify(data[0].correctedData.result));
-        }
-
-        else
-        {
-        this.json_input = JSON.parse(JSON.stringify(data[0].kvpData.form));
-        this.coordinate_array = JSON.parse(JSON.stringify(data[0].kvpData.form));
+        this.alldoc = this.apiData.docarray;
+        if (data[0].isCorrected == 'true') {
+          this.json_input = JSON.parse(
+            JSON.stringify(data[0].correctedData.result)
+          );
+          this.coordinate_array = JSON.parse(
+            JSON.stringify(data[0].correctedData.result)
+          );
+        } else {
+          this.json_input = JSON.parse(JSON.stringify(data[0].kvpData.form));
+          this.coordinate_array = JSON.parse(
+            JSON.stringify(data[0].kvpData.form)
+          );
         }
         this.api_result = data[0];
 
         console.log(data);
 
-        this.set_svg_dimensions();
         this.token_label_intialization();
       });
+
+
+      location.onPopState(() => {
+        if(this.entity_connector_line!=undefined)
+        {
+          this.entity_connector_line.remove();
+          this.entity_connector_line=undefined;
+        }
+      });
+    // this.image_cord_recieving();
   }
+
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.set_svg_dimensions();
+      this.set_image_tokens();
     }, 1000);
   }
 
-  set_svg_dimensions() {
-    this.img_ref.nativeElement.style.height = 'auto';
-    this.img_ref.nativeElement.style.width = 'auto';
+ 
+  set_image_tokens()
+  {
+    for (let i = 0; i < this.coordinate_array.length; i++) {
+      this.coordinate_array[i].box[0] =
+        (this.coordinate_array[i].box[0] / (this.offset_width)) * this.c;
+      this.coordinate_array[i].box[1] =
+        (this.coordinate_array[i].box[1] / (this.offset_length)) * this.l;
+      this.coordinate_array[i].box[2] =
+        (this.coordinate_array[i].box[2] / (this.offset_width)) * this.c;
+      this.coordinate_array[i].box[3] =
+        (this.coordinate_array[i].box[3] / (this.offset_length)) * this.l;
+    }
+  }
 
-    this.img_length = this.img_ref.nativeElement.offsetHeight;
-    this.img_width = this.img_ref.nativeElement.offsetWidth;
-    this.l = this.img_ref.nativeElement.offsetHeight;
-    this.c = this.img_ref.nativeElement.offsetWidth;
+  set_svg_dimensions() {
+
+    this.offset_length = this.img_ref.nativeElement.offsetHeight;
+    this.offset_width = this.img_ref.nativeElement.offsetWidth;
+
+    this.change_image_height = (window.innerHeight*89)/100;
+    this.change_image_width = (window.innerWidth)/2;
+
+
+    if(this.offset_length - this.change_image_height > this.offset_width - this.change_image_width)
+    {
+      this.img_length = this.change_image_height;
+      this.img_width = (this.change_image_height)*(this.offset_width/this.offset_length);
+    }
+
+    else
+    {
+      this.img_width = this.change_image_width;
+      this.img_length = (this.change_image_width)*(this.offset_length/this.offset_width); 
+    }
+
+    this.img_ref.nativeElement.style.height = this.img_length + "px";
+    this.img_ref.nativeElement.style.width = this.img_width + "px";
+
+    this.l = this.img_length;
+    this.c = this.img_width;
   }
 
   close_alert() {
     this.alert_ref.nativeElement.style.display = 'none';
   }
 
-  token_label_intialization() {
+  token_label_intialization() 
+  {
     for (let i = 0; i < this.json_input.length; i++) {
-      if (this.json_input[i].label == 'header') {
-        this.used_token_map.set(this.json_input[i].id, 1);
-        this.header_entity_strings.push(this.json_input[i].text);
-        this.header_entity_indexs.push([this.json_input[i].id]);
-      } else if (this.json_input[i].label == 'other') {
-        this.used_token_map.set(this.json_input[i].id, 1);
-        this.other_entity_strings.push(this.json_input[i].text);
-        this.other_entity_indexs.push([this.json_input[i].id]);
-      } else if (this.json_input[i].label == 'question') {
-        this.used_token_map.set(this.json_input[i].id, 1);
-        this.question_entity_strings.push(this.json_input[i].text);
-        this.question_entity_indexs.push([this.json_input[i].id]);
-        this.answer_entity_strings.push('');
-        this.answer_entity_indexs.push([]);
-      } else if (this.json_input[i].label == 'answer') {
-        this.used_token_map.set(this.json_input[i].id, 1);
-        this.answer_entity_strings.push(this.json_input[i].text);
-        this.answer_entity_indexs.push([this.json_input[i].id]);
-        this.question_entity_strings.push('');
-        this.question_entity_indexs.push([]);
+      if (!this.link_map.has(i)) {
+        if (this.json_input[i].label == 'header') {
+          this.used_token_map.set(this.json_input[i].id, 1);
+          this.header_entity_strings.push(this.json_input[i].text);
+          this.header_entity_indexs.push([this.json_input[i].id]);
+        } 
+        else if (this.json_input[i].label == 'other') 
+        {
+          this.used_token_map.set(this.json_input[i].id, 1);
+          this.other_entity_strings.push(this.json_input[i].text);
+          this.other_entity_indexs.push([this.json_input[i].id]);
+        }
+        else if (this.json_input[i].label == 'question')
+        {
+          if (this.json_input[i].linking[0].linking.length > 0)
+          {
+            this.used_token_map.set(this.json_input[i].id, 1);
+            this.question_entity_strings.push(this.json_input[i].text);
+            this.question_entity_indexs.push([this.json_input[i].id]);
+            //  this.answer_entity_strings.push('');
+            //  this.answer_entity_indexs.push([]);
+            let l_in = this.json_input[i].linking[0].linking[1];
+            this.used_token_map.set(this.json_input[l_in].id, 1);
+            this.answer_entity_strings.push(this.json_input[l_in].text);
+            this.answer_entity_indexs.push([this.json_input[l_in].id]);
+            this.link_map.set(l_in, 1);
+          } 
+          else 
+          {
+            this.used_token_map.set(this.json_input[i].id, 1);
+            this.question_entity_strings.push(this.json_input[i].text);
+            this.question_entity_indexs.push([this.json_input[i].id]);
+            this.answer_entity_strings.push('');
+            this.answer_entity_indexs.push([]);
+          }
+        } 
+        else if (this.json_input[i].label == 'answer') 
+        {
+          if (this.json_input[i].linking[0].linking.length > 0) 
+          {
+            this.used_token_map.set(this.json_input[i].id, 1);
+            this.answer_entity_strings.push(this.json_input[i].text);
+            this.answer_entity_indexs.push([this.json_input[i].id]);
+            //  this.question_entity_strings.push('');
+            //  this.question_entity_indexs.push([]);
+            let l_in = this.json_input[i].linking[0].linking[1];
+            this.used_token_map.set(this.json_input[l_in].id, 1);
+            this.question_entity_strings.push(this.json_input[l_in].text);
+            this.question_entity_indexs.push([this.json_input[l_in].id]);
+            this.link_map.set(l_in, 1);
+          } else {
+            this.used_token_map.set(this.json_input[i].id, 1);
+            this.answer_entity_strings.push(this.json_input[i].text);
+            this.answer_entity_indexs.push([this.json_input[i].id]);
+            this.question_entity_strings.push('');
+            this.question_entity_indexs.push([]);
+          }
+        }
       }
     }
   }
@@ -219,12 +294,17 @@ export class EditingPageComponent implements AfterViewInit {
     }
   }
   zoom_in() {
-
     //if any entity is getting pointed in image
     this.display_entity_rect_ref.nativeElement.style.x = 0;
     this.display_entity_rect_ref.nativeElement.style.y = 0;
     this.display_entity_rect_ref.nativeElement.style.height = 0;
     this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line=undefined;
+    }
 
     if (this.times >= 2.5) return;
     this.times += 0.2;
@@ -234,8 +314,6 @@ export class EditingPageComponent implements AfterViewInit {
     this.img_width = this.c * this.times;
 
     for (let i = 0; i < this.coordinate_array.length; i++) {
-     
-
       this.coordinate_array[i].box[0] =
         (this.coordinate_array[i].box[0] / (this.times - 0.2)) * this.times;
       this.coordinate_array[i].box[1] =
@@ -248,12 +326,17 @@ export class EditingPageComponent implements AfterViewInit {
   }
 
   zoom_out() {
-
     //if any entity is getting pointed in image
     this.display_entity_rect_ref.nativeElement.style.x = 0;
     this.display_entity_rect_ref.nativeElement.style.y = 0;
     this.display_entity_rect_ref.nativeElement.style.height = 0;
     this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line=undefined;
+    }
 
     this.times -= 0.2;
     this.img_ref.nativeElement.style.height = this.l * this.times + 'px';
@@ -315,46 +398,68 @@ export class EditingPageComponent implements AfterViewInit {
 
       this.display_entity_rect_ref.nativeElement.style.height = 0;
       this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+      if(this.entity_connector_line!=undefined)
+      {
+        this.entity_connector_line.remove();
+        this.entity_connector_line=undefined;
+      }
     }
   }
 
   make_custom_entity() {
-    if (this.custom_input_type == 'Header') {
-      if (this.custom_header_input_ref.nativeElement.value == '') {
+    if (this.custom_input_type == 'Header') 
+    {
+      if (this.custom_header_input_ref.nativeElement.value == '') 
+      {
         this.alert_message = '  Select tokens first to make an entity';
         this.alert_ref.nativeElement.style.display = 'flex';
 
         setTimeout(() => {
           this.alert_ref.nativeElement.style.display = 'none';
         }, 5000);
-      } else {
-        for (let i = 0; i < this.custom_input_array1.length; i++) {
+      } 
+      else 
+      {
+        for (let i = 0; i < this.custom_input_array1.length; i++) 
+        {
           this.used_token_map.set(this.custom_input_array1[i], 1);
         }
-        this.header_entity_indexs.push(this.custom_input_array1);
-        this.header_entity_strings.push(
-          this.custom_header_input_ref.nativeElement.value
-        );
+
+        // this.header_entity_indexs.push(this.custom_input_array1);
+        // this.header_entity_strings.push(this.custom_header_input_ref.nativeElement.value);
+        
+        this.header_entity_indexs.unshift(this.custom_input_array1);
+        this.header_entity_strings.unshift(this.custom_header_input_ref.nativeElement.value);
 
         this.custom_input_array1 = [];
         this.custom_header_input_ref.nativeElement.value = '';
       }
-    } else if (this.custom_input_type == 'Other') {
-      if (this.custom_other_input_ref.nativeElement.value == '') {
+    } 
+    else if (this.custom_input_type == 'Other')
+    {
+      if (this.custom_other_input_ref.nativeElement.value == '') 
+      {
         this.alert_message = '  Select tokens first to make an entity';
         this.alert_ref.nativeElement.style.display = 'flex';
 
         setTimeout(() => {
           this.alert_ref.nativeElement.style.display = 'none';
         }, 5000);
-      } else {
-        for (let i = 0; i < this.custom_input_array1.length; i++) {
+      }
+      else
+      {
+        for (let i = 0; i < this.custom_input_array1.length; i++) 
+        {
           this.used_token_map.set(this.custom_input_array1[i], 1);
         }
-        this.other_entity_indexs.push(this.custom_input_array1);
-        this.other_entity_strings.push(
-          this.custom_other_input_ref.nativeElement.value
-        );
+
+        // this.other_entity_indexs.push(this.custom_input_array1);
+        // this.other_entity_strings.push(this.custom_other_input_ref.nativeElement.value);
+        
+        this.other_entity_indexs.unshift(this.custom_input_array1);
+        this.other_entity_strings.unshift(this.custom_other_input_ref.nativeElement.value);
+
         this.custom_input_array1 = [];
         this.custom_other_input_ref.nativeElement.value = '';
       }
@@ -377,15 +482,18 @@ export class EditingPageComponent implements AfterViewInit {
           this.used_token_map.set(this.custom_input_array2[i], 1);
         }
 
-        this.question_entity_indexs.push(this.custom_input_array1);
-        this.question_entity_strings.push(
-          this.custom_question_input_ref.nativeElement.value
-        );
+        // this.question_entity_indexs.push(this.custom_input_array1);
+        // this.question_entity_strings.push(this.custom_question_input_ref.nativeElement.value);
+        
+        this.question_entity_indexs.unshift(this.custom_input_array1);
+        this.question_entity_strings.unshift(this.custom_question_input_ref.nativeElement.value);
 
-        this.answer_entity_indexs.push(this.custom_input_array2);
-        this.answer_entity_strings.push(
-          this.custom_answer_input_ref.nativeElement.value
-        );
+        // this.answer_entity_indexs.push(this.custom_input_array2);
+        // this.answer_entity_strings.push(this.custom_answer_input_ref.nativeElement.value);
+
+        this.answer_entity_indexs.unshift(this.custom_input_array2);
+        this.answer_entity_strings.unshift(this.custom_answer_input_ref.nativeElement.value);
+        
 
         this.custom_input_array1 = [];
         this.custom_input_array2 = [];
@@ -506,6 +614,12 @@ export class EditingPageComponent implements AfterViewInit {
 
     this.display_entity_rect_ref.nativeElement.style.height = 0;
     this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line=undefined;
+    }
 
     if (type == 'q') {
       for (let i = 0; i < this.question_entity_indexs[index].length; i++) {
@@ -693,23 +807,36 @@ export class EditingPageComponent implements AfterViewInit {
 
     if (condition == 0) {
       this.exit();
-    } else {
+    } 
+    else
+    {
       this.doc_id_index++;
-
-      if (this.doc_id_index >= this.alldoc.length) {
-        // alert('This is the last document of the batch');
-      } else {
-        this.apiData.docData = this.alldoc[this.doc_id_index].documentId;
-        this.image_cord_recieving();
-      }
+      // if (this.doc_id_index >= this.alldoc.length)
+      // {
+      //   alert('This is the last document of the batch');
+      // } 
+      // else
+      // {
+        localStorage.setItem('global_doc_id',this.doc_id_index);
+        // console.log(localStorage.getItem('global_doc_id'));
+        window.location.reload();
+      // }
     }
   }
 
-  exit() {
+  exit() 
+  {
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line=undefined;
+    }
+
     this.router.navigateByUrl('/batches');
   }
 
-  entity_click(type: string, index: number) {
+  entity_click(type: string, index: number,entity_ref:any)
+  {
     var x = 99999,
       y = 99999,
       x2 = -1,
@@ -821,5 +948,19 @@ export class EditingPageComponent implements AfterViewInit {
 
     this.display_entity_rect_ref.nativeElement.style.height = y2 - y;
     this.display_entity_rect_ref.nativeElement.style.width = x2 - x;
+
+    //connecting-line stuff
+
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line=undefined;
+    }
+
+    this.entity_connector_line=new LeaderLine(entity_ref,this.display_entity_rect_ref.nativeElement);
+    this.entity_connector_line.size=2.75;
+    this.entity_connector_line.dash=true;
+    this.entity_connector_line.path="grid";
+    this.entity_connector_line.color="#39a87a";    
   }
 }
