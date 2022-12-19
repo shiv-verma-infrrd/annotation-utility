@@ -3,6 +3,10 @@ import {HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,8 +16,9 @@ export class LoginService {
     
     constructor(private http:HttpClient, private router: Router) {}
 
-    loginAuthenticate(username: string, password: string): Observable<any> {
-      return this.http
-      .post<any>(this.URL + '/login', {'email':username, 'password':password}, {observe: 'response'})
+    login(username: string, password: string): Observable<any> {
+      return this.http.post(this.URL + '/login', {
+        'email':username, 'password':password
+      }, httpOptions)
     }
 }

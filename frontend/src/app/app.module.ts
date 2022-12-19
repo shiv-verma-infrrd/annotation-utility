@@ -13,6 +13,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {HttpClientModule} from '@angular/common/http'
 import { LoginComponent } from './login/login.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { authInterceptorProviders } from './helpers/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     FontAwesomeModule,
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

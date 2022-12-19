@@ -65,10 +65,17 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-    test = user.find_one({"email": email, "password": password})
-    if test:
+    user_query = user.find_one({"email": email, "password": password})
+    if user_query:
         access_token = create_access_token(identity=email)
-        return jsonify(message="Login Succeeded!", access_token=access_token), 200
+        return_data = jsonify(
+          accessToken=access_token,
+          userId = str(user_query['_id']),
+          username = user_query['name'],
+          email = user_query['email'],
+        )
+        print('User: ', return_data)
+        return return_data, 200
     else:
         return jsonify(message="Bad Email or Password"), 400
 
@@ -77,7 +84,7 @@ def login():
 ################# Fetching all batches #################
 
 @app.route('/batches',methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_batches():
   try:
     data = list(db.batches.find())
@@ -99,7 +106,7 @@ def get_batches():
 ############## Fetch all documents ################
 
 @app.route("/documents",methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def get_documents():
    
     try:
@@ -116,7 +123,7 @@ def get_documents():
 ######### Fetch Documents list using batchId ######
 
 @app.route("/documents/<id>",methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_single_documents(id):
   
     try:
