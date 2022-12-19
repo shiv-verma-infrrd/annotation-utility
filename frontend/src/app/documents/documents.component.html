@@ -15,28 +15,33 @@
             <div class="doc-thumbnail" routerLink="/editing-page" (click)="get_docID(i.documentId)">
                 <img src="{{imgUrl + i.imagePath}}" alt="dash">
             </div>
-            <div class="doc-name"
+            <div class="doc-name" style=" border:1px solid white"
                 [ngClass]="{corrected: i.isCorrected == 'true', notCorrected: i.isCorrected == 'False'}"
                 routerLink="/editing-page">
-                
+
                 <!-- icon show issue -->
+                <div class="if-div" style="margin-top: 4px;">
 
-                <div *ngIf="i.isCorrected=='true'; then thenblock else showThiss"></div>
 
-                <ng-template #thenblock>
-                <fa-icon style="font-size: small; margin: 5px 5px;"  [icon]="docCheck" ></fa-icon>
-                </ng-template>
-        
-                <ng-template #showThiss>
-                    <fa-icon style="font-size: small; margin: 5px 5px;" [icon]="docNotCheck"></fa-icon>
-                </ng-template>
-                
-                <span class="center-span">
-                    {{i.document_name}}
-                </span>
+                    <div  *ngIf="i.isCorrected=='true'; then thenblock else showThiss">
+                    </div>
+
+                    <ng-template #thenblock>
+                        <fa-icon style=" font-size: small; margin: 5px 5px;"
+                            [icon]="docCheck"></fa-icon>
+                    </ng-template>
+
+                    <ng-template #showThiss>
+                        <fa-icon style=" font-size: small; margin: 5px 5px;"
+                            [icon]="docNotCheck"></fa-icon>
+                    </ng-template>
+
+                    <span  class="center-span">
+                        {{i.document_name}}
+                    </span>
+                </div>
             </div>
         </div>
 
     </div>
 </div>
-

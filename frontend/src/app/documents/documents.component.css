@@ -52,6 +52,7 @@
     }
 
 .btn{
+    cursor: pointer;
     position: absolute;
     left: 60%;
     top: 0.4%;
@@ -62,11 +63,11 @@
     background-color: white;
 }
 
+.btn:hover{
+    background-color: #39a87a;
+    color:white;
 
-/* .doc-container{
-    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
-    /* padding-left: 10px; 
-    margin: 4px 4px;  */
+}
 
 .col{
     
@@ -109,15 +110,9 @@
     cursor: pointer;
     color: white;
     border-radius: 0 0 4px 4px;
-    /* background-color: red; */
-    /* border: 1px solid green; */
     height: 6vh;
     width: 14.85vw;
-    /* display: flex; */
     margin-left: 5vw;
-    /* margin-bottom: 5vh; */
-    /* justify-content: center;
-    align-items: center; */
 }
 .center-span{
     font-size: 10px;

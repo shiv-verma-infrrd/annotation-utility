@@ -1,10 +1,7 @@
 
-/* .navbar-1 span{
-    font-weight: bold;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-} */
 .navbar-1{
-  user-select: none;
+    display: flex;
+    user-select: none;
     overflow: hidden;
     height: 7vh;
     width: 100vw;
@@ -22,30 +19,34 @@
 }
 
 .logo {
-  cursor: pointer;
-    /* position: absolute; */
+    cursor: pointer;
     margin-top: 13px;
     margin-left: 15px;
     height: 100%;
     width: 20%;
-    /* top: 3%;
-    left: 1%; */
-    background-image: url("https://uat.infrrd.cloud/assets/images/logos/infrrd-logo-monotone-white-transparent@2x.png");
-    background-size: 35%;
-    background-repeat: no-repeat;
-  }
-/*
-  .logo {
-    position: absolute;
-    margin-top: 10px;
-    margin-left: 12.1px;
-    height: 100%;
-    width: 20%;
-    /* top: 3%;
-    left: 1%; 
     background-image: url("https://uat.infrrd.cloud/assets/images/logos/infrrd-logo-monotone-white-transparent@2x.png");
     background-size: 35%;
     background-repeat: no-repeat;
   }
 
-*/
+  button{
+    /* flex-grow: 1; */
+    /* position: absolute; */
+    background-color: #39a87a;
+    color: white;
+    margin-left: auto; 
+    margin-right: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+    width: 80px;
+    border: 1px solid #fff;
+  }
+
+  button:hover{
+    background-color: #fff;
+    color: #39a87a;
+    cursor: pointer;
+  }
+
