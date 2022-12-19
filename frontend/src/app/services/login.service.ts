@@ -13,6 +13,7 @@ const httpOptions = {
 
 export class LoginService {
     URL = "http://127.0.0.1:80/"
+    isLoggedIn = false;
     
     constructor(private http:HttpClient, private router: Router) {}
 

@@ -14,8 +14,7 @@ import { NgToastService } from 'ng-angular-popup';
 export class LoginComponent implements OnInit {
   @ViewChild('alert_ref') alert_ref: any;
 
-  alert_message: string = 'Invalid Credentials.\nTry again';
-  isLoggedIn = false;
+  alert_message: string = '';
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
@@ -26,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
+      this.loginService.isLoggedIn = true;
       this.roles = this.tokenStorage.getUser().roles;
       this.router.navigate(['batches'])
     }
@@ -44,8 +43,8 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveUser(data);
 
         this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.toast.success({detail:"Succes Message",summary:"Logged in Succesfully",duration:3000});
+        this.loginService.isLoggedIn = true;
+        this.toast.success({detail:"Success Message",summary:"Logged in Succesfully",duration:3000});
         this.roles = this.tokenStorage.getUser().roles;
         this.router.navigate(['batches'])
       },
@@ -53,11 +52,6 @@ export class LoginComponent implements OnInit {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
         this.toast.error({detail:"Error Message",summary:this.errorMessage,duration:3000})
-        // this.alert_ref.nativeElement.style.display = 'flex';
-
-        // setTimeout(() => {
-        //   this.alert_ref.nativeElement.style.display = 'none';
-        // }, 5000);
         form.resetForm()
       }
     })

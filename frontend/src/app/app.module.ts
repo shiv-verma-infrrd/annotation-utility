@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgToastModule } from 'ng-angular-popup';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { NgToastModule } from 'ng-angular-popup';
     FontAwesomeModule,
     NgToastModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
