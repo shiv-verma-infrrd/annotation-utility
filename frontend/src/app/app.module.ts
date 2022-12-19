@@ -14,6 +14,7 @@ import {HttpClientModule} from '@angular/common/http'
 import { LoginComponent } from './login/login.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
+import { NgToastModule } from 'ng-angular-popup';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
     Ng2SearchPipeModule,
     HttpClientModule,
     FontAwesomeModule,
+    NgToastModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

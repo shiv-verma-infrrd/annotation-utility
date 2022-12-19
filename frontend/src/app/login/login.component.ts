@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../services/token-storage.service';
+import { NgToastService } from 'ng-angular-popup';
 
 
 @Component({
@@ -18,7 +19,10 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
-  constructor(private loginService: LoginService, private tokenStorage: TokenStorageService, private router: Router) { }
+  constructor(private loginService: LoginService, 
+    private tokenStorage: TokenStorageService, 
+    private router: Router,
+    private toast:NgToastService) { }
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
@@ -41,17 +45,19 @@ export class LoginComponent implements OnInit {
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
+        this.toast.success({detail:"Succes Message",summary:"Logged in Succesfully",duration:3000});
         this.roles = this.tokenStorage.getUser().roles;
         this.router.navigate(['batches'])
       },
       error: err => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
-        this.alert_ref.nativeElement.style.display = 'flex';
+        this.toast.error({detail:"Error Message",summary:this.errorMessage,duration:3000})
+        // this.alert_ref.nativeElement.style.display = 'flex';
 
-        setTimeout(() => {
-          this.alert_ref.nativeElement.style.display = 'none';
-        }, 5000);
+        // setTimeout(() => {
+        //   this.alert_ref.nativeElement.style.display = 'none';
+        // }, 5000);
         form.resetForm()
       }
     })
