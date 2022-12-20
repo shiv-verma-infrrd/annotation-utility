@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiDataService } from '../services/api-data.service'; 
+import { ApiDataService } from '../services/api-data.service';
+import {faDownload} from '@fortawesome/free-solid-svg-icons'
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +14,7 @@ export class DashboardComponent implements OnInit {
   apiBatchdata:any;
   // thumbnail="https://cdn-icons-png.flaticon.com/512/3767/3767084.png";
   thumbnail = "../../assets/dimg.png"
-  
+  download_icon = faDownload;
   constructor(private apiData:ApiDataService,
     private router: Router,
     private route: ActivatedRoute) { 
@@ -44,5 +45,17 @@ export class DashboardComponent implements OnInit {
       relativeTo:this.route
     })
 
+  }
+
+  download(batchId:any,batch_name:any){
+    console.log("downloading...");
+    
+    this.apiData.download_batch(batchId,batch_name).subscribe((data)=>{ 
+      
+      console.log("data");
+      
+      console.log(data)
+    
+    })
   }
 }

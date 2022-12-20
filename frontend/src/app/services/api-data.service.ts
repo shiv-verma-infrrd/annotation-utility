@@ -40,6 +40,19 @@ export class ApiDataService {
     return this.http.put(this.URL+'pages',data, {'headers':headers} );
   
   }
+
+  download_batch(batchId:any,batch_name:any){
+
+    const data = {
+      "batchId": batchId,
+      "batch_name":batch_name
+      // "allocatedTo":"sfkdnkw"
+  }    
+  const headers = { 'content-type': 'application/json'}
+    return this.http.post(this.URL+'downloads',data ,{'headers':headers})
+  }
+  
+  
 }
 
 
