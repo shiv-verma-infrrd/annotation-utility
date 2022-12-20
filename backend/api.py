@@ -372,7 +372,7 @@ def myapppp():
         # print(batch['documentId'])
 
         # Serializing json
-        json_object = json.dumps(batch['kvpData'])
+        json_object = json.dumps(batch['correctedData'])
 
 
 
