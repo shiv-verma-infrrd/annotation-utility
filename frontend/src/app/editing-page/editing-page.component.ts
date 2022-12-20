@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import 'leader-line';
 import { ApiDataService } from '../services/api-data.service';
 import { PlatformLocation } from '@angular/common' 
-
+import { NgToastService } from 'ng-angular-popup';
 
 declare let LeaderLine: any;
 @Component({
@@ -20,8 +20,6 @@ export class EditingPageComponent implements AfterViewInit {
   @ViewChild('main_image_ref') img_ref: any;
   @ViewChild('svg_ref') svg_ref: any;
   @ViewChild('alert_ref') alert_ref: any;
-
-  alert_message: string = 'This token is already used';
 
   imgUrl: any;
   image_url: any;
@@ -70,7 +68,7 @@ export class EditingPageComponent implements AfterViewInit {
   change_image_width : number = 0;
    
 
-  constructor(private apiData: ApiDataService, private router: Router, location:PlatformLocation) {
+  constructor(private apiData: ApiDataService, private router:Router, private location:PlatformLocation, private toast:NgToastService) {
     this.apiData.docData = localStorage.getItem('global_doc_id');
     this.apiData.batchData = localStorage.getItem('global_batch_id');
     this.imgUrl = this.apiData.URL;
@@ -235,15 +233,15 @@ export class EditingPageComponent implements AfterViewInit {
       }
     }
   }
-  image_token_click(id: number) {
-    if (this.used_token_map.has(id)) {
-      this.alert_message = ' This token is already used';
-      this.alert_ref.nativeElement.style.display = 'flex';
+  image_token_click(id: number) 
+  {
+    if (this.used_token_map.has(id)) 
+    {
+      
 
-      setTimeout(() => {
-        this.alert_ref.nativeElement.style.display = 'none';
-      }, 5000);
-    } else {
+      this.toast.warning({detail:"WARNING",summary:'This token has already been used',duration:5000});
+    } 
+    else {
       if (
         this.selected_input_type == 'q' ||
         this.selected_input_type == 'a' ||
@@ -412,12 +410,9 @@ export class EditingPageComponent implements AfterViewInit {
     {
       if (this.custom_header_input_ref.nativeElement.value == '') 
       {
-        this.alert_message = '  Select tokens first to make an entity';
-        this.alert_ref.nativeElement.style.display = 'flex';
+      
 
-        setTimeout(() => {
-          this.alert_ref.nativeElement.style.display = 'none';
-        }, 5000);
+        this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
       } 
       else 
       {
@@ -440,12 +435,9 @@ export class EditingPageComponent implements AfterViewInit {
     {
       if (this.custom_other_input_ref.nativeElement.value == '') 
       {
-        this.alert_message = '  Select tokens first to make an entity';
-        this.alert_ref.nativeElement.style.display = 'flex';
+        
+        this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
 
-        setTimeout(() => {
-          this.alert_ref.nativeElement.style.display = 'none';
-        }, 5000);
       }
       else
       {
@@ -468,12 +460,10 @@ export class EditingPageComponent implements AfterViewInit {
         this.custom_question_input_ref.nativeElement.value == '' ||
         this.custom_answer_input_ref.nativeElement.value == ''
       ) {
-        this.alert_message = '  Select tokens first to make an entity';
-        this.alert_ref.nativeElement.style.display = 'flex';
+        
 
-        setTimeout(() => {
-          this.alert_ref.nativeElement.style.display = 'none';
-        }, 5000);
+        this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
+
       } else {
         for (let i = 0; i < this.custom_input_array1.length; i++) {
           this.used_token_map.set(this.custom_input_array1[i], 1);
