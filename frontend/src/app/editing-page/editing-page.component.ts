@@ -111,7 +111,6 @@ export class EditingPageComponent implements AfterViewInit {
           this.entity_connector_line=undefined;
         }
       });
-    // this.image_cord_recieving();
   }
 
 
@@ -186,49 +185,49 @@ export class EditingPageComponent implements AfterViewInit {
         }
         else if (this.json_input[i].label == 'question')
         {
-          if (this.json_input[i].linking[0].linking.length > 0)
-          {
+          // if (this.json_input[i].linking[0].linking.length > 0)
+          // {
             this.used_token_map.set(this.json_input[i].id, 1);
             this.question_entity_strings.push(this.json_input[i].text);
             this.question_entity_indexs.push([this.json_input[i].id]);
-            //  this.answer_entity_strings.push('');
-            //  this.answer_entity_indexs.push([]);
-            let l_in = this.json_input[i].linking[0].linking[1];
-            this.used_token_map.set(this.json_input[l_in].id, 1);
-            this.answer_entity_strings.push(this.json_input[l_in].text);
-            this.answer_entity_indexs.push([this.json_input[l_in].id]);
-            this.link_map.set(l_in, 1);
-          } 
-          else 
-          {
-            this.used_token_map.set(this.json_input[i].id, 1);
-            this.question_entity_strings.push(this.json_input[i].text);
-            this.question_entity_indexs.push([this.json_input[i].id]);
-            this.answer_entity_strings.push('');
-            this.answer_entity_indexs.push([]);
-          }
+             this.answer_entity_strings.push('');
+             this.answer_entity_indexs.push([]);
+          //   let l_in = this.json_input[i].linking[0].linking[1];
+          //   this.used_token_map.set(this.json_input[l_in].id, 1);
+          //   this.answer_entity_strings.push(this.json_input[l_in].text);
+          //   this.answer_entity_indexs.push([this.json_input[l_in].id]);
+          //   this.link_map.set(l_in, 1);
+          // } 
+          // else 
+          // {
+          //   this.used_token_map.set(this.json_input[i].id, 1);
+          //   this.question_entity_strings.push(this.json_input[i].text);
+          //   this.question_entity_indexs.push([this.json_input[i].id]);
+          //   this.answer_entity_strings.push('');
+          //   this.answer_entity_indexs.push([]);
+          // }
         } 
         else if (this.json_input[i].label == 'answer') 
         {
-          if (this.json_input[i].linking[0].linking.length > 0) 
-          {
+          // if (this.json_input[i].linking[0].linking.length > 0) 
+          // {
             this.used_token_map.set(this.json_input[i].id, 1);
             this.answer_entity_strings.push(this.json_input[i].text);
             this.answer_entity_indexs.push([this.json_input[i].id]);
-            //  this.question_entity_strings.push('');
-            //  this.question_entity_indexs.push([]);
-            let l_in = this.json_input[i].linking[0].linking[1];
-            this.used_token_map.set(this.json_input[l_in].id, 1);
-            this.question_entity_strings.push(this.json_input[l_in].text);
-            this.question_entity_indexs.push([this.json_input[l_in].id]);
-            this.link_map.set(l_in, 1);
-          } else {
-            this.used_token_map.set(this.json_input[i].id, 1);
-            this.answer_entity_strings.push(this.json_input[i].text);
-            this.answer_entity_indexs.push([this.json_input[i].id]);
-            this.question_entity_strings.push('');
-            this.question_entity_indexs.push([]);
-          }
+             this.question_entity_strings.push('');
+             this.question_entity_indexs.push([]);
+            // let l_in = this.json_input[i].linking[0].linking[1];
+            // this.used_token_map.set(this.json_input[l_in].id, 1);
+            // this.question_entity_strings.push(this.json_input[l_in].text);
+            // this.question_entity_indexs.push([this.json_input[l_in].id]);
+            // this.link_map.set(l_in, 1);
+          // } else {
+          //   this.used_token_map.set(this.json_input[i].id, 1);
+          //   this.answer_entity_strings.push(this.json_input[i].text);
+          //   this.answer_entity_indexs.push([this.json_input[i].id]);
+          //   this.question_entity_strings.push('');
+          //   this.question_entity_indexs.push([]);
+          // }
         }
       }
     }
@@ -237,8 +236,6 @@ export class EditingPageComponent implements AfterViewInit {
   {
     if (this.used_token_map.has(id)) 
     {
-      
-
       this.toast.warning({detail:"WARNING",summary:'This token has already been used',duration:5000});
     } 
     else {
@@ -269,7 +266,8 @@ export class EditingPageComponent implements AfterViewInit {
           this.other_entity_strings[this.selected_input_index] +=
             ' ' + this.json_input[id].text;
         }
-      } else {
+      } else
+      {
         // need to add string in inpt and index in array
         if (this.selected_input_type == 'ch') {
           this.used_token_map.set(id, 1);
@@ -932,7 +930,8 @@ export class EditingPageComponent implements AfterViewInit {
           y2 = this.coordinate_array[this.other_entity_indexs[index][i]].box[3];
       }
     }
-
+   if(x!=99999)
+   {
     this.display_entity_rect_ref.nativeElement.style.x = x;
     this.display_entity_rect_ref.nativeElement.style.y = y;
 
@@ -951,6 +950,15 @@ export class EditingPageComponent implements AfterViewInit {
     this.entity_connector_line.size=2.75;
     this.entity_connector_line.dash=true;
     this.entity_connector_line.path="grid";
-    this.entity_connector_line.color="#39a87a";    
+    this.entity_connector_line.color="#39a87a"; 
+   }   
+  }
+
+  entity_line_adjuster()
+  {
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.position();
+    }
   }
 }

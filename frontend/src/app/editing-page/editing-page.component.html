@@ -7,7 +7,7 @@
     <div (click)="zoom_in()" class="zoom_in_button">+</div>
     <div (click)="zoom_out()" class="zoom_out_button">-</div>
   </div>
-  <div class="page-left-section" (scroll)="entity_connector_line.position()">
+  <div class="page-left-section" (scroll)="entity_line_adjuster()">
     <img #main_image_ref src={{imgUrl+image_url}}>
     <svg #svg_ref [attr.height]="img_length" [attr.width]="img_width">
       <rect #r class="image_rect" *ngFor="let i of coordinate_array;let ind=index" [attr.x]="i.box[0]"
@@ -30,7 +30,7 @@
       <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_other_input_ref,'co',-1)" readonly #custom_other_input_ref class="custom-other-input" placeholder="Other Entity">
     </div>
 
-    <div class="page-right-section-mid" (scroll)="entity_connector_line.position()">
+    <div class="page-right-section-mid" (scroll)="entity_line_adjuster()">
       <!-- ****************** displaying question and answer ******************* -->
       <div class="display-entity" *ngFor="let i of question_entity_strings;let ind=index">
         <!--question part-->
