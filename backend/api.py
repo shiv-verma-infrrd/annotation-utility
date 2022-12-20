@@ -231,121 +231,22 @@ def put_ocr_data():
 ############## Uploding zip files ##################################
 ######### and inserting zip data into Db ###########################
 
-# @app.route("/uploads",methods=["POST"])
-# def upload_zip_files():
-#   try:
-#      file = request.files['file']
-#      extention = os.path.splitext(file.filename)[1]
-     
-#      batch_list = os.listdir(app.config['ZIP_FILE_UPLOAD_DIRECTORY'])
-#     #  print(batch_list)
-     
-#      new_batch_no = 0
-
-#      if  len(batch_list) != 0:
-#         last_uploaded_batch = batch_list[-1]
-#         new_batch_no = last_uploaded_batch[-5]
-#         print(last_uploaded_batch)
-#      print(new_batch_no)
-
-#      if file:
-
-#         if extention != app.config['ALLOWED_EXTENTIONS']:
-#            return Response(
-#             response= json.dumps({"Message": "Not a .zip file"}),
-#             status=200,
-#             mimetype="application/json"
-#             )
-
-#         upload_dir = os.path.join(
-#           app.config['ZIP_FILE_UPLOAD_DIRECTORY'],
-#           secure_filename(f"{int(new_batch_no) + 1}.zip")
-#         )  
-
-#         file.save(upload_dir)
-
-#         extract_dir = os.path.join(
-#           app.config['ZIP_FILE_EXTRACT_DIRECTORY'],
-#           secure_filename(f"{int(new_batch_no) + 1}")
-#         )
-        
-#         with ZipFile(upload_dir, 'r') as zObject:
-
-#          zObject.extractall(
-#          path=extract_dir ) 
-
-#          c = os.getcwd()
-#          d = f'assets\\{int(new_batch_no) + 1}\\806\\annotations'
-#          g = os.path.join(c,d)
-          
-#         #  file_dir = r'C:\Users\shivk\OneDrive\Desktop\1234\api\assets\806\annotations'
-#          curr_dt = datetime.now()
-#          docId = int(round(curr_dt.timestamp())*1000)
-#          count = 0
-#          file_dir = os.path.join(c,d)
-#          for filename in os.listdir(file_dir):
-#              f = os.path.join(file_dir, filename)
-#              if os.path.isfile(f):
-#                   with open(f) as file_1:
-#                        file_data = json.load(file_1)  
-#                     #  print(file_data)
-#                       #  print(os.path.splitext(filename)[0])
-#                        docId = docId + 1
-#                        count = count + 1
-                       
-#                        data = {
-#                                   "documentId": docId,
-#                                   "bId":int(new_batch_no) + 1,
-#                                   "isCorrected": "False",
-#                                   "imageStatus": "Not Corrected",
-#                                   "imagePath": f"assets/{int(new_batch_no) + 1}/images/806/{os.path.splitext(filename)[0]}.jpg",
-#                                   "kvpData":file_data,
-#                                   "correctedData": { "form": []},
-#                                   "correctedBy": "",
-#                                   "correctedOn": ""
-#                                 }
-#                        db.pages.insert_one(data)
-                        
-                       
-
-#          return  Response(
-#          response= json.dumps({"Message": "File Uploaded Successfully"}),
-#          status=200,
-#          mimetype="application/json"
-#           )     
-#   except Exception as ex:
-#     print(ex)
-#     return Response(
-#           response= json.dumps({"Message": "File not uploaded"}),
-#           status=500,
-#           mimetype="application/json"
-#       ) 
-
 @app.route("/uploads",methods=["POST"])
 def upload_zip_files():
   try:
      file = request.files['file']
      extention = os.path.splitext(file.filename)[1]
      
-    #  batch_list = os.listdir(app.config['ZIP_FILE_UPLOAD_DIRECTORY'])
-    # #  print(batch_list)
-     
-    #  new_batch_no = 0
-
-    #  if  len(batch_list) != 0:
-    #     last_uploaded_batch = batch_list[-1]
-    #     new_batch_no = last_uploaded_batch[-5]
-    #     # print(last_uploaded_batch)
-    #  print(new_batch_no)
      Db_data = list(db.pages.find())
          
-      #  max_doc_id = []
+  
      max_batch_id = []
      for x in Db_data:
-    #  max_doc_id.append(x['documentId'])
+ 
         max_batch_id.append(x['batchId'])
-  #  max_doc_id.sort()
+ 
      max_batch_id.sort()
+
      if len(Db_data) == 0:
         batch_id = 0
      else:  
@@ -452,7 +353,67 @@ def upload_zip_files():
           mimetype="application/json"
       )   
 
-#################################################################################
+
+#################################################################
+############## downloading file using batch name ###############
+@app.route('/downloads',methods=['POST'])
+     
+def myapppp():
+
+    raw_data = request.json
+    print(raw_data['batchId'])
+    print(raw_data['batch_name'])
+
+    data = list(db.pages.find({"batchId":int(raw_data['batchId'])}))
+    # print(data)
+
+    for batch in data:
+        batch['_id'] = str(batch['_id'])
+        # print(batch['documentId'])
+
+        # Serializing json
+        json_object = json.dumps(batch['kvpData'])
+
+
+
+        # Writing to sample.json
+        with open("downloads/"+str(batch['documentId'])+".json", "w") as outfile:
+            outfile.write(json_object)
+    
+    file_paths = []
+  
+    # crawling through directory and subdirectories
+    for root, directories, files in os.walk("downloads"):
+        for filename in files:
+            # join the two strings in order to form the full filepath.
+            filepath = os.path.join(root, filename)
+            file_paths.append(filepath)
+  
+    # print('Following files will be zipped:')
+    # for file_name in file_paths:
+    #       # print(file_name)
+            # writing files to a zipfile
+    with ZipFile("zipfiles/"+raw_data['batch_name']+'.zip','w') as zip:
+        # writing each file one by one
+        for file in file_paths:
+            zip.write(file)
+
+        # print('All files zipped successfully!')
+    
+    c = os.getcwd()          
+    d = f"zipfiles/{raw_data['batch_name']}.zip"
+    download = os.path.join(c, d)
+
+    for root, directories, files in os.walk("downloads"):
+        for filename in files:
+            # join the two strings in order to form the full filepath.
+            filepath = os.path.join(root, filename)
+            os.remove(filepath)    
+    return send_file(download,as_attachment=True)
+
+    
+#################################################################
+##################################################################
 
 if __name__ == "__main__":
     app.run(port=80,debug=True)

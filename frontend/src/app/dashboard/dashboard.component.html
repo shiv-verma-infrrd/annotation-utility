@@ -1,15 +1,34 @@
 <app-navbar></app-navbar>
 <app-upload-file></app-upload-file>
 <div class="text-center">
-    <button class="btn btn-outline-success" (click)="onFetchClicked()">Fetch Batches</button>
+  <button class="btn btn-outline-success" (click)="onFetchClicked()">
+    Fetch Batches
+  </button>
 </div>
 <div class="row">
-    <div class="col">
-        <div class="dash-container" *ngFor="let batch of apiBatchdata" >
-            <div class="dash-thumbnail" routerLink="/documents" (click)="get_batch_id(batch.batchId)">
-                <img [src]="thumbnail" alt="dash" />
-            </div>
-            <div class="dash-name">{{batch.batchName}}</div>
-        </div>
+  <div class="col">
+    <div class="dash-container" *ngFor="let batch of apiBatchdata">
+      <div
+        class="dash-thumbnail"
+        routerLink="/documents"
+        (click)="get_batch_id(batch.batchId)"
+      >
+        <img [src]="thumbnail" alt="dash" />
+        
+      </div>
+
+      <div class="dash-name">
+        {{ batch.batchName }}
+
+        <fa-icon
+          (click)="download(batch.batchId, batch.batchName)"
+          style="font-size: small; margin: 5px 5px"
+          [icon]="download_icon"
+        >
+        </fa-icon>
+      </div>
+
+      <!-- <button style="font-size: 30px;" (click)="download(batch.batchId,batch.batchName)"> <i class="bi bi-download"> </i></button> -->
     </div>
+  </div>
 </div>
