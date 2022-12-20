@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiDataService } from '../services/api-data.service'; 
 
 @Component({
@@ -13,9 +14,9 @@ export class DashboardComponent implements OnInit {
   // thumbnail="https://cdn-icons-png.flaticon.com/512/3767/3767084.png";
   thumbnail = "../../assets/dimg.png"
   
-  constructor(private apiData:ApiDataService) { 
-
-    
+  constructor(private apiData:ApiDataService,
+    private router: Router,
+    private route: ActivatedRoute) { 
      
   }
 
@@ -33,5 +34,15 @@ export class DashboardComponent implements OnInit {
    localStorage.setItem('global_batch_id',id)
    console.log( "this is batch data " + this.apiData.batchData);
    
+  }
+
+  onFetchClicked() {
+    //  return this.apiData.fetchData();
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation='reload';
+    this.router.navigate(['./'],{
+      relativeTo:this.route
+    })
+
   }
 }

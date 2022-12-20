@@ -16,6 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgToastModule } from 'ng-angular-popup';
 import { AuthGuard } from './guards/auth.guard';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AuthGuard } from './guards/auth.guard';
     DocumentsComponent,
     NavbarComponent,
     EditingPageComponent,
-    LoginComponent
+    LoginComponent,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
