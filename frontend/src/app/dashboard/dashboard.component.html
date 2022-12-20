@@ -1,5 +1,8 @@
 <app-navbar></app-navbar>
-
+<app-upload-file></app-upload-file>
+<div class="text-center">
+    <button class="btn btn-outline-success" (click)="onFetchClicked()">Fetch Batches</button>
+</div>
 <div class="row">
     <div class="col">
         <div class="dash-container" *ngFor="let batch of apiBatchdata" >
