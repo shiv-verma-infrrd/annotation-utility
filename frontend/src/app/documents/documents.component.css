@@ -87,7 +87,7 @@
     /* margin-top: 3px; */
     height: 35vh;
     width: 15vw;
-    padding: 3px;
+    /* padding: 3px; */
     display: flex;
 }
 
@@ -112,7 +112,7 @@
     color: white;
     border-radius: 0 0 4px 4px;
     height: 6vh;
-    width: 14.85vw;
+    width: 15vw;
     margin-left: 5vw;
     /* margin-top: 0%; */
 }

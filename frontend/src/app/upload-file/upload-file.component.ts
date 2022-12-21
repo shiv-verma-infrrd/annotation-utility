@@ -1,5 +1,7 @@
-import { Component,ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UploadFileService } from '../services/upload-file.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { NgToastService } from 'ng-angular-popup';
 
 @Component({
@@ -7,13 +9,16 @@ import { NgToastService } from 'ng-angular-popup';
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.css']
 })
-export class UploadFileComponent implements OnInit{
+export class UploadFileComponent implements OnInit {
 
   shortLink: string = "";
   loading: boolean = false;
   file !: File;
 
-  constructor(private uploadFileService: UploadFileService, private toast: NgToastService) { }
+  constructor(private uploadFileService: UploadFileService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private toast: NgToastService) { }
 
   ngOnInit(): void { }
 
@@ -31,10 +36,18 @@ export class UploadFileComponent implements OnInit{
       .subscribe((data) => {
         this.loading = false;
         console.log(data);
-        this.toast.success({detail:"Success Message",summary:"Uploaded Successfully, Please fetch now",duration:3000})
-      },err=>{
+        this.toast.success({ detail: "Success Message", summary: "Uploaded Successfully, Please fetch now", duration: 3000 })
+
+
+        // fetching 
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['./'], {
+          relativeTo: this.route
+        })
+      }, err => {
         this.loading = false;
-        this.toast.error({detail:"Error Message",summary:err.Message,duration:3000})
+        this.toast.error({ detail: "Error Message", summary: err.Message, duration: 3000 })
       }
 
       );
