@@ -9,6 +9,7 @@ import os
 from zipfile import ZipFile
 from datetime import datetime
 from io import BytesIO
+import shutil
 
 app = Flask(__name__)
 
@@ -460,7 +461,15 @@ def send_zip_file():
 @app.route("/batch/<id>", methods=["DELETE"])
 def delete_user(id):
   try:
-    return "shiv"
+    dbResponse = db.batches.delete_one({"batchId":int(id)})
+    dbResponse2 = db.pages.delete_many({"batchId":int(id)})
+    path = os.path.join("assets/",str(id))
+    shutil.rmtree(path)
+    return Response(
+          response= json.dumps({"Message": "Batch deleted","id":f"{id}"}),
+          status=200,
+          mimetype="application/json"
+         ) 
   except Exception as ex: 
     print(ex)
     return Response(
@@ -469,6 +478,7 @@ def delete_user(id):
           mimetype="application/json"
          )  
 
+#################################################################
 #################################################################
 #################################################################
 if __name__ == "__main__":

@@ -51,6 +51,10 @@ export class ApiDataService {
   // const headers = { 'content-type': 'application/json'}
     return this.http.post(this.URL+'downloads',data ,{observe:'response',responseType:"blob"})
   }
+
+  delete_batch_id(batchId:any){
+    return this.http.delete(this.URL+'batch/'+batchId)
+  }
   
   
 }

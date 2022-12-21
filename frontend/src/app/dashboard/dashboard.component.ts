@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiDataService } from '../services/api-data.service';
-import {faDownload} from '@fortawesome/free-solid-svg-icons'
-import { TokenStorageService } from '../services/token-storage.service';
 
+import { TokenStorageService } from '../services/token-storage.service';
+import {faDownload,faTrash} from '@fortawesome/free-solid-svg-icons'
+import { NgToastService } from 'ng-angular-popup';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -17,10 +18,16 @@ export class DashboardComponent implements OnInit {
   // thumbnail="https://cdn-icons-png.flaticon.com/512/3767/3767084.png";
   thumbnail = "../../assets/dimg.png"
   download_icon = faDownload;
+  delete_icon = faTrash;
+  delete_batch_Id:any
+  delete_batch_name:any
+  
   constructor(private apiData:ApiDataService,
     private router: Router,
     private route: ActivatedRoute,
-    private tokenStorage: TokenStorageService) { 
+    private tokenStorage: TokenStorageService,
+    private toast: NgToastService
+    ) { 
      
   }
 
@@ -66,5 +73,32 @@ export class DashboardComponent implements OnInit {
       a.click();
     
     })
+
+    this.toast.success({ detail: "Success Message", summary: " file Downloaded Successfully", duration: 3000 })
+  }
+
+  displayStyle = "none";
+
+  openPopup(bId:any, bName:any) {
+    this.delete_batch_Id = bId
+    this.delete_batch_name = bName
+    this.displayStyle = "block";
+  }
+  closePopup() {
+    this.displayStyle = "none";
+  }
+
+  delete_batch(id:any){
+
+    console.log("batchid :"+id)
+    this.apiData.delete_batch_id(id).subscribe((data)=>{ 
+             console.log(data)
+    })
+  
+    this.closePopup()
+    this.onFetchClicked()
+    this.toast.success({ detail: "Success Message", summary: this.delete_batch_name+" Deleted Successfully", duration: 3000 })
+
+
   }
 }
