@@ -32,6 +32,7 @@
   button{
     /* flex-grow: 1; */
     /* position: absolute; */
+    font-size: small;
     background-color: #39a87a;
     color: white;
     margin-left: auto; 
@@ -39,7 +40,7 @@
     margin-top: 5px;
     margin-bottom: 5px;
     display: block;
-    font-weight: bold;
+    /* font-weight: bold; */
     width: 80px;
     border: 1px solid #fff;
   }

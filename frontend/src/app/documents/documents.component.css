@@ -51,7 +51,7 @@
     display: flex;
     }
 
-.btn{
+.btnn{
     cursor: pointer;
     position: absolute;
     left: 60%;
@@ -63,14 +63,14 @@
     background-color: white;
 }
 
-.btn:hover{
+.btnn:hover{
     background-color: #39a87a;
     color:white;
 
 }
-
 .col{
     
+    /* height: 100%; */
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     /* margin-top: 5px; */
@@ -92,6 +92,7 @@
 }
 
 .doc-thumbnail img{
+    border: 1px solid rgb(214, 214, 214);
     user-select:none ;
     align-items: center;
     justify-content: center;
@@ -113,6 +114,7 @@
     height: 6vh;
     width: 14.85vw;
     margin-left: 5vw;
+    /* margin-top: 0%; */
 }
 .center-span{
     font-size: 10px;
