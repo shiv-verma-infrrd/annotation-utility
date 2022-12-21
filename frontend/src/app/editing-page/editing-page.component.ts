@@ -172,7 +172,8 @@ export class EditingPageComponent implements AfterViewInit {
   {
     for (let i = 0; i < this.json_input.length; i++) {
       if (!this.link_map.has(i)) {
-        if (this.json_input[i].label == 'header') {
+        if (this.json_input[i].label == 'header')
+        {
           this.used_token_map.set(this.json_input[i].id, 1);
           this.header_entity_strings.push(this.json_input[i].text);
           this.header_entity_indexs.push([this.json_input[i].id]);
@@ -185,49 +186,50 @@ export class EditingPageComponent implements AfterViewInit {
         }
         else if (this.json_input[i].label == 'question')
         {
-          // if (this.json_input[i].linking[0].linking.length > 0)
-          // {
+          if(Object.entries(this.json_input[i].linking[0]).length> 0)
+          {
             this.used_token_map.set(this.json_input[i].id, 1);
             this.question_entity_strings.push(this.json_input[i].text);
             this.question_entity_indexs.push([this.json_input[i].id]);
-             this.answer_entity_strings.push('');
-             this.answer_entity_indexs.push([]);
-          //   let l_in = this.json_input[i].linking[0].linking[1];
-          //   this.used_token_map.set(this.json_input[l_in].id, 1);
-          //   this.answer_entity_strings.push(this.json_input[l_in].text);
-          //   this.answer_entity_indexs.push([this.json_input[l_in].id]);
-          //   this.link_map.set(l_in, 1);
-          // } 
-          // else 
-          // {
-          //   this.used_token_map.set(this.json_input[i].id, 1);
-          //   this.question_entity_strings.push(this.json_input[i].text);
-          //   this.question_entity_indexs.push([this.json_input[i].id]);
-          //   this.answer_entity_strings.push('');
-          //   this.answer_entity_indexs.push([]);
-          // }
+            //  this.answer_entity_strings.push('');
+            //  this.answer_entity_indexs.push([]);
+            let l_in = this.json_input[i].linking[0].linking[1];
+            
+            this.used_token_map.set(this.json_input[l_in].id, 1);
+            this.answer_entity_strings.push(this.json_input[l_in].text);
+            this.answer_entity_indexs.push([this.json_input[l_in].id]);
+            this.link_map.set(l_in, 1);
+          } 
+          else 
+          {
+            this.used_token_map.set(this.json_input[i].id, 1);
+            this.question_entity_strings.push(this.json_input[i].text);
+            this.question_entity_indexs.push([this.json_input[i].id]);
+            this.answer_entity_strings.push('');
+            this.answer_entity_indexs.push([]);
+          }
         } 
         else if (this.json_input[i].label == 'answer') 
         {
-          // if (this.json_input[i].linking[0].linking.length > 0) 
-          // {
+          if (Object.entries(this.json_input[i].linking[0]).length > 0) 
+          {
             this.used_token_map.set(this.json_input[i].id, 1);
             this.answer_entity_strings.push(this.json_input[i].text);
             this.answer_entity_indexs.push([this.json_input[i].id]);
-             this.question_entity_strings.push('');
-             this.question_entity_indexs.push([]);
-            // let l_in = this.json_input[i].linking[0].linking[1];
-            // this.used_token_map.set(this.json_input[l_in].id, 1);
-            // this.question_entity_strings.push(this.json_input[l_in].text);
-            // this.question_entity_indexs.push([this.json_input[l_in].id]);
-            // this.link_map.set(l_in, 1);
-          // } else {
-          //   this.used_token_map.set(this.json_input[i].id, 1);
-          //   this.answer_entity_strings.push(this.json_input[i].text);
-          //   this.answer_entity_indexs.push([this.json_input[i].id]);
-          //   this.question_entity_strings.push('');
-          //   this.question_entity_indexs.push([]);
-          // }
+            //  this.question_entity_strings.push('');
+            //  this.question_entity_indexs.push([]);
+            let l_in = this.json_input[i].linking[0].linking[1];
+            this.used_token_map.set(this.json_input[l_in].id, 1);
+            this.question_entity_strings.push(this.json_input[l_in].text);
+            this.question_entity_indexs.push([this.json_input[l_in].id]);
+            this.link_map.set(l_in, 1);
+          } else {
+            this.used_token_map.set(this.json_input[i].id, 1);
+            this.answer_entity_strings.push(this.json_input[i].text);
+            this.answer_entity_indexs.push([this.json_input[i].id]);
+            this.question_entity_strings.push('');
+            this.question_entity_indexs.push([]);
+          }
         }
       }
     }
@@ -635,18 +637,21 @@ export class EditingPageComponent implements AfterViewInit {
     }
   }
 
-  save_all_data(condition: number) {
+  save_all_data(condition: number) 
+  {
     let result: any = [];
     let a, b, c, d;
     let t: any[] = [];
 
-    for (let i = 0; i < this.question_entity_strings.length; i++) {
+    for (let i = 0; i < this.question_entity_strings.length; i++) 
+    {
       a = 99999;
       b = 99999;
       c = -1;
       d = -1;
       t = [];
-      for (let j = 0; j < this.question_entity_indexs[i].length; j++) {
+      for (let j = 0; j < this.question_entity_indexs[i].length; j++) 
+      {
         if (a > this.json_input[this.question_entity_indexs[i][j]].box[0])
           a = this.json_input[this.question_entity_indexs[i][j]].box[0];
 
