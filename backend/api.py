@@ -100,7 +100,7 @@ def get_batches(userId):
     return Response(
           response= json.dumps(
             {
-                "message":"cannot read users",
+                "message":"cannot read batches",
             }),
           status=500,
           mimetype="application/json"
