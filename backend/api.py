@@ -1,4 +1,4 @@
-from flask import Flask,Response,request,jsonify,send_file
+from flask import Flask,Response,request,jsonify,send_file,make_response
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 import pymongo
 import json
@@ -365,8 +365,8 @@ def upload_zip_files():
 def myapppp():
 
     raw_data = request.json
-    print(raw_data['batchId'])
-    print(raw_data['batch_name'])
+    # print(raw_data['batchId'])
+    # print(raw_data['batch_name'])
 
     data = list(db.pages.find({"batchId":int(raw_data['batchId'])}))
     # print(data)
@@ -413,7 +413,9 @@ def myapppp():
             # join the two strings in order to form the full filepath.
             filepath = os.path.join(root, filename)
             os.remove(filepath)    
-    return send_file(download,as_attachment=True)
+    resp = make_response(send_file(download,as_attachment=True))  
+    resp.headers['content-disposition'] = 'attachment; filename='+raw_data['batch_name']+'.zip'        
+    return resp
 
     
 #################################################################
