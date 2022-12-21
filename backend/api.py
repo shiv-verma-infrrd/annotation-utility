@@ -187,8 +187,27 @@ def get_kvp_data_one(id):
 @app.route('/<batchId>/<image>',methods=['GET'])
 # @jwt_required()
 def myapp(batchId, image):
-    image = f'assets/{batchId}/{batchId}/images/{image}.jpg'
-    return send_file(image)    
+    
+    
+    img_file = f'assets/{batchId}/{batchId}/images/{image}.png'
+    if os.path.isfile(img_file):
+      return send_file(img_file)
+
+    img_file = f'assets/{batchId}/{batchId}/images/{image}.jpeg'
+    if os.path.isfile(img_file):
+      return send_file(img_file)     
+
+    img_file = f'assets/{batchId}/{batchId}/images/{image}.jpg'  
+    if os.path.isfile(img_file):
+      return send_file(img_file)
+
+    img_file = f'assets/{batchId}/{batchId}/images/{image}.webp'  
+    if os.path.isfile(img_file):
+      return send_file(img_file)
+
+    img_file = f'assets/{batchId}/{batchId}/images/{image}.pdf'  
+    if os.path.isfile(img_file):
+      return send_file(img_file)          
 
 # @app.route('/images/<id>', methods=['GET'])
 # def serve_img(id):
