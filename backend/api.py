@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import os
 from zipfile import ZipFile
 from datetime import datetime
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -300,27 +301,28 @@ def upload_zip_files():
 
          zObject.extractall(
          path=extract_dir ) 
-
+         
+        os.remove(upload_dir) 
 ############ Inserting Pages data in Db ##################
-         c = os.getcwd()
+        c = os.getcwd()
          
-         d = f"assets\{batch_id + 1}"
+        d = f"assets\{batch_id + 1}"
          
-         for file1 in os.listdir(d):
-           print("*********"+file1)
+        for file1 in os.listdir(d):
+          #  print("*********"+file1)
            os.rename(os.path.join(d,file1),os.path.join(d,str(batch_id + 1)))  
-           print("******"+file1)
-         g = os.path.join(c,os.path.join(d,str(batch_id + 1)))
-         print(g)
+          #  print("******"+file1)
+        g = os.path.join(c,os.path.join(d,str(batch_id + 1)))
+        #  print(g)
           
         #  file_dir = r'C:\Users\shivk\OneDrive\Desktop\1234\api\assets\806\annotations'
-         curr_dt = datetime.now()
-         docId = 0
-         img_Id_array = []
-         imgId = int(round(curr_dt.timestamp())*1000)
-         docId_array = []
-         file_dir = os.path.join(g,r'annotations')
-         for filename in os.listdir(file_dir):
+        curr_dt = datetime.now()
+        docId = 0
+        img_Id_array = []
+        imgId = int(round(curr_dt.timestamp())*1000)
+        docId_array = []
+        file_dir = os.path.join(g,r'annotations')
+        for filename in os.listdir(file_dir):
              f = os.path.join(file_dir, filename)
              if os.path.isfile(f):
                   with open(f) as file_1:
@@ -349,7 +351,7 @@ def upload_zip_files():
                        db.pages.insert_one(data)
                         
 ##################### Inserting Batches data in Db #######################
-         b_data = {       
+        b_data = {       
                           "batchId":batch_id + 1,
                           "batchName": request.form['batch_name'],
                           "documentCount": len(data),
@@ -361,9 +363,9 @@ def upload_zip_files():
                           "createdOn": "8/12/2022",
                           "createdBy": "admin"
                      }
-         db.batches.insert_one(b_data)            
+        db.batches.insert_one(b_data)            
 
-         return  Response(
+        return  Response(
          response= json.dumps({"Message": "File Uploaded Successfully"}),
          status=200,
          mimetype="application/json"
@@ -431,12 +433,20 @@ def myapppp():
         for filename in files:
             # join the two strings in order to form the full filepath.
             filepath = os.path.join(root, filename)
-            os.remove(filepath)    
-    resp = make_response(send_file(download,as_attachment=True))  
-    resp.headers['content-disposition'] = 'attachment; filename='+raw_data['batch_name']+'.zip'        
-    return resp
+            os.remove(filepath)
 
+    return_file = BytesIO()  
+
+    with open(download,'rb') as fz:
+      return_file.write(fz.read())
     
+    return_file.seek(0)
+    os.remove(download)    
+    # print(return_file.seek(0))     
+    resp = make_response(send_file(return_file, mimetype='application/zip'))
+    resp.headers['content-disposition'] = 'attachment; filename='+raw_data['batch_name']+'.zip' 
+    resp.headers['content-type'] = 'application/zip'       
+    return resp
 #################################################################
 ##################################################################
 
