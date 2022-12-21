@@ -15,6 +15,7 @@
     <div class="doc-container" *ngFor="let i of apiPage | filter:searchText">
         <div class="doc-thumbnail" routerLink="/editing-page" (click)="get_docID(i.documentId)">
             <img src="{{imgUrl + i.imagePath}}" alt="dash">
+            <!-- <img src="{{i.imagePath | secure}}" alt="dash"> -->
         </div>
         <div class="doc-name" style=" border:1px solid white"
             [ngClass]="{corrected: i.isCorrected == 'true', notCorrected: i.isCorrected == 'False'}"

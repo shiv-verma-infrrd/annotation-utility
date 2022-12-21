@@ -15,8 +15,8 @@ export class ApiDataService {
 
   constructor(private http:HttpClient) {}
 
-  batches(){
-    return this.http.get(this.URL+'/batches')
+  batches(userId: string){
+    return this.http.get(this.URL+'/batches/'+userId)
   }
 
   documents(){

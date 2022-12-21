@@ -85,11 +85,11 @@ def login():
 ########################################################
 ################# Fetching all batches #################
 
-@app.route('/batches',methods=["GET"])
+@app.route('/batches/<userId>',methods=["GET"])
 @jwt_required()
-def get_batches():
+def get_batches(userId):
   try:
-    data = list(db.batches.find())
+    data = list(db.batches.find({'allocatedTo':userId}))
     return Response(response=json.dumps(data, default=str),
                         status=200,
                         mimetype="application/json")

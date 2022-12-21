@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiDataService } from '../services/api-data.service';
 import {faDownload} from '@fortawesome/free-solid-svg-icons'
+import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,18 +13,21 @@ import {faDownload} from '@fortawesome/free-solid-svg-icons'
 export class DashboardComponent implements OnInit {
   batchID:any;
   apiBatchdata:any;
+  userId:string = '';
   // thumbnail="https://cdn-icons-png.flaticon.com/512/3767/3767084.png";
   thumbnail = "../../assets/dimg.png"
   download_icon = faDownload;
   constructor(private apiData:ApiDataService,
     private router: Router,
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute,
+    private tokenStorage: TokenStorageService) { 
      
   }
 
   ngOnInit(): void {
+    this.userId = this.tokenStorage.getUser().userId
 
-    this.apiData.batches().subscribe((data)=>{
+    this.apiData.batches(this.userId).subscribe((data)=>{
       this.apiBatchdata = data;
       // console.warn("apiBatchdata",data);
     })
