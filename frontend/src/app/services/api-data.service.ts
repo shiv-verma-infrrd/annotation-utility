@@ -48,8 +48,8 @@ export class ApiDataService {
       "batch_name":batch_name
       // "allocatedTo":"sfkdnkw"
   }    
-  const headers = { 'content-type': 'application/json'}
-    return this.http.post(this.URL+'downloads',data ,{'headers':headers})
+  // const headers = { 'content-type': 'application/json'}
+    return this.http.post(this.URL+'downloads',data ,{observe:'response',responseType:"blob"})
   }
   
   
