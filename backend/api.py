@@ -339,7 +339,7 @@ def upload_zip_files():
                                   "batchId":batch_id + 1,
                                   "documentId":docId,
                                   "batchName": request.form['batch_name'],
-                                  "document_name": request.form['batch_name'] + " docs " + str(docId),
+                                  "document_name": str(os.path.splitext(filename)[0]),
                                   "isCorrected": "False",
                                   "imageStatus": "Not Corrected",
                                   "imagePath": f"/{batch_id + 1}/{os.path.splitext(filename)[0]}",
@@ -355,11 +355,11 @@ def upload_zip_files():
         b_data = {       
                           "batchId":batch_id + 1,
                           "batchName": request.form['batch_name'],
-                          "documentCount": len(data),
+                          "documentCount": len(docId_array),
                           "img_Id": img_Id_array, 
                           "isCorrected": "False",
                           "allocatedBy": "admin",
-                          "allocatedTo": "user-1",
+                          "allocatedTo": str(request.form['user_id']),
                           "allocatedOn": "8/12/2022",
                           "createdOn": "8/12/2022",
                           "createdBy": "admin"
@@ -459,6 +459,7 @@ def send_zip_file():
 #################################################################
 ################ Delete Btaches #################################
 @app.route("/batch/<id>", methods=["DELETE"])
+@jwt_required()
 def delete_user(id):
   try:
     dbResponse = db.batches.delete_one({"batchId":int(id)})

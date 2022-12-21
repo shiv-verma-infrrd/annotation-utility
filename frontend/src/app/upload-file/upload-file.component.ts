@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UploadFileService } from '../services/upload-file.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { TokenStorageService } from '../services/token-storage.service';
 import { NgToastService } from 'ng-angular-popup';
 
 @Component({
@@ -15,12 +15,21 @@ export class UploadFileComponent implements OnInit {
   loading: boolean = false;
   file !: File;
 
+  user_id:any;
+
   constructor(private uploadFileService: UploadFileService,
     private router: Router,
     private route: ActivatedRoute,
-    private toast: NgToastService) { }
+    private toast: NgToastService,
+    private tokenStorage: TokenStorageService
+    ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    
+    // this.user_id = this.tokenStorage.getUser().userId
+    // console.log(this.user_id)
+    
+  }
 
   onChange(event: any) {
     this.file = event.target.files[0];
@@ -32,7 +41,7 @@ export class UploadFileComponent implements OnInit {
   onUpload() {
     this.loading = true;
     console.log(this.file);
-    this.uploadFileService.upload(this.file, [this.batch_name_input_field.nativeElement.value])
+    this.uploadFileService.upload(this.file, [this.batch_name_input_field.nativeElement.value],this.tokenStorage.getUser().userId)
       .subscribe((data) => {
         this.loading = false;
         console.log(data);
