@@ -383,72 +383,93 @@ def upload_zip_files():
 ############## downloading file using batch name ###############
 @app.route('/downloads',methods=['POST'])
 @jwt_required()
-def myapppp():
+def send_zip_file():
+    try:
+        raw_data = request.json
+        # print(raw_data['batchId'])
+        # print(raw_data['batch_name'])
 
-    raw_data = request.json
-    # print(raw_data['batchId'])
-    # print(raw_data['batch_name'])
+        data = list(db.pages.find({"batchId":int(raw_data['batchId'])}))
+        # print(data)
 
-    data = list(db.pages.find({"batchId":int(raw_data['batchId'])}))
-    # print(data)
+        for batch in data:
+            batch['_id'] = str(batch['_id'])
+            # print(batch['documentId'])
 
-    for batch in data:
-        batch['_id'] = str(batch['_id'])
-        # print(batch['documentId'])
-
-        # Serializing json
-        json_object = json.dumps(batch['correctedData'])
+            # Serializing json
+            json_object = json.dumps(batch['correctedData'])
 
 
 
-        # Writing to sample.json
-        with open("downloads/"+str(batch['documentId'])+".json", "w") as outfile:
-            outfile.write(json_object)
-    
-    file_paths = []
-  
-    # crawling through directory and subdirectories
-    for root, directories, files in os.walk("downloads"):
-        for filename in files:
-            # join the two strings in order to form the full filepath.
-            filepath = os.path.join(root, filename)
-            file_paths.append(filepath)
-  
-    # print('Following files will be zipped:')
-    # for file_name in file_paths:
-    #       # print(file_name)
-            # writing files to a zipfile
-    with ZipFile("zipfiles/"+raw_data['batch_name']+'.zip','w') as zip:
-        # writing each file one by one
-        for file in file_paths:
-            zip.write(file)
+            # Writing to sample.json
+            with open("downloads/"+str(batch['documentId'])+".json", "w") as outfile:
+                outfile.write(json_object)
+        
+        file_paths = []
+      
+        # crawling through directory and subdirectories
+        for root, directories, files in os.walk("downloads"):
+            for filename in files:
+                # join the two strings in order to form the full filepath.
+                filepath = os.path.join(root, filename)
+                file_paths.append(filepath)
+      
+        # print('Following files will be zipped:')
+        # for file_name in file_paths:
+        #       # print(file_name)
+                # writing files to a zipfile
+        with ZipFile("zipfiles/"+raw_data['batch_name']+'.zip','w') as zip:
+            # writing each file one by one
+            for file in file_paths:
+                zip.write(file)
 
-        # print('All files zipped successfully!')
-    
-    c = os.getcwd()          
-    d = f"zipfiles/{raw_data['batch_name']}.zip"
-    download = os.path.join(c, d)
+            # print('All files zipped successfully!')
+        
+        c = os.getcwd()          
+        d = f"zipfiles/{raw_data['batch_name']}.zip"
+        download = os.path.join(c, d)
 
-    for root, directories, files in os.walk("downloads"):
-        for filename in files:
-            # join the two strings in order to form the full filepath.
-            filepath = os.path.join(root, filename)
-            os.remove(filepath)
+        for root, directories, files in os.walk("downloads"):
+            for filename in files:
+                # join the two strings in order to form the full filepath.
+                filepath = os.path.join(root, filename)
+                os.remove(filepath)
 
-    return_file = BytesIO()  
+        return_file = BytesIO()  
 
-    with open(download,'rb') as fz:
-      return_file.write(fz.read())
-    
-    return_file.seek(0)
-    os.remove(download)    
-    # print(return_file.seek(0))     
-    resp = make_response(send_file(return_file, mimetype='application/zip'))
-    resp.headers['content-disposition'] = 'attachment; filename='+raw_data['batch_name']+'.zip' 
-    resp.headers['content-type'] = 'application/zip'       
-    return resp
+        with open(download,'rb') as fz:
+          return_file.write(fz.read())
+        
+        return_file.seek(0)
+        os.remove(download)    
+        # print(return_file.seek(0))     
+        resp = make_response(send_file(return_file, mimetype='application/zip'))
+        resp.headers['content-disposition'] = 'attachment; filename='+raw_data['batch_name']+'.zip' 
+        resp.headers['content-type'] = 'application/zip'       
+        return resp
+    except Exception as ex:
+        print(ex)
+        return Response(
+          response= json.dumps({"Message": "File cannot be downloaded"}),
+          status=500,
+          mimetype="application/json"
+         )     
 #################################################################
-##################################################################
+#################################################################
+################ Delete Btaches #################################
+@app.route("/batch/<id>", methods=["DELETE"])
+def delete_user(id):
+  try:
+    return "shiv"
+  except Exception as ex: 
+    print(ex)
+    return Response(
+          response= json.dumps({"Message": "File cannot be deleted"}),
+          status=500,
+          mimetype="application/json"
+         )  
 
+#################################################################
+#################################################################
 if __name__ == "__main__":
     app.run(port=80,debug=True)
