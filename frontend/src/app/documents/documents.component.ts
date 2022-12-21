@@ -24,7 +24,8 @@ export class DocumentsComponent implements OnInit {
     
     this.imgUrl = this.apiData.URL;
     
-    this.apiData.batchData = localStorage.getItem('global_batch_id')
+    this.apiData.batchData = window.sessionStorage.getItem('global_batch_id')
+    console.log('batch_id: ', this.apiData.batchData)
     this.apiData.get_one_doc(this.apiData.batchData).subscribe((data)=>{
       this.apiData.docarray = data;
       this.apiPage = data; 
@@ -57,7 +58,7 @@ export class DocumentsComponent implements OnInit {
 
   get_docID(id:any){
     this.apiData.docData = id;
-    localStorage.setItem('global_doc_id',id)
+    window.sessionStorage.setItem('global_doc_id',id)
   }
 
 

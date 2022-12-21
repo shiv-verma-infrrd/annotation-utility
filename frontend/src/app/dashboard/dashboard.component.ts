@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
 
   get_batch_id(id:any){
    this.apiData.batchData = id;
-   localStorage.setItem('global_batch_id',id)
+   window.sessionStorage.setItem('global_batch_id',id)
    console.log( "this is batch data " + this.apiData.batchData);
    
   }

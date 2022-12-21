@@ -69,11 +69,11 @@ export class EditingPageComponent implements AfterViewInit {
    
 
   constructor(private apiData: ApiDataService, private router:Router, private location:PlatformLocation, private toast:NgToastService) {
-    this.apiData.docData = localStorage.getItem('global_doc_id');
-    this.apiData.batchData = localStorage.getItem('global_batch_id');
+    this.apiData.docData = window.sessionStorage.getItem('global_doc_id');
+    this.apiData.batchData = window.sessionStorage.getItem('global_batch_id');
     this.imgUrl = this.apiData.URL;
 
-    this.doc_id_index = localStorage.getItem('global_doc_id');
+    this.doc_id_index = window.sessionStorage.getItem('global_doc_id');
     // this.doc_id_index -= 1;
 
 
@@ -810,8 +810,8 @@ export class EditingPageComponent implements AfterViewInit {
       // } 
       // else
       // {
-        localStorage.setItem('global_doc_id',this.doc_id_index);
-        // console.log(localStorage.getItem('global_doc_id'));
+        window.sessionStorage.setItem('global_doc_id',this.doc_id_index);
+        // console.log(window.sessionStorage.getItem('global_doc_id'));
         window.location.reload();
       // }
     }

@@ -73,6 +73,7 @@ def login():
           userId = str(user_query['_id']),
           username = user_query['name'],
           email = user_query['email'],
+          userRole = user_query['isAdmin']
         )
         print('User: ', return_data)
         return return_data, 200
@@ -142,7 +143,7 @@ def get_single_documents(id):
 #Fetching pages using document Id and batchId
 
 @app.route("/pages/<batchId>/<docId>",methods=["GET"])
-
+@jwt_required()
 def get_kvp_data(batchId,docId):
    
     try:
@@ -163,7 +164,7 @@ def get_kvp_data(batchId,docId):
 ######### Fetching pages using document Id ########
 
 @app.route("/pages/<id>",methods=["GET"])
-
+@jwt_required()
 def get_kvp_data_one(id):
    
     try:
@@ -184,6 +185,7 @@ def get_kvp_data_one(id):
 ################ serving image  ###################
 
 @app.route('/<batchId>/<image>',methods=['GET'])
+# @jwt_required()
 def myapp(batchId, image):
     image = f'assets/{batchId}/{batchId}/images/{image}.jpg'
     return send_file(image)    
@@ -196,6 +198,7 @@ def myapp(batchId, image):
 ########### updating page using raw data ##########
 
 @app.route("/pages",methods=["PUT"])
+@jwt_required()
 def put_ocr_data():
 
  try:    
@@ -232,6 +235,7 @@ def put_ocr_data():
 ######### and inserting zip data into Db ###########################
 
 @app.route("/uploads",methods=["POST"])
+@jwt_required()
 def upload_zip_files():
   try:
      file = request.files['file']
@@ -357,7 +361,7 @@ def upload_zip_files():
 #################################################################
 ############## downloading file using batch name ###############
 @app.route('/downloads',methods=['POST'])
-     
+@jwt_required()
 def myapppp():
 
     raw_data = request.json
