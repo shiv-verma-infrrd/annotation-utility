@@ -14,6 +14,11 @@ import { NgToastService } from 'ng-angular-popup';
 export class LoginComponent implements OnInit {
   @ViewChild('alert_ref') alert_ref: any;
 
+  form: any = {
+    username: null,
+    password: null
+  };
+
   alert_message: string = '';
   isLoginFailed = false;
   errorMessage = '';
@@ -24,11 +29,16 @@ export class LoginComponent implements OnInit {
     private toast:NgToastService) { }
 
   ngOnInit() {
-    if (this.tokenStorage.getToken()) {
-      this.loginService.isLoggedIn = true;
-      this.roles = this.tokenStorage.getUser().roles;
-      this.router.navigate(['batches'])
+    // if (this.tokenStorage.isLoggedIn()) {
+    //   this.loginService.isLoggedIn = true;
+    //   this.roles = this.tokenStorage.getUser().roles;
+    //   this.router.navigate(['batches'])
+    // }
+    this.loginService.getsession()
+    if (!this.loginService.isLoggedIn){
+      this.loginService.getcsrf()
     }
+    
   }
 
   close_alert() {
@@ -39,10 +49,8 @@ export class LoginComponent implements OnInit {
     this.loginService.login(form.value.username, form.value.password)
     .subscribe({
       next: data=>{
-        
-        this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
-
+        
         this.isLoginFailed = false;
         this.loginService.isLoggedIn = true;
         this.toast.success({detail:"Success Message",summary:"Logged in Succesfully",duration:3000});

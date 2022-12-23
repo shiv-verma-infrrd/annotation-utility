@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
 import { Observable } from 'rxjs';
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ApiDataService {
   docarray:any;
   URL = "http://127.0.0.1:80/";
 
-  constructor(private http:HttpClient) {}
+  constructor(private http:HttpClient, private loginService: LoginService) {}
 
   batches(userId: string){
     return this.http.get(this.URL+'/batches/'+userId)

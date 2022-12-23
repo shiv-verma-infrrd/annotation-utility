@@ -15,8 +15,6 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogout(){
-    console.log("storage cleared");
-    this.loginService.isLoggedIn = false;
-    this.tokenStorage.signOut();
+    this.loginService.logout()
   }
 }

@@ -17,7 +17,6 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgToastModule } from 'ng-angular-popup';
 import { AuthGuard } from './guards/auth.guard';
 import { UploadFileComponent } from './upload-file/upload-file.component';
-import { SecurePipe } from './pipes/secure.pipe';
 
 @NgModule({
   declarations: [
@@ -28,7 +27,6 @@ import { SecurePipe } from './pipes/secure.pipe';
     EditingPageComponent,
     LoginComponent,
     UploadFileComponent,
-    SecurePipe
   ],
   imports: [
     BrowserModule,
