@@ -45,7 +45,7 @@ export class UploadFileComponent implements OnInit {
       .subscribe((data) => {
         this.loading = false;
         console.log(data);
-        this.toast.success({ detail: "Success Message", summary: "Uploaded Successfully, Please fetch now", duration: 3000 })
+        this.toast.success({ detail: "Success Message", summary: "Uploaded Successfully", duration: 3000 })
 
 
         // fetching 
@@ -54,7 +54,8 @@ export class UploadFileComponent implements OnInit {
         this.router.navigate(['./'], {
           relativeTo: this.route
         })
-      }, err => {
+       }
+      , err => {
         this.loading = false;
         this.toast.error({ detail: "Error Message", summary: err.Message, duration: 3000 })
       }
