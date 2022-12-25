@@ -20,6 +20,16 @@ import pymongo
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+app.config["ENV"] = "development"
+print(app.config["ENV"])
+
+if app.config['ENV'] == "production":
+   app.config.from_object("config.ProductionConfig")
+elif app.config['ENV'] == 'testing':
+   app.config.from_object("config.TestingConfig")
+else:
+   app.config.from_object("config.DevelopmentConfig")
+
 app.config.update(
     DEBUG=True,
     SECRET_KEY="secret",
@@ -29,6 +39,13 @@ app.config.update(
     SESSION_COOKIE_SAMESITE="None",
 )
 
+api_v1_cors_config = {
+    "origins": "*"
+}
+
+CORS(app, resources={
+    r"/*": api_v1_cors_config
+})
 
 try:
   mongo = pymongo.MongoClient(

@@ -31,10 +31,10 @@ export class LoginService {
     getcsrf(){
       this.http.get(this.URL + '/getcsrf', {observe: 'response'}).subscribe(
         (data: any) => {
-          window.sessionStorage.setItem('CSRFToken', data.headers.get("X-CSRFToken"))
-          console.log('token: ', window.sessionStorage.getItem('CSRFToken'))
+          // window.sessionStorage.setItem('CSRFToken', data.headers.get("X-CSRFToken"))
+          // console.log('token: ', window.sessionStorage.getItem('CSRFToken'))
           this.CSRFToken = data.headers.get("X-CSRFToken")
-          console.log(this.CSRFToken)
+          // console.log(this.CSRFToken)
         }
       )
     }

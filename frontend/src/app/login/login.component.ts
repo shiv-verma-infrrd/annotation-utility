@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
     this.loginService.login(form.value.username, form.value.password)
     .subscribe({
       next: data=>{
-        this.tokenStorage.saveUser(data);
+        this.tokenStorage.saveUser(data, this.loginService.CSRFToken);
         
         this.isLoginFailed = false;
         this.loginService.isLoggedIn = true;
