@@ -490,7 +490,7 @@ def send_zip_file():
 #################################################################
 ################ Delete Btaches #################################
 @app.route("/batch/<id>", methods=["DELETE"])
-@login_required
+# @login_required
 def delete_user(id):
   try:
     dbResponse = db.batches.delete_one({"batchId":int(id)})
