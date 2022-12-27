@@ -15,7 +15,7 @@ export class UploadFileService {
     // console.log("service"+user_id)
     const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
     const formData = new FormData(); 
-    formData.append("file", file);
+    formData.append("zip_file", file);
     formData.append("batch_name", batch_name)
     formData.append("user_id", user_id)
     return this.http.post(this.baseApiUrl+'uploads',formData, {headers: headers})
