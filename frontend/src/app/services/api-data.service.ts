@@ -13,6 +13,8 @@ export class ApiDataService {
   docData:any;
   doc_name:any;
   docarray:any;
+  forms:any[]=[];
+  checkboxesCoordinate:any[]=[]
   URL = "http://127.0.0.1:80/";
 
   constructor(private http:HttpClient, private tokenStorageService: TokenStorageService) {}

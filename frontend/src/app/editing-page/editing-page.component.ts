@@ -29,7 +29,7 @@ export class EditingPageComponent implements AfterViewInit {
   alldoc: any;
   doc_id_index: any;
 
-  checkboxes:any;
+  checkboxes:any[]=[];
 
   img_length: number = 0;
   img_width: number = 0;
@@ -82,10 +82,33 @@ export class EditingPageComponent implements AfterViewInit {
       .checkboxes(this.apiData.doc_name)
       .subscribe((data:any) => {
         
-        this.checkboxes = JSON.parse(
-          JSON.stringify(data)
-        );
-        console.log(data[0].checkboxes.checkboxes)
+        // this.checkboxes = JSON.parse(
+        //   JSON.stringify(data[0].checkboxes.checkboxes)
+        // );
+        // console.log(this.checkboxes)
+
+        // console.log("service form****")
+        
+        for(let i in data[0].checkboxes.checkboxes){
+
+          //  console.log(data[0].checkboxes.checkboxes[i].tl.x,data[0].checkboxes.checkboxes[i].tl.y,data[0].checkboxes.checkboxes[i].br.x,data[0].checkboxes.checkboxes[i].br.y)
+           
+           let box = [data[0].checkboxes.checkboxes[i].tl.x,data[0].checkboxes.checkboxes[i].tl.y,data[0].checkboxes.checkboxes[i].br.x,data[0].checkboxes.checkboxes[i].br.y]
+          
+           
+           let text = "*"
+           let label = "others"
+           let words = [box,text]
+           let linking:any = []
+           let id = i
+           
+           
+           this.apiData.forms.push({box,text,label,words,linking,id})
+          //  console.log("bla bla")
+           
+        }
+        
+        // console.log("*****forms",this.apiData.forms)
       })
 
     
@@ -94,6 +117,27 @@ export class EditingPageComponent implements AfterViewInit {
       .subscribe((data) => {
         this.image_url = data[0].imagePath;
         this.alldoc = this.apiData.docarray;
+
+        // console.log("editing page api ****",data[0].Data.kvpData[0]);
+
+        for(let i in data[0].Data.kvpData){
+
+         
+           
+           let box = [data[0].Data.kvpData[i][1].tl.x,data[0].Data.kvpData[i][1].tl.y,data[0].Data.kvpData[i][1].br.x,data[0].Data.kvpData[i][1].br.y]
+          
+           
+           let text = data[0].Data.kvpData[i][0]
+           let label = "others"
+           let words = [box,text]
+           let linking:any = []
+           let id = i
+           this.apiData.checkboxesCoordinate.push({box,text,label,words,linking,id})
+          //  console.log("bla bla",this.apiData.checkboxesCoordinate)
+           
+        }
+
+
         if (data[0].isCorrected == 'true') {
           this.json_input = JSON.parse(
             JSON.stringify(data[0].correctedData.result)
@@ -102,14 +146,34 @@ export class EditingPageComponent implements AfterViewInit {
             JSON.stringify(data[0].correctedData.result)
           );
         } else {
-          this.json_input = JSON.parse(JSON.stringify(data[0].Data.kvpData.form));
-          this.coordinate_array = JSON.parse(
+
+          if(data[0].Type == "checkboxes"){
+            // this.json_input = this.apiData.forms
+            // this.coordinate_array = this.apiData.forms
+            // this.apiData.checkboxesCoordinate.push(this.apiData.forms)
+
+            for(let i in this.apiData.forms){
+              this.apiData.checkboxesCoordinate.push(this.apiData.forms[i])
+            }
+            this.json_input = this.apiData.checkboxesCoordinate;
+            this.coordinate_array = this.apiData.checkboxesCoordinate;
+          
+            console.log(this.apiData.checkboxesCoordinate)
+
+          }
+          else{
+
+            this.json_input = JSON.parse(JSON.stringify(data[0].Data.kvpData.form));
+            this.coordinate_array = JSON.parse(
             JSON.stringify(data[0].Data.kvpData.form)
           );
+
+          } 
+          
         }
         this.api_result = data[0];
 
-        console.log("editing page api ****",data);
+        
 
         this.token_label_intialization();
       });
