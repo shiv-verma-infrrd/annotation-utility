@@ -29,6 +29,8 @@ export class EditingPageComponent implements AfterViewInit {
   alldoc: any;
   doc_id_index: any;
 
+  checkboxes:any;
+
   img_length: number = 0;
   img_width: number = 0;
   times: number = 1;
@@ -75,7 +77,16 @@ export class EditingPageComponent implements AfterViewInit {
 
     this.doc_id_index = window.sessionStorage.getItem('global_doc_id');
     // this.doc_id_index -= 1;
-
+    this.apiData.doc_name = window.sessionStorage.getItem('global_doc_name')
+    this.apiData
+      .checkboxes(this.apiData.doc_name)
+      .subscribe((data:any) => {
+        
+        this.checkboxes = JSON.parse(
+          JSON.stringify(data)
+        );
+        console.log(data[0].checkboxes.checkboxes)
+      })
 
     
     this.apiData
@@ -91,14 +102,14 @@ export class EditingPageComponent implements AfterViewInit {
             JSON.stringify(data[0].correctedData.result)
           );
         } else {
-          this.json_input = JSON.parse(JSON.stringify(data[0].kvpData.form));
+          this.json_input = JSON.parse(JSON.stringify(data[0].Data.kvpData.form));
           this.coordinate_array = JSON.parse(
-            JSON.stringify(data[0].kvpData.form)
+            JSON.stringify(data[0].Data.kvpData.form)
           );
         }
         this.api_result = data[0];
 
-        console.log(data);
+        console.log("editing page api ****",data);
 
         this.token_label_intialization();
       });

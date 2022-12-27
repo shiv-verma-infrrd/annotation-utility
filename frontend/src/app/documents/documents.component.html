@@ -13,7 +13,7 @@
 <div class="row">
 <div class="col">
     <div class="doc-container" *ngFor="let i of apiPage | filter:searchText">
-        <div class="doc-thumbnail" routerLink="/editing-page" (click)="get_docID(i.documentId)">
+        <div class="doc-thumbnail" routerLink="/editing-page" (click)="get_docID(i.documentId,i.document_name)">
             <img src="{{imgUrl + i.imagePath}}" alt="dash">
             <!-- <img src="{{i.imagePath | secure}}" alt="dash"> -->
         </div>

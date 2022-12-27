@@ -29,7 +29,7 @@ export class DocumentsComponent implements OnInit {
     this.apiData.get_one_doc(this.apiData.batchData).subscribe((data)=>{
       this.apiData.docarray = data;
       this.apiPage = data; 
-      console.log(data)
+      console.log("apipage****in document page***",data)
     });
 
     
@@ -56,8 +56,11 @@ export class DocumentsComponent implements OnInit {
    
   }
 
-  get_docID(id:any){
+  get_docID(id:any,docName:any){
     this.apiData.docData = id;
+    this.apiData.doc_name = docName;
+    // console.log("docname",docName)
+    window.sessionStorage.setItem('global_doc_name',docName)
     window.sessionStorage.setItem('global_doc_id',id)
   }
 

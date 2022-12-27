@@ -11,6 +11,7 @@ import { TokenStorageService } from './token-storage.service';
 export class ApiDataService {
   batchData:any;
   docData:any;
+  doc_name:any;
   docarray:any;
   URL = "http://127.0.0.1:80/";
 
@@ -58,6 +59,11 @@ export class ApiDataService {
     const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
     return this.http.delete(this.URL+'batch/'+batchId, {'headers':headers})
   }
+
+  checkboxes(doc_name: string){
+    return this.http.get(this.URL+'/checkboxes/'+doc_name)
+  }
+
   
   
 }

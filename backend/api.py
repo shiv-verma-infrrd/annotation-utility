@@ -577,5 +577,28 @@ def upload_zip():
               mimetype="application/json"
             )
 
+############################################################################
+@app.route("/checkboxes/<doc_name>", methods=["GET"])
+@login_required
+def get_checkboxes(doc_name):
+  
+    try:
+      data = list(db.checkboxes.find({"document_name":str(doc_name)+"_checkboxes"}))
+      
+      return Response(
+          response= json.dumps(data,default=str),
+          status=200,
+          mimetype="application/json"
+         ) 
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response= json.dumps(
+                {
+                    "message":"cannot read batches",
+                }),
+            status=500,
+            mimetype="application/json"
+        )  
 if __name__ == "__main__":
     app.run(debug=True, port=80)
