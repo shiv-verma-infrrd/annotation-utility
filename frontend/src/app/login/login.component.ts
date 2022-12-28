@@ -29,16 +29,6 @@ export class LoginComponent implements OnInit {
     private toast:NgToastService) { }
 
   ngOnInit() {
-    // if (this.tokenStorage.isLoggedIn()) {
-    //   this.loginService.isLoggedIn = true;
-    //   this.roles = this.tokenStorage.getUser().roles;
-    //   this.router.navigate(['batches'])
-    // }
-    this.loginService.getsession()
-    if (!this.loginService.isLoggedIn){
-      this.loginService.getcsrf()
-    }
-    
   }
 
   close_alert() {
