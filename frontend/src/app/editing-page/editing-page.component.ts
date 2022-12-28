@@ -87,7 +87,7 @@ export class EditingPageComponent implements AfterViewInit {
         // );
         // console.log(this.checkboxes)
 
-        // console.log("service form****")
+        console.log("service form****",data)
         
         for(let i in data[0].checkboxes.checkboxes){
 
@@ -108,7 +108,7 @@ export class EditingPageComponent implements AfterViewInit {
            
         }
         
-        // console.log("*****forms",this.apiData.forms)
+        console.log("*****forms",this.apiData.forms)
       })
 
     
@@ -152,15 +152,16 @@ export class EditingPageComponent implements AfterViewInit {
             // this.coordinate_array = this.apiData.forms
             // this.apiData.checkboxesCoordinate.push(this.apiData.forms)
 
-            for(let i in this.apiData.forms){
-              this.apiData.checkboxesCoordinate.push(this.apiData.forms[i])
-            }
+            // for(let i in this.apiData.forms){
+            //   this.apiData.checkboxesCoordinate.push(this.apiData.forms[i])
+            // }
             this.json_input = this.apiData.checkboxesCoordinate;
             this.coordinate_array = this.apiData.checkboxesCoordinate;
           
             console.log(this.apiData.checkboxesCoordinate)
 
           }
+
           else{
 
             this.json_input = JSON.parse(JSON.stringify(data[0].Data.kvpData.form));

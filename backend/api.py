@@ -420,8 +420,20 @@ def push_json_data_in_db(batch_id,doc_type):
              if os.path.isfile(f):
                   with open(f) as file_1:
                        file_data = json.load(file_1)  
-                    #  print(file_data)
+                    
                       #  print(os.path.splitext(filename)[0])
+                      
+                    #    for i in range(len(file_data)):
+                        
+                    #         print("text ---> ",file_data[i][0] )
+                    #         print("tl x ---> ",file_data[i][1]['tl']['x'])
+                    #         print("tl y ---> ",file_data[i][1]['tl']['y'])
+                    #         print("br x ---> ",file_data[i][1]['br']['x'])
+                    #         print("br y ---> ",file_data[i][1]['br']['y'])
+                    #         print("index ---> ",i)
+                      
+                      
+                      
                        docId = docId + 1
                        imgId = imgId + 1
                        data = {   
@@ -445,11 +457,9 @@ def push_json_data_in_db(batch_id,doc_type):
                                    "correctedData": {
                                       	"checkboxData" :{},
                                       	"ocrData":{},
-                                    	  "kvpdata": {"form": []},
+                                    	"kvpdata": {},
                                   },
                               
-
-                                  "correctedData": { "form": []},
                                   "correctedBy": "",
                                   "correctedOn": ""
 
@@ -463,6 +473,8 @@ def push_json_data_in_db(batch_id,doc_type):
                   if os.path.isfile(f):
                     with open(f) as file_1:
                         file_data = json.load(file_1) 
+                        
+                        print(file_data["checkboxes"][0]['token_indexes'])
                         
                         c_data = {
                               "batchId":batch_id,
@@ -507,13 +519,12 @@ def upload_zip():
               
               
         batch_id = get_batch_id()    
-       
-        last_file_id = get_last_file()
                      
         with ZipFile(zip_file,mode='r') as zp:
           dirs = list(set([os.path.dirname(x) for x in zp.namelist()]))
           file_data = zp.namelist()
           
+        #   print(dirs)
           
         #   folder_check = ['annotations','images','checkbox_data','ocr']
           
@@ -525,9 +536,8 @@ def upload_zip():
           
           
           if len(dirs) == 2:
-            
-            if batch_id == last_file_id:
-              path = os.path.join("../assets/",str(batch_id))
+            path = os.path.join("../assets/",str(batch_id))
+            if os.path.exists(path):
               remove_filesystem_folder(path)
             extract_file(file_data,zp,batch_id) 
             rename_file(batch_id) 
@@ -539,14 +549,17 @@ def upload_zip():
             remove_filesystem_folder(path)
             
           elif len(dirs) == 3:
-            if batch_id == last_file_id:
-              path = os.path.join("../assets/",str(batch_id))
+            path = os.path.join("../assets/",str(batch_id))  
+            if os.path.exists(path):
               remove_filesystem_folder(path)
-            extract_file(file_data,zp,batch_id)  
+             
+            extract_file(file_data,zp,batch_id)
+             
             rename_file(batch_id)
             image_to_jpg(batch_id,zip_file_name)
-            push_json_data_in_db(batch_id,"checkboxes")
             
+            push_json_data_in_db(batch_id,"checkboxes")
+            print("bla bla") 
             path = f"../assets/{batch_id}/{batch_id}/checkbox_data"
             remove_filesystem_folder(path)
             
