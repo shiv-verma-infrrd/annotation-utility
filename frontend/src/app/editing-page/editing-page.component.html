@@ -1,49 +1,81 @@
 <div class="editing-page-body">
-
   <div class="navbar-1">
     <div class="logo" routerLink="/batches"></div>
   </div>
   <div class="navbar-2">
-    <div (click)="zoom_in()" class="zoom_in_button">+</div>
-    <div (click)="zoom_out()" class="zoom_out_button">-</div>
+    <div (click)="image_zoom_in()" class="zoom_in_button">+</div>
+    <div (click)="image_zoom_out()" class="zoom_out_button">-</div>
+    <div class="display-all-question-on-click" (click)="display_category_label('q')">Question</div>
+    <div class="display-all-answer-on-click" (click)="display_category_label('a')">Answer</div>
+    <div class="display-all-header-on-click" (click)="display_category_label('h')">Header</div>
+    <div class="display-all-other-on-click" (click)="display_category_label('o')">Other</div>
   </div>
+
   <div class="page-left-section" (scroll)="entity_line_adjuster()">
-    <img #main_image_ref src={{imgUrl+image_url}}>
-    <svg #svg_ref [attr.height]="img_length" [attr.width]="img_width">
-      <rect #r class="image_rect" *ngFor="let i of coordinate_array;let ind=index" [attr.x]="i.box[0]"
-        [attr.y]="i.box[1]" [attr.height]="i.box[3]-i.box[1]" [attr.width]="i.box[2]-i.box[0]"
-        (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="image_token_click(i.id)" />
+      <img #image_ref src={{imageUrl+image_src}}>
+      <svg:svg #svg_ref [attr.height]="image_height" [attr.width]="image_width">
+        <rect #r class="image_rect" *ngFor="let i of token_cord_for_image;let ind=index" [attr.x]="i.box[0]"
+          [attr.y]="i.box[1]" [attr.height]="i.box[3]-i.box[1]" [attr.width]="i.box[2]-i.box[0]"
+          (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="image_token_click(i.id)"/>
         <rect class="entity_rect" #display_entity_rect_ref x="0" y="0" height="0" width="0" />
-    </svg>
+       <!-- display entity on selecting option  -->
+        <!-- on click display question -->
+         <ng-container *ngIf="display_question==1"> 
+           <ng-container *ngFor="let q of question_entity_ids">
+             <rect class="mark-question-on-image"  *ngFor="let qj of q" [attr.x]="token_cord_for_image[qj].box[0]" [attr.y]="token_cord_for_image[qj].box[1]" [attr.height]="token_cord_for_image[qj].box[3]-token_cord_for_image[qj].box[1]" [attr.width]="token_cord_for_image[qj].box[2]-token_cord_for_image[qj].box[0]"/> 
+           </ng-container>
+        </ng-container>
+        <!-- on click display answer -->
+        <ng-container *ngIf="display_answer==1"> 
+          <ng-container *ngFor="let a of answer_entity_ids">
+            <rect class="mark-answer-on-image"  *ngFor="let aj of a" [attr.x]="token_cord_for_image[aj].box[0]" [attr.y]="token_cord_for_image[aj].box[1]" [attr.height]="token_cord_for_image[aj].box[3]-token_cord_for_image[aj].box[1]" [attr.width]="token_cord_for_image[aj].box[2]-token_cord_for_image[aj].box[0]"/> 
+          </ng-container>
+       </ng-container>
+       <!-- on click display header -->
+       <ng-container *ngIf="display_header==1"> 
+         <ng-container *ngFor="let h of header_entity_ids">
+           <rect class="mark-header-on-image"  *ngFor="let hj of h" [attr.x]="token_cord_for_image[hj].box[0]" [attr.y]="token_cord_for_image[hj].box[1]" [attr.height]="token_cord_for_image[hj].box[3]-token_cord_for_image[hj].box[1]" [attr.width]="token_cord_for_image[hj].box[2]-token_cord_for_image[hj].box[0]"/> 
+         </ng-container>
+      </ng-container>
+      <!-- on click display other -->
+      <ng-container *ngIf="display_other==1"> 
+        <ng-container *ngFor="let o of other_entity_ids">
+          <rect class="mark-other-on-image"  *ngFor="let oj of o" [attr.x]="token_cord_for_image[oj].box[0]" [attr.y]="token_cord_for_image[oj].box[1]" [attr.height]="token_cord_for_image[oj].box[3]-token_cord_for_image[oj].box[1]" [attr.width]="token_cord_for_image[oj].box[2]-token_cord_for_image[oj].box[0]"/> 
+        </ng-container>
+      </ng-container>
+     <!--  -->
+      </svg>
   </div>
-  <div class="page-right-section">
+
+  <div class="page-right-section"> 
     
     <div class="page-right-section-top">
-      <button class="next-button" (click)="next_button_click()">></button>
-      <button class="add-entity-button" (click)="make_custom_entity()">Add {{custom_input_type}}</button>
+    <button class="next-button" (click)="next_button_click()">></button>
+    <button class="add-entity-button" (click)="make_custom_entity()">Add {{custom_input_type}}</button>
 
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_header_input_ref,'ch',-1)" readonly #custom_header_input_ref class="custom-header-input" placeholder="Header Entity">
-      
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_question_input_ref,'cq',-1)" readonly #custom_question_input_ref class="custom-question-input" placeholder="Question Entity">
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_answer_input_ref,'ca',-1)" readonly #custom_answer_input_ref class="custom-answer-input" placeholder="Answer Entity">
-      
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input(custom_other_input_ref,'co',-1)" readonly #custom_other_input_ref class="custom-other-input" placeholder="Other Entity">
-    </div>
+    <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input_for_editing(custom_header_input_ref,'ch',-1)" readonly #custom_header_input_ref class="custom-header-input" placeholder="Header Entity">
+    
+    <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input_for_editing(custom_question_input_ref,'cq',-1)" readonly #custom_question_input_ref class="custom-question-input" placeholder="Question Entity">
+    <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input_for_editing(custom_answer_input_ref,'ca',-1)" readonly #custom_answer_input_ref class="custom-answer-input" placeholder="Answer Entity">
+    
+    <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input_for_editing(custom_other_input_ref,'co',-1)" readonly #custom_other_input_ref class="custom-other-input" placeholder="Other Entity">
+  </div>
 
+  
     <div class="page-right-section-mid" (scroll)="entity_line_adjuster()">
       <!-- ****************** displaying question and answer ******************* -->
       <div class="display-entity" *ngFor="let i of question_entity_strings;let ind=index">
         <!--question part-->
-        <div #q_struct_ref class="qa-entity-cell-structure q-entity-cell-pos" (click)="entity_click('q',ind,q_struct_ref)">
+        <div #q_struct_ref class="qa-entity-cell-structure q-entity-cell-pos" (click)="select_input_for_editing(q_i_r,'q',ind)"  (click)="entity_click('q',ind,q_i_r)">
           <div class="qa-entity-cell-type">Q</div>
-          <input readonly #q_i_r class="qa-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(q_i_r,'q',ind)"/>
+          <input readonly #q_i_r class="qa-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_entity()"/>
         </div>
         <!--end of question part-->
 
         <!--answer part-->
-        <div #a_struct_ref class="qa-entity-cell-structure a-entity-cell-pos" (click)="entity_click('a',ind,a_struct_ref)">
+        <div #a_struct_ref class="qa-entity-cell-structure a-entity-cell-pos" (click)="select_input_for_editing(a_i_r,'a',ind)" (click)="entity_click('a',ind,a_i_r)">
           <div class="qa-entity-cell-type">A</div>
-          <input readonly #a_i_r class="qa-entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(a_i_r,'a',ind)"/>
+          <input readonly #a_i_r class="qa-entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="pop_token_from_entity()"/>
         </div>
         <!--end of answer part-->
 
@@ -60,9 +92,9 @@
       
       <!--****************** displaying header *******************-->
       <div class="display-entity" *ngFor="let i of header_entity_strings;let ind=index">
-        <div #h_struct_ref class="ho-entity-cell-structure h-entity-cell-pos" (click)="entity_click('h',ind,h_struct_ref)">
+        <div #h_struct_ref class="ho-entity-cell-structure h-entity-cell-pos" (click)="select_input_for_editing(h_i_r,'h',ind)" (click)="entity_click('h',ind,h_i_r)">
           <div class="ho-entity-cell-type">H</div>
-          <input #h_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(h_i_r,'h',ind)" />
+          <input #h_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_entity()"/>
         </div>
        
         <div class="delete-entity" (click)="delete_entity('h',ind)">
@@ -78,9 +110,9 @@
 
       <!--****************** displaying other *******************-->
       <div class="display-entity" *ngFor="let i of other_entity_strings;let ind=index">
-        <div #o_struct_ref class="ho-entity-cell-structure o-entity-cell-pos" (click)="entity_click('o',ind,o_struct_ref)">
+        <div #o_struct_ref class="ho-entity-cell-structure o-entity-cell-pos" (click)="select_input_for_editing(o_i_r,'o',ind)" (click)="entity_click('o',ind,o_i_r)">
           <div class="ho-entity-cell-type">O</div>
-          <input  #o_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="clear_entity_cell()" (click)="select_input(o_i_r,'o',ind)"  />
+          <input  #o_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_entity()"/>
         </div>
 
         <div class="delete-entity" (click)="delete_entity('o',ind)">
@@ -94,10 +126,12 @@
       </div>
       <!--****************** end of displaying other *******************-->
     </div>
+    
     <div class="page-right-section-bottom">
       <button  (click)="save_all_data(0)" class="save-and-exit">Save and Exit</button>
       <button (click)="save_all_data(1)" class="save-and-next">Save and Next</button>
       <button (click)="exit()" class="cancel-button">Cancel</button>
     </div>
   </div>
+  
 </div>

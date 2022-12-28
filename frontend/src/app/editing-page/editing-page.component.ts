@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import 'leader-line';
 import { ApiDataService } from '../services/api-data.service';
@@ -11,31 +11,48 @@ declare let LeaderLine: any;
   templateUrl: './editing-page.component.html',
   styleUrls: ['./editing-page.component.css'],
 })
-export class EditingPageComponent implements AfterViewInit {
+export class EditingPageComponent implements AfterViewInit 
+{
+  @ViewChild('image_ref') image_ref:any;
   @ViewChild('custom_header_input_ref') custom_header_input_ref: any;
   @ViewChild('custom_question_input_ref') custom_question_input_ref: any;
   @ViewChild('custom_answer_input_ref') custom_answer_input_ref: any;
   @ViewChild('custom_other_input_ref') custom_other_input_ref: any;
   @ViewChild('display_entity_rect_ref') display_entity_rect_ref: any;
-  @ViewChild('main_image_ref') img_ref: any;
-  @ViewChild('svg_ref') svg_ref: any;
-  @ViewChild('alert_ref') alert_ref: any;
+  
 
-  imgUrl: any;
-  image_url: any;
-  coordinate_array: any;
-  json_input: any;
-  api_result: any;
-  alldoc: any;
-  doc_id_index: any;
+  imageUrl:any;
+  doc_id:any;
 
-  checkboxes:any[]=[];
+  api_result:any;
 
-  img_length: number = 0;
-  img_width: number = 0;
-  times: number = 1;
-  l: number = 0;
-  c: number = 0;
+  image_src:any;
+  token_cord_for_image:any=[];
+  token_cord_for_cal:any=[];
+
+  offset_height:number = 0;
+  offset_width:number = 0;
+  image_height:number = 0;
+  image_width:number = 0;
+  times:number = 1;
+  l:number = 0;
+  c:number = 0;
+
+  question_entity_strings:string[]=[];
+  question_entity_ids:number[][]=[];
+
+  answer_entity_strings:string[]=[];
+  answer_entity_ids:number[][]=[];
+
+  header_entity_strings:string[]=[];
+  header_entity_ids:number[][]=[];
+
+  other_entity_strings:string[]=[];
+  other_entity_ids:number[][]=[];
+
+  cord_id_map=new Map();
+  entity_intial_map=new Map();
+  used_token_map=new Map();
 
   custom_input_type: any = 'Header';
 
@@ -46,329 +63,124 @@ export class EditingPageComponent implements AfterViewInit {
   custom_input_array1: number[] = [];
   custom_input_array2: number[] = [];
 
-  header_entity_strings: string[] = [];
-  header_entity_indexs: number[][] = [];
+  entity_connector_line: any = undefined;
+  some_changes_done:number=0;
+  display_question:number=0;
+  display_answer:number=0;
+  display_header:number=0;
+  display_other:number=0;
 
-  other_entity_strings: string[] = [];
-  other_entity_indexs: number[][] = [];
-
-  question_entity_strings: string[] = [];
-  question_entity_indexs: number[][] = [];
-
-  answer_entity_strings: string[] = [];
-  answer_entity_indexs: number[][] = [];
-  used_token_map = new Map();
-  link_map = new Map();
-
-  entity_connector_line:any=undefined;
-
-
-  // image portrait adjustment variables
-  offset_length : number = 0;
-  offset_width : number = 0;
-  change_image_height : number = 0;
-  change_image_width : number = 0;
-   
-
-  constructor(private apiData: ApiDataService, private router:Router, private location:PlatformLocation, private toast:NgToastService) {
+  constructor(private apiData: ApiDataService, private router:Router, private location:PlatformLocation, private toast:NgToastService)
+  {
     this.apiData.docData = window.sessionStorage.getItem('global_doc_id');
     this.apiData.batchData = window.sessionStorage.getItem('global_batch_id');
-    this.imgUrl = this.apiData.URL;
+    this.imageUrl = this.apiData.URL;
 
-    this.doc_id_index = window.sessionStorage.getItem('global_doc_id');
-    // this.doc_id_index -= 1;
-    this.apiData.doc_name = window.sessionStorage.getItem('global_doc_name')
-    this.apiData
-      .checkboxes(this.apiData.doc_name)
-      .subscribe((data:any) => {
-        
-        // this.checkboxes = JSON.parse(
-        //   JSON.stringify(data[0].checkboxes.checkboxes)
-        // );
-        // console.log(this.checkboxes)
-
-        console.log("service form****",data)
-        
-        for(let i in data[0].checkboxes.checkboxes){
-
-          //  console.log(data[0].checkboxes.checkboxes[i].tl.x,data[0].checkboxes.checkboxes[i].tl.y,data[0].checkboxes.checkboxes[i].br.x,data[0].checkboxes.checkboxes[i].br.y)
-           
-           let box = [data[0].checkboxes.checkboxes[i].tl.x,data[0].checkboxes.checkboxes[i].tl.y,data[0].checkboxes.checkboxes[i].br.x,data[0].checkboxes.checkboxes[i].br.y]
-          
-           
-           let text = "*"
-           let label = "others"
-           let words = [box,text]
-           let linking:any = []
-           let id = i
-           
-           
-           this.apiData.forms.push({box,text,label,words,linking,id})
-          //  console.log("bla bla")
-           
-        }
-        
-        console.log("*****forms",this.apiData.forms)
-      })
-
+    this.doc_id= window.sessionStorage.getItem('global_doc_id');
     
-    this.apiData
-      .get_pages(this.apiData.batchData, this.apiData.docData)
-      .subscribe((data) => {
-        this.image_url = data[0].imagePath;
-        this.alldoc = this.apiData.docarray;
+    this.apiData.get_pages(this.apiData.batchData, this.apiData.docData).subscribe((data) => 
+    {        
+        this.image_src = data[0].imagePath;
+        this.api_result=JSON.parse(JSON.stringify((data[0].Data.kvpData.form)));
+        this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.kvpData.form))));
+        this.kvp_label_initialization();
+    });
 
-        // console.log("editing page api ****",data[0].Data.kvpData[0]);
-
-        for(let i in data[0].Data.kvpData){
-
-         
-           
-           let box = [data[0].Data.kvpData[i][1].tl.x,data[0].Data.kvpData[i][1].tl.y,data[0].Data.kvpData[i][1].br.x,data[0].Data.kvpData[i][1].br.y]
-          
-           
-           let text = data[0].Data.kvpData[i][0]
-           let label = "others"
-           let words = [box,text]
-           let linking:any = []
-           let id = i
-           this.apiData.checkboxesCoordinate.push({box,text,label,words,linking,id})
-          //  console.log("bla bla",this.apiData.checkboxesCoordinate)
-           
-        }
-
-
-        if (data[0].isCorrected == 'true') {
-          this.json_input = JSON.parse(
-            JSON.stringify(data[0].correctedData.result)
-          );
-          this.coordinate_array = JSON.parse(
-            JSON.stringify(data[0].correctedData.result)
-          );
-        } else {
-
-          if(data[0].Type == "checkboxes"){
-            // this.json_input = this.apiData.forms
-            // this.coordinate_array = this.apiData.forms
-            // this.apiData.checkboxesCoordinate.push(this.apiData.forms)
-
-            // for(let i in this.apiData.forms){
-            //   this.apiData.checkboxesCoordinate.push(this.apiData.forms[i])
-            // }
-            this.json_input = this.apiData.checkboxesCoordinate;
-            this.coordinate_array = this.apiData.checkboxesCoordinate;
-          
-            console.log(this.apiData.checkboxesCoordinate)
-
-          }
-
-          else{
-
-            this.json_input = JSON.parse(JSON.stringify(data[0].Data.kvpData.form));
-            this.coordinate_array = JSON.parse(
-            JSON.stringify(data[0].Data.kvpData.form)
-          );
-
-          } 
-          
-        }
-        this.api_result = data[0];
-
-        
-
-        this.token_label_intialization();
-      });
-
-
-      location.onPopState(() => {
-        if(this.entity_connector_line!=undefined)
-        {
-          this.entity_connector_line.remove();
-          this.entity_connector_line=undefined;
-        }
-      });
+     
+    location.onPopState(() => {
+      if(this.entity_connector_line!=undefined)
+      {
+        this.entity_connector_line.remove();
+        this.entity_connector_line=undefined;
+      }
+    });
   }
 
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.set_svg_dimensions();
-      this.set_image_tokens();
-    }, 1000);
-  }
-
- 
-  set_image_tokens()
+  ngAfterViewInit(): void 
   {
-    for (let i = 0; i < this.coordinate_array.length; i++) {
-      this.coordinate_array[i].box[0] =
-        (this.coordinate_array[i].box[0] / (this.offset_width)) * this.c;
-      this.coordinate_array[i].box[1] =
-        (this.coordinate_array[i].box[1] / (this.offset_length)) * this.l;
-      this.coordinate_array[i].box[2] =
-        (this.coordinate_array[i].box[2] / (this.offset_width)) * this.c;
-      this.coordinate_array[i].box[3] =
-        (this.coordinate_array[i].box[3] / (this.offset_length)) * this.l;
+    setTimeout(()=>{
+      this.image_height = this.image_ref.nativeElement.offsetHeight;
+      this.image_width = this.image_ref.nativeElement.offsetWidth;
+      
+      this.viewport_image_adjuster();
+      this.viewport_token_cord_adjuster();
+      }, 1000);
+  }
+
+  token_extractor_from_grouping(data:any)
+  {
+    let count=0;
+    for(let i=0;i<data.length;i++)
+    {
+      for(let j=0;j<data[i].words.length;j++)
+      {
+            
+            this.token_cord_for_image.push(
+              JSON.parse(JSON.stringify({
+                "box":data[i].words[j].box,
+                "text":data[i].words[j].text,
+                "id":count
+              }))  
+            );
+
+            this.token_cord_for_cal.push(
+              JSON.parse(JSON.stringify({
+                "box":data[i].words[j].box,
+                "text":data[i].words[j].text,
+                "id":count
+              }))
+            );
+
+            this.cord_id_map.set(JSON.stringify(data[i].words[j].box),count);
+
+            count++;
+      }
     }
   }
 
-  set_svg_dimensions() {
+  viewport_image_adjuster()
+  { 
+    let window_image_height = (window.innerHeight*89)/100;
+    let window_image_width = (window.innerWidth)/2;
 
-    this.offset_length = this.img_ref.nativeElement.offsetHeight;
-    this.offset_width = this.img_ref.nativeElement.offsetWidth;
+    this.offset_height = this.image_ref.nativeElement.offsetHeight;
+    this.offset_width = this.image_ref.nativeElement.offsetWidth;
 
-    this.change_image_height = (window.innerHeight*89)/100;
-    this.change_image_width = (window.innerWidth)/2;
-
-
-    if(this.offset_length - this.change_image_height > this.offset_width - this.change_image_width)
+    if(this.offset_height > this.offset_width)
     {
-      this.img_length = this.change_image_height;
-      this.img_width = (this.change_image_height)*(this.offset_width/this.offset_length);
+      this.image_height = window_image_height;
+      this.image_width = (window_image_height)*(this.offset_width/this.offset_height);
     }
-
     else
     {
-      this.img_width = this.change_image_width;
-      this.img_length = (this.change_image_width)*(this.offset_length/this.offset_width); 
+      this.image_width = window_image_width;
+      this.image_height = (window_image_width)*(this.offset_height/this.offset_width); 
     }
 
-    this.img_ref.nativeElement.style.height = this.img_length + "px";
-    this.img_ref.nativeElement.style.width = this.img_width + "px";
+    this.image_ref.nativeElement.style.height = this.image_height + "px";
+    this.image_ref.nativeElement.style.width = this.image_width + "px";
 
-    this.l = this.img_length;
-    this.c = this.img_width;
+    this.l = this.image_height;
+    this.c = this.image_width;
   }
 
-  close_alert() {
-    this.alert_ref.nativeElement.style.display = 'none';
-  }
 
-  token_label_intialization() 
+  viewport_token_cord_adjuster()
   {
-    for (let i = 0; i < this.json_input.length; i++) {
-      if (!this.link_map.has(i)) {
-        if (this.json_input[i].label == 'header')
-        {
-          this.used_token_map.set(this.json_input[i].id, 1);
-          this.header_entity_strings.push(this.json_input[i].text);
-          this.header_entity_indexs.push([this.json_input[i].id]);
-        } 
-        else if (this.json_input[i].label == 'other') 
-        {
-          this.used_token_map.set(this.json_input[i].id, 1);
-          this.other_entity_strings.push(this.json_input[i].text);
-          this.other_entity_indexs.push([this.json_input[i].id]);
-        }
-        else if (this.json_input[i].label == 'question')
-        {
-          if(Object.entries(this.json_input[i].linking[0]).length> 0)
-          {
-            this.used_token_map.set(this.json_input[i].id, 1);
-            this.question_entity_strings.push(this.json_input[i].text);
-            this.question_entity_indexs.push([this.json_input[i].id]);
-            //  this.answer_entity_strings.push('');
-            //  this.answer_entity_indexs.push([]);
-            let l_in = this.json_input[i].linking[0].linking[1];
-            
-            this.used_token_map.set(this.json_input[l_in].id, 1);
-            this.answer_entity_strings.push(this.json_input[l_in].text);
-            this.answer_entity_indexs.push([this.json_input[l_in].id]);
-            this.link_map.set(l_in, 1);
-          } 
-          else 
-          {
-            this.used_token_map.set(this.json_input[i].id, 1);
-            this.question_entity_strings.push(this.json_input[i].text);
-            this.question_entity_indexs.push([this.json_input[i].id]);
-            this.answer_entity_strings.push('');
-            this.answer_entity_indexs.push([]);
-          }
-        } 
-        else if (this.json_input[i].label == 'answer') 
-        {
-          if (Object.entries(this.json_input[i].linking[0]).length > 0) 
-          {
-            this.used_token_map.set(this.json_input[i].id, 1);
-            this.answer_entity_strings.push(this.json_input[i].text);
-            this.answer_entity_indexs.push([this.json_input[i].id]);
-            //  this.question_entity_strings.push('');
-            //  this.question_entity_indexs.push([]);
-            let l_in = this.json_input[i].linking[0].linking[1];
-            this.used_token_map.set(this.json_input[l_in].id, 1);
-            this.question_entity_strings.push(this.json_input[l_in].text);
-            this.question_entity_indexs.push([this.json_input[l_in].id]);
-            this.link_map.set(l_in, 1);
-          } else {
-            this.used_token_map.set(this.json_input[i].id, 1);
-            this.answer_entity_strings.push(this.json_input[i].text);
-            this.answer_entity_indexs.push([this.json_input[i].id]);
-            this.question_entity_strings.push('');
-            this.question_entity_indexs.push([]);
-          }
-        }
-      }
+    for (let i = 0; i < this.token_cord_for_image.length; i++) {
+      this.token_cord_for_image[i].box[0] =
+        (this.token_cord_for_image[i].box[0] / (this.offset_width)) * this.image_width;
+      this.token_cord_for_image[i].box[1] =
+        (this.token_cord_for_image[i].box[1] / (this.offset_height)) * this.image_height;
+      this.token_cord_for_image[i].box[2] =
+        (this.token_cord_for_image[i].box[2] / (this.offset_width)) * this.image_width;
+      this.token_cord_for_image[i].box[3] =
+        (this.token_cord_for_image[i].box[3] / (this.offset_height)) * this.image_height;
     }
   }
-  image_token_click(id: number) 
+
+  image_zoom_in()
   {
-    if (this.used_token_map.has(id)) 
-    {
-      this.toast.warning({detail:"WARNING",summary:'This token has already been used',duration:5000});
-    } 
-    else {
-      if (
-        this.selected_input_type == 'q' ||
-        this.selected_input_type == 'a' ||
-        this.selected_input_type == 'h' ||
-        this.selected_input_type == 'o'
-      ) {
-        if (this.selected_input_type == 'q') {
-          this.used_token_map.set(id, 1);
-          this.question_entity_indexs[this.selected_input_index].push(id);
-          this.question_entity_strings[this.selected_input_index] +=
-            ' ' + this.json_input[id].text;
-        } else if (this.selected_input_type == 'a') {
-          this.used_token_map.set(id, 1);
-          this.answer_entity_indexs[this.selected_input_index].push(id);
-          this.answer_entity_strings[this.selected_input_index] +=
-            ' ' + this.json_input[id].text;
-        } else if (this.selected_input_type == 'h') {
-          this.used_token_map.set(id, 1);
-          this.header_entity_indexs[this.selected_input_index].push(id);
-          this.header_entity_strings[this.selected_input_index] +=
-            ' ' + this.json_input[id].text;
-        } else if (this.selected_input_type == 'o') {
-          this.used_token_map.set(id, 1);
-          this.other_entity_indexs[this.selected_input_index].push(id);
-          this.other_entity_strings[this.selected_input_index] +=
-            ' ' + this.json_input[id].text;
-        }
-      } else
-      {
-        // need to add string in inpt and index in array
-        if (this.selected_input_type == 'ch') {
-          this.used_token_map.set(id, 1);
-          this.selected_input_ref.value += ' ' + this.json_input[id].text;
-          this.custom_input_array1.push(id);
-        } else if (this.selected_input_type == 'cq') {
-          this.used_token_map.set(id, 1);
-          this.selected_input_ref.value += ' ' + this.json_input[id].text;
-          this.custom_input_array1.push(id);
-        } else if (this.selected_input_type == 'ca') {
-          this.used_token_map.set(id, 1);
-          this.selected_input_ref.value += ' ' + this.json_input[id].text;
-          this.custom_input_array2.push(id);
-        } else if (this.selected_input_type == 'co') {
-          this.used_token_map.set(id, 1);
-          this.selected_input_ref.value += ' ' + this.json_input[id].text;
-          this.custom_input_array1.push(id);
-        }
-      }
-    }
-  }
-  zoom_in() {
-    //if any entity is getting pointed in image
     this.display_entity_rect_ref.nativeElement.style.x = 0;
     this.display_entity_rect_ref.nativeElement.style.y = 0;
     this.display_entity_rect_ref.nativeElement.style.height = 0;
@@ -382,25 +194,22 @@ export class EditingPageComponent implements AfterViewInit {
 
     if (this.times >= 2.5) return;
     this.times += 0.2;
-    this.img_ref.nativeElement.style.height = this.l * this.times + 'px';
-    this.img_ref.nativeElement.style.width = this.c * this.times + 'px';
-    this.img_length = this.l * this.times;
-    this.img_width = this.c * this.times;
+    this.image_ref.nativeElement.style.height = this.l * this.times + 'px';
+    this.image_ref.nativeElement.style.width = this.c * this.times + 'px';
+    this.image_height = this.l * this.times;
+    this.image_width = this.c * this.times;
 
-    for (let i = 0; i < this.coordinate_array.length; i++) {
-      this.coordinate_array[i].box[0] =
-        (this.coordinate_array[i].box[0] / (this.times - 0.2)) * this.times;
-      this.coordinate_array[i].box[1] =
-        (this.coordinate_array[i].box[1] / (this.times - 0.2)) * this.times;
-      this.coordinate_array[i].box[2] =
-        (this.coordinate_array[i].box[2] / (this.times - 0.2)) * this.times;
-      this.coordinate_array[i].box[3] =
-        (this.coordinate_array[i].box[3] / (this.times - 0.2)) * this.times;
+    for (let i = 0; i < this.token_cord_for_image.length; i++) 
+    {
+      this.token_cord_for_image[i].box[0] = (this.token_cord_for_image[i].box[0] / (this.times - 0.2)) * this.times;
+      this.token_cord_for_image[i].box[1] = (this.token_cord_for_image[i].box[1] / (this.times - 0.2)) * this.times;
+      this.token_cord_for_image[i].box[2] = (this.token_cord_for_image[i].box[2] / (this.times - 0.2)) * this.times;
+      this.token_cord_for_image[i].box[3] = (this.token_cord_for_image[i].box[3] / (this.times - 0.2)) * this.times;
     }
   }
 
-  zoom_out() {
-    //if any entity is getting pointed in image
+  image_zoom_out()
+  {
     this.display_entity_rect_ref.nativeElement.style.x = 0;
     this.display_entity_rect_ref.nativeElement.style.y = 0;
     this.display_entity_rect_ref.nativeElement.style.height = 0;
@@ -412,60 +221,269 @@ export class EditingPageComponent implements AfterViewInit {
       this.entity_connector_line=undefined;
     }
 
-    this.times -= 0.2;
-    this.img_ref.nativeElement.style.height = this.l * this.times + 'px';
-    this.img_ref.nativeElement.style.width = this.c * this.times + 'px';
-    this.img_length = this.l * this.times;
-    this.img_width = this.c * this.times;
+    if(this.times<=0.4)
+    return;
 
-    for (let i = 0; i < this.coordinate_array.length; i++) {
-      this.coordinate_array[i].box[0] =
-        (this.coordinate_array[i].box[0] / (this.times + 0.2)) * this.times;
-      this.coordinate_array[i].box[1] =
-        (this.coordinate_array[i].box[1] / (this.times + 0.2)) * this.times;
-      this.coordinate_array[i].box[2] =
-        (this.coordinate_array[i].box[2] / (this.times + 0.2)) * this.times;
-      this.coordinate_array[i].box[3] =
-        (this.coordinate_array[i].box[3] / (this.times + 0.2)) * this.times;
+    this.times -= 0.2;
+    this.image_ref.nativeElement.style.height = this.l * this.times + 'px';
+    this.image_ref.nativeElement.style.width = this.c * this.times + 'px';
+    this.image_height = this.l * this.times;
+    this.image_width = this.c * this.times;
+
+    for (let i = 0; i < this.token_cord_for_image.length; i++) 
+    {
+      this.token_cord_for_image[i].box[0] = (this.token_cord_for_image[i].box[0] / (this.times + 0.2)) * this.times;
+      this.token_cord_for_image[i].box[1] = (this.token_cord_for_image[i].box[1] / (this.times + 0.2)) * this.times;
+      this.token_cord_for_image[i].box[2] = (this.token_cord_for_image[i].box[2] / (this.times + 0.2)) * this.times;
+      this.token_cord_for_image[i].box[3] = (this.token_cord_for_image[i].box[3] / (this.times + 0.2)) * this.times;
     }
   }
 
-  token_mouse_enter(data: any) {
+  token_mouse_enter(data: any) 
+  {
     data.stroke = '#39a87a';
   }
-  token_mouse_out(data: any) {
+
+  token_mouse_out(data: any) 
+  {
     data.stroke = '';
   }
 
-  next_button_click() {
-    this.clear_custom_input();
-    this.clear_selected_input_ref();
-    if (this.custom_input_type == 'Header') {
-      this.custom_input_type = 'Q&A';
-      this.custom_question_input_ref.nativeElement.style.display = 'block';
-      this.custom_answer_input_ref.nativeElement.style.display = 'block';
-      this.custom_header_input_ref.nativeElement.style.display = 'none';
-      this.custom_other_input_ref.nativeElement.style.display = 'none';
-    } else if (this.custom_input_type == 'Q&A') {
-      this.custom_input_type = 'Other';
-      this.custom_header_input_ref.nativeElement.style.display = 'none';
-      this.custom_question_input_ref.nativeElement.style.display = 'none';
-      this.custom_answer_input_ref.nativeElement.style.display = 'none';
-      this.custom_other_input_ref.nativeElement.style.display = 'block';
-    } else {
-      this.custom_input_type = 'Header';
-      this.custom_header_input_ref.nativeElement.style.display = 'block';
-      this.custom_question_input_ref.nativeElement.style.display = 'none';
-      this.custom_answer_input_ref.nativeElement.style.display = 'none';
-      this.custom_other_input_ref.nativeElement.style.display = 'none';
+  kvp_label_initialization()
+  {
+    for(let i=0;i<this.api_result.length;i++)
+    {
+      if(!this.entity_intial_map.has(this.api_result[i].id))
+      {
+        if(this.api_result[i].label=="question")
+        {
+          this.entity_intial_map.set(this.api_result[i].id,1)// add in entity map
+
+          this.question_entity_strings.push(JSON.parse(JSON.stringify(this.api_result[i].text)));
+          var t:number[]=[];
+          for(let j=0;j<this.api_result[i].words.length;j++)
+          {
+            t.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[j].box)));
+            this.used_token_map.set(t[t.length-1],1);
+          }
+          this.question_entity_ids.push(t);
+
+          if(Object.entries(this.api_result[i].linking[0]).length > 0)
+          {
+            var z_o_in = 0;
+            if (this.api_result[i].linking[0].linking[0] == this.api_result[i].id)
+              z_o_in = 1;
+            else
+              z_o_in = 0;
+
+            var link_ind = -1;
+            var max_pob = -1;
+            var count = 0;
+            for (let x in this.api_result[i].linking) 
+            {
+              if (!this.entity_intial_map.has(this.api_result[i].linking[x].linking[z_o_in]) &&
+                 this.api_result[i].linking[x].prob_score > max_pob)
+              {
+                max_pob = this.api_result[i].linking[x].prob_score;
+                link_ind = count;
+              }
+              count++;
+            }
+
+            if (link_ind == -1)
+            {
+              this.answer_entity_strings.push('');
+              this.answer_entity_ids.push([]);
+            }
+            else
+            {
+              let linked_token_id =this.api_result[i].linking[link_ind].linking[z_o_in];
+              
+              this.entity_intial_map.set(this.api_result[linked_token_id].id,1)// add in entity map
+
+              this.answer_entity_strings.push(JSON.parse(JSON.stringify(this.api_result[linked_token_id].text)));
+              var temp:number[]=[];
+              for(let j=0;j<this.api_result[linked_token_id].words.length;j++)
+              {
+                  temp.push(this.cord_id_map.get(JSON.stringify(this.api_result[linked_token_id].words[j].box)));
+                  this.used_token_map.set(temp[temp.length-1],1);    
+              }
+              this.answer_entity_ids.push(temp);
+            }
+          }
+          else
+          {
+            this.answer_entity_strings.push('');
+            this.answer_entity_ids.push([]);
+          }
+        }
+        else if(this.api_result[i].label=="answer")
+        {
+          this.entity_intial_map.set(this.api_result[i].id,1)// add in entity map
+
+          this.answer_entity_strings.push(JSON.parse(JSON.stringify(this.api_result[i].text)));
+          var t:number[]=[];
+          for(let j=0;j<this.api_result[i].words.length;j++)
+          {
+              t.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[j].box)));
+              this.used_token_map.set(t[t.length-1],1);
+          }
+          this.answer_entity_ids.push(t);
+
+          
+          if(Object.entries(this.api_result[i].linking[0]).length > 0)
+          {
+            var z_o_in = 0;
+            if (this.api_result[i].linking[0].linking[0] == this.api_result[i].id)
+              z_o_in = 1;
+            else
+             z_o_in = 0;
+
+            var link_ind = -1;
+            var max_pob = -1;
+            var count = 0;
+            for (let x in this.api_result[i].linking) 
+            {
+              if (!this.entity_intial_map.has(this.api_result[i].linking[x].linking[z_o_in]) &&
+                 this.api_result[i].linking[x].prob_score > max_pob)
+              {
+                max_pob = this.api_result[i].linking[x].prob_score;
+                link_ind = count;
+              }
+              count++;
+            }
+
+            if (link_ind == -1)
+            {
+              this.question_entity_strings.push('');
+              this.question_entity_ids.push([]);
+            }
+            else
+            {
+              let linked_token_id =this.api_result[i].linking[link_ind].linking[z_o_in];
+              
+              this.entity_intial_map.set(this.api_result[linked_token_id].id,1)// add in entity map
+
+              this.question_entity_strings.push(JSON.parse(JSON.stringify(this.api_result[linked_token_id].text)));
+              var temp:number[]=[];
+              for(let j=0;j<this.api_result[linked_token_id].words.length;j++)
+              {
+                  temp.push(this.cord_id_map.get(JSON.stringify(this.api_result[linked_token_id].words[j].box)));
+                  this.used_token_map.set(temp[temp.length-1],1);
+    
+              }
+              this.question_entity_ids.push(temp);
+            }
+          }
+          else
+          {
+            this.question_entity_strings.push('');
+            this.question_entity_ids.push([]);
+          }
+        }
+        else if(this.api_result[i].label=="header")
+        {
+          this.header_entity_strings.push(JSON.parse(JSON.stringify(this.api_result[i].text)));
+          
+          var t:number[]=[];
+          for(let j=0;j<this.api_result[i].words.length;j++)
+          {
+              t.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[j].box)));
+              this.used_token_map.set(t[t.length-1],1);
+          }
+          this.header_entity_ids.push(t);
+        }
+        else 
+        {
+          this.other_entity_strings.push(JSON.parse(JSON.stringify(this.api_result[i].text)));
+          
+          var t:number[]=[];
+          for(let j=0;j<this.api_result[i].words.length;j++)
+          {
+              t.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[j].box)));
+              this.used_token_map.set(t[t.length-1],1);
+          }
+          this.other_entity_ids.push(t);
+        }
+      }
     }
   }
-  select_input(ref: any, type: any, index: number) {
+
+  image_token_click(token_id:number)
+  {
+    if(this.used_token_map.has(token_id))
+    {
+      this.toast.warning({detail:"WARNING",summary:'This token has already been used',duration:5000});
+    }
+    else
+    {
+      if (this.selected_input_type == 'q' || this.selected_input_type =='a' ||this.selected_input_type =='h' ||this.selected_input_type == 'o')
+      {
+        if (this.selected_input_type == 'q') 
+        {
+          this.used_token_map.set(token_id, 1);
+          this.question_entity_ids[this.selected_input_index].push(token_id);
+          this.question_entity_strings[this.selected_input_index]+= ' ' + this.token_cord_for_image[token_id].text;
+        }
+
+        else if (this.selected_input_type == 'a') 
+        {
+          this.used_token_map.set(token_id, 1);
+          this.answer_entity_ids[this.selected_input_index].push(token_id);
+          this.answer_entity_strings[this.selected_input_index] += ' ' + this.token_cord_for_image[token_id].text;
+        }
+        else if (this.selected_input_type == 'h') 
+        {
+          this.used_token_map.set(token_id, 1);
+          this.header_entity_ids[this.selected_input_index].push(token_id);
+          this.header_entity_strings[this.selected_input_index] += ' ' + this.token_cord_for_image[token_id].text;
+        }
+        else if (this.selected_input_type == 'o')
+        {
+          this.used_token_map.set(token_id, 1);
+          this.other_entity_ids[this.selected_input_index].push(token_id);
+          this.other_entity_strings[this.selected_input_index] += ' ' + this.token_cord_for_image[token_id].text;
+        }
+      }
+      else
+      {
+        // need to add string in inpt and index in array
+        if (this.selected_input_type == 'ch')
+        {
+          this.used_token_map.set(token_id, 1);
+          this.selected_input_ref.value += ' ' + this.token_cord_for_image[token_id].text;
+          this.custom_input_array1.push(token_id);
+        } 
+        else if (this.selected_input_type == 'cq')
+        {
+          this.used_token_map.set(token_id, 1);
+          this.selected_input_ref.value += ' ' + this.token_cord_for_image[token_id].text;
+          this.custom_input_array1.push(token_id);
+        }
+        else if (this.selected_input_type == 'ca') 
+        {
+          this.used_token_map.set(token_id, 1);
+          this.selected_input_ref.value += ' ' + this.token_cord_for_image[token_id].text;
+          this.custom_input_array2.push(token_id);
+        }
+        else if (this.selected_input_type == 'co')
+        {
+          this.used_token_map.set(token_id, 1);
+          this.selected_input_ref.value += ' ' + this.token_cord_for_image[token_id].text;
+          this.custom_input_array1.push(token_id);
+        }
+      }
+    }
+  }
+  
+  select_input_for_editing(ref: any, type: any, index: number)
+  {
     this.selected_input_ref = ref;
     this.selected_input_type = type;
-    this.selected_input_index = index;
+    this.selected_input_index = index;  
 
-    if (type == 'cq' || type == 'ca' || type == 'ch' || type == 'co') {
+    if (type == 'cq' || type == 'ca' || type == 'ch' || type == 'co') 
+    {
       //if any entity is getting pointed in image
       this.display_entity_rect_ref.nativeElement.style.x = 0;
       this.display_entity_rect_ref.nativeElement.style.y = 0;
@@ -481,17 +499,175 @@ export class EditingPageComponent implements AfterViewInit {
     }
   }
 
-  make_custom_entity() {
+  pop_token_from_entity()
+  { 
+    this.some_changes_done=1;
+
+    if (this.selected_input_type == 'q') 
+    {
+        let remain_length=this.question_entity_ids[this.selected_input_index].length;
+
+        if(remain_length==0)
+        return;
+
+        this.used_token_map.delete(this.question_entity_ids[this.selected_input_index][remain_length-1]);
+
+        let deleted_token_id=this.question_entity_ids[this.selected_input_index][remain_length-1];
+        this.question_entity_ids[this.selected_input_index].pop();
+
+        var pos=this.question_entity_strings[this.selected_input_index].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+
+        this.question_entity_strings[this.selected_input_index]=
+        this.question_entity_strings[this.selected_input_index].substring(0,pos)
+        +
+        this.question_entity_strings[this.selected_input_index].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.question_entity_strings[this.selected_input_index].length);
+
+        //check if only spaces left
+        let space_count=0;
+        for(let k=0;k<this.question_entity_strings[this.selected_input_index].length;k++)
+        {
+          if(this.question_entity_strings[this.selected_input_index][k]==' ')
+          space_count++;
+        }
+
+        if(space_count==this.question_entity_strings[this.selected_input_index].length)
+        this.question_entity_strings[this.selected_input_index]='';
+    } 
+    else if (this.selected_input_type == 'a')
+    {
+      let remain_length=this.answer_entity_ids[this.selected_input_index].length;
+
+      if(remain_length==0)
+      return;
+
+      this.used_token_map.delete(this.answer_entity_ids[this.selected_input_index][remain_length-1]);
+
+      let deleted_token_id=this.answer_entity_ids[this.selected_input_index][remain_length-1];
+      this.answer_entity_ids[this.selected_input_index].pop();
+
+      var pos=this.answer_entity_strings[this.selected_input_index].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+
+      this.answer_entity_strings[this.selected_input_index]=
+      this.answer_entity_strings[this.selected_input_index].substring(0,pos)
+      +
+      this.answer_entity_strings[this.selected_input_index].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.answer_entity_strings[this.selected_input_index].length);
+
+      //check if only spaces left
+      let space_count=0;
+      for(let k=0;k<this.answer_entity_strings[this.selected_input_index].length;k++)
+      {
+        if(this.answer_entity_strings[this.selected_input_index][k]==' ')
+        space_count++;
+      }
+
+      if(space_count==this.answer_entity_strings[this.selected_input_index].length)
+      this.answer_entity_strings[this.selected_input_index]='';
+    } 
+    else if (this.selected_input_type == 'h') 
+    {
+      let remain_length=this.header_entity_ids[this.selected_input_index].length;
+
+      if(remain_length==0)
+      return;
+
+      this.used_token_map.delete(this.header_entity_ids[this.selected_input_index][remain_length-1]);
+
+      let deleted_token_id=this.header_entity_ids[this.selected_input_index][remain_length-1];
+      this.header_entity_ids[this.selected_input_index].pop();
+
+      var pos=this.header_entity_strings[this.selected_input_index].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+
+      this.header_entity_strings[this.selected_input_index]=
+      this.header_entity_strings[this.selected_input_index].substring(0,pos)
+      +
+      this.header_entity_strings[this.selected_input_index].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.header_entity_strings[this.selected_input_index].length);
+
+      //check if only spaces left
+      let space_count=0;
+      for(let k=0;k<this.header_entity_strings[this.selected_input_index].length;k++)
+      {
+        if(this.header_entity_strings[this.selected_input_index][k]==' ')
+        space_count++;
+      }
+
+      if(space_count==this.header_entity_strings[this.selected_input_index].length)
+      this.header_entity_strings[this.selected_input_index]='';
+    } 
+    else if (this.selected_input_type == 'o')
+    {
+      let remain_length=this.other_entity_ids[this.selected_input_index].length;
+
+      if(remain_length==0)
+      return;
+
+      this.used_token_map.delete(this.other_entity_ids[this.selected_input_index][remain_length-1]);
+
+      let deleted_token_id=this.other_entity_ids[this.selected_input_index][remain_length-1];
+      this.other_entity_ids[this.selected_input_index].pop();
+
+      var pos=this.other_entity_strings[this.selected_input_index].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+
+      this.other_entity_strings[this.selected_input_index]=
+      this.other_entity_strings[this.selected_input_index].substring(0,pos)
+      +
+      this.other_entity_strings[this.selected_input_index].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.other_entity_strings[this.selected_input_index].length);
+
+      //check if only spaces left
+      let space_count=0;
+      for(let k=0;k<this.other_entity_strings[this.selected_input_index].length;k++)
+      {
+        if(this.other_entity_strings[this.selected_input_index][k]==' ')
+        space_count++;
+      }
+
+      if(space_count==this.other_entity_strings[this.selected_input_index].length)
+      this.other_entity_strings[this.selected_input_index]='';
+    }
+  }
+
+  next_button_click()
+  {
+    this.clear_custom_input();
+    this.clear_selected_input_ref();
+
+    if (this.custom_input_type == 'Header') 
+    {
+      this.custom_input_type = 'Q&A';
+      this.custom_question_input_ref.nativeElement.style.display = 'block';
+      this.custom_answer_input_ref.nativeElement.style.display = 'block';
+      this.custom_header_input_ref.nativeElement.style.display = 'none';
+      this.custom_other_input_ref.nativeElement.style.display = 'none';
+    }
+    else if (this.custom_input_type == 'Q&A') 
+    {
+      this.custom_input_type = 'Other';
+      this.custom_header_input_ref.nativeElement.style.display = 'none';
+      this.custom_question_input_ref.nativeElement.style.display = 'none';
+      this.custom_answer_input_ref.nativeElement.style.display = 'none';
+      this.custom_other_input_ref.nativeElement.style.display = 'block';
+    } 
+    else
+    {
+      this.custom_input_type = 'Header';
+      this.custom_header_input_ref.nativeElement.style.display = 'block';
+      this.custom_question_input_ref.nativeElement.style.display = 'none';
+      this.custom_answer_input_ref.nativeElement.style.display = 'none';
+      this.custom_other_input_ref.nativeElement.style.display = 'none';
+    }
+  }
+
+  make_custom_entity()
+  {
     if (this.custom_input_type == 'Header') 
     {
       if (this.custom_header_input_ref.nativeElement.value == '') 
       {
-      
-
         this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
       } 
       else 
       {
+        this.some_changes_done=1;
+
         for (let i = 0; i < this.custom_input_array1.length; i++) 
         {
           this.used_token_map.set(this.custom_input_array1[i], 1);
@@ -500,7 +676,7 @@ export class EditingPageComponent implements AfterViewInit {
         // this.header_entity_indexs.push(this.custom_input_array1);
         // this.header_entity_strings.push(this.custom_header_input_ref.nativeElement.value);
         
-        this.header_entity_indexs.unshift(this.custom_input_array1);
+        this.header_entity_ids.unshift(this.custom_input_array1);
         this.header_entity_strings.unshift(this.custom_header_input_ref.nativeElement.value);
 
         this.custom_input_array1 = [];
@@ -517,6 +693,8 @@ export class EditingPageComponent implements AfterViewInit {
       }
       else
       {
+        this.some_changes_done=1;
+
         for (let i = 0; i < this.custom_input_array1.length; i++) 
         {
           this.used_token_map.set(this.custom_input_array1[i], 1);
@@ -525,39 +703,44 @@ export class EditingPageComponent implements AfterViewInit {
         // this.other_entity_indexs.push(this.custom_input_array1);
         // this.other_entity_strings.push(this.custom_other_input_ref.nativeElement.value);
         
-        this.other_entity_indexs.unshift(this.custom_input_array1);
+        this.other_entity_ids.unshift(this.custom_input_array1);
         this.other_entity_strings.unshift(this.custom_other_input_ref.nativeElement.value);
 
         this.custom_input_array1 = [];
         this.custom_other_input_ref.nativeElement.value = '';
       }
-    } else {
-      if (
-        this.custom_question_input_ref.nativeElement.value == '' ||
-        this.custom_answer_input_ref.nativeElement.value == ''
-      ) {
-        
-
+    } 
+    else 
+    {
+      if (this.custom_question_input_ref.nativeElement.value == '' || this.custom_answer_input_ref.nativeElement.value == '') 
+      {
         this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
 
-      } else {
-        for (let i = 0; i < this.custom_input_array1.length; i++) {
+      } 
+      else 
+      {
+        this.some_changes_done=1;
+        
+        for (let i = 0; i < this.custom_input_array1.length; i++) 
+        {
           this.used_token_map.set(this.custom_input_array1[i], 1);
         }
-        for (let i = 0; i < this.custom_input_array2.length; i++) {
+
+        for (let i = 0; i < this.custom_input_array2.length; i++) 
+        {
           this.used_token_map.set(this.custom_input_array2[i], 1);
         }
 
         // this.question_entity_indexs.push(this.custom_input_array1);
         // this.question_entity_strings.push(this.custom_question_input_ref.nativeElement.value);
         
-        this.question_entity_indexs.unshift(this.custom_input_array1);
+        this.question_entity_ids.unshift(this.custom_input_array1);
         this.question_entity_strings.unshift(this.custom_question_input_ref.nativeElement.value);
 
         // this.answer_entity_indexs.push(this.custom_input_array2);
         // this.answer_entity_strings.push(this.custom_answer_input_ref.nativeElement.value);
 
-        this.answer_entity_indexs.unshift(this.custom_input_array2);
+        this.answer_entity_ids.unshift(this.custom_input_array2);
         this.answer_entity_strings.unshift(this.custom_answer_input_ref.nativeElement.value);
         
 
@@ -569,12 +752,14 @@ export class EditingPageComponent implements AfterViewInit {
       }
     }
   }
-  clear_custom_input() {
-    if (
-      this.custom_input_type == 'Header' ||
-      this.custom_input_type == 'Other'
-    ) {
-      for (let i = 0; i < this.custom_input_array1.length; i++) {
+
+
+  clear_custom_input() 
+  {
+    if (this.custom_input_type == 'Header' ||this.custom_input_type == 'Other') 
+    {
+      for (let i = 0; i < this.custom_input_array1.length; i++)
+      {
         this.used_token_map.delete(this.custom_input_array1[i]);
       }
 
@@ -582,11 +767,16 @@ export class EditingPageComponent implements AfterViewInit {
 
       this.custom_header_input_ref.nativeElement.value = '';
       this.custom_other_input_ref.nativeElement.value = '';
-    } else {
-      for (let i = 0; i < this.custom_input_array1.length; i++) {
+    } 
+    else
+    {
+      for (let i = 0; i < this.custom_input_array1.length; i++)
+      {
         this.used_token_map.delete(this.custom_input_array1[i]);
       }
-      for (let i = 0; i < this.custom_input_array2.length; i++) {
+      
+      for (let i = 0; i < this.custom_input_array2.length; i++)
+      {
         this.used_token_map.delete(this.custom_input_array2[i]);
       }
       this.custom_input_array1 = [];
@@ -596,20 +786,23 @@ export class EditingPageComponent implements AfterViewInit {
       this.custom_answer_input_ref.nativeElement.value = '';
     }
   }
-  clear_custom_input_cell() {
-    if (
-      this.selected_input_type == 'ch' ||
-      this.selected_input_type == 'co' ||
-      this.selected_input_type == 'cq'
-    ) {
-      for (let i = 0; i < this.custom_input_array1.length; i++) {
+  
+  clear_custom_input_cell() 
+  {
+    if (this.selected_input_type == 'ch' ||this.selected_input_type == 'co' ||this.selected_input_type == 'cq')
+    {
+      for (let i = 0; i < this.custom_input_array1.length; i++) 
+      {
         this.used_token_map.delete(this.custom_input_array1[i]);
       }
 
       this.custom_input_array1 = [];
       this.selected_input_ref.value = '';
-    } else {
-      for (let i = 0; i < this.custom_input_array2.length; i++) {
+    } 
+    else
+    {
+      for (let i = 0; i < this.custom_input_array2.length; i++) 
+      {
         this.used_token_map.delete(this.custom_input_array2[i]);
       }
 
@@ -617,104 +810,104 @@ export class EditingPageComponent implements AfterViewInit {
       this.selected_input_ref.value = '';
     }
   }
-  clear_entity_cell() {
-    if (this.selected_input_type == 'q') {
-      for (
-        let i = 0;
-        i < this.question_entity_indexs[this.selected_input_index].length;
-        i++
-      ) {
-        this.used_token_map.delete(
-          this.question_entity_indexs[this.selected_input_index][i]
-        );
-      }
-      this.question_entity_strings[this.selected_input_index] = '';
-      this.question_entity_indexs[this.selected_input_index] = [];
-    } else if (this.selected_input_type == 'a') {
-      for (
-        let j = 0;
-        j < this.answer_entity_indexs[this.selected_input_index].length;
-        j++
-      ) {
-        this.used_token_map.delete(
-          this.answer_entity_indexs[this.selected_input_index][j]
-        );
-      }
-      this.answer_entity_strings[this.selected_input_index] = '';
-      this.answer_entity_indexs[this.selected_input_index] = [];
-    } else if (this.selected_input_type == 'h') {
-      for (
-        let j = 0;
-        j < this.header_entity_indexs[this.selected_input_index].length;
-        j++
-      ) {
-        this.used_token_map.delete(
-          this.header_entity_indexs[this.selected_input_index][j]
-        );
-      }
-      this.header_entity_strings[this.selected_input_index] = '';
-      this.header_entity_indexs[this.selected_input_index] = [];
-    } else if (this.selected_input_type == 'o') {
-      for (
-        let j = 0;
-        j < this.other_entity_indexs[this.selected_input_index].length;
-        j++
-      ) {
-        this.used_token_map.delete(
-          this.other_entity_indexs[this.selected_input_index][j]
-        );
-      }
-      this.other_entity_strings[this.selected_input_index] = '';
-      this.other_entity_indexs[this.selected_input_index] = [];
-    }
-  }
-  clear_selected_input_ref() {
+
+
+  clear_selected_input_ref()
+  {
     this.selected_input_ref = undefined;
     this.selected_input_type = '';
     this.selected_input_index = -1;
   }
-  delete_entity(type: string, index: number) {
-    //if any entity is getting pointed in image
+
+  delete_entity(type:string,index:number)
+  {
+    this.some_changes_done = 1;
+
+    // if any entity is getting pointed in image
     this.display_entity_rect_ref.nativeElement.style.x = 0;
     this.display_entity_rect_ref.nativeElement.style.y = 0;
 
     this.display_entity_rect_ref.nativeElement.style.height = 0;
     this.display_entity_rect_ref.nativeElement.style.width = 0;
 
-    if(this.entity_connector_line!=undefined)
+    if (this.entity_connector_line != undefined) 
     {
       this.entity_connector_line.remove();
-      this.entity_connector_line=undefined;
+      this.entity_connector_line = undefined;
     }
 
-    if (type == 'q') {
-      for (let i = 0; i < this.question_entity_indexs[index].length; i++) {
-        this.used_token_map.delete(this.question_entity_indexs[index][i]);
+    if (type == 'q') 
+    {
+      console.log(this.question_entity_ids[index]);
+      console.log(this.answer_entity_ids[index]);
+      
+      
+      for (let i = 0; i < this.question_entity_ids[index].length; i++)
+      {
+        this.used_token_map.delete(this.question_entity_ids[index][i]);
       }
-      for (let j = 0; j < this.answer_entity_indexs[index].length; j++) {
-        this.used_token_map.delete(this.answer_entity_indexs[index][j]);
+      
+      for (let j = 0; j < this.answer_entity_ids[index].length; j++) 
+      {
+        this.used_token_map.delete(this.answer_entity_ids[index][j]);
       }
+
       this.question_entity_strings.splice(index, 1);
-      this.question_entity_indexs.splice(index, 1);
+      this.question_entity_ids.splice(index, 1);
       this.answer_entity_strings.splice(index, 1);
-      this.answer_entity_indexs.splice(index, 1);
-    } else if (type == 'h') {
-      for (let i = 0; i < this.header_entity_indexs[index].length; i++) {
-        this.used_token_map.delete(this.header_entity_indexs[index][i]);
+      this.answer_entity_ids.splice(index, 1);
+    } 
+    else if (type == 'h') 
+    {
+      for (let i = 0; i < this.header_entity_ids[index].length; i++) 
+      {
+        this.used_token_map.delete(this.header_entity_ids[index][i]);
       }
+
       this.header_entity_strings.splice(index, 1);
-      this.header_entity_indexs.splice(index, 1);
-    } else if (type == 'o') {
-      for (let i = 0; i < this.other_entity_indexs[index].length; i++) {
-        this.used_token_map.delete(this.other_entity_indexs[index][i]);
+      this.header_entity_ids.splice(index, 1);
+    } 
+    else if (type == 'o')
+    {
+      for (let i = 0; i < this.other_entity_ids[index].length; i++) 
+      {
+        this.used_token_map.delete(this.other_entity_ids[index][i]);
       }
       this.other_entity_strings.splice(index, 1);
-      this.other_entity_indexs.splice(index, 1);
+      this.other_entity_ids.splice(index, 1);
     }
   }
 
   save_all_data(condition: number) 
   {
+    if (this.question_entity_strings.find((element) => element == '') !=undefined ||
+    this.answer_entity_strings.find((element) => element == '') != undefined) 
+    {
+      this.toast.error({
+        detail: 'ERROR',
+        summary: 'The data is not corrected properly',
+        duration: 3000,
+      });
+      return;
+    } 
+    else if (this.some_changes_done == 0)
+    {
+      this.toast.error({
+        detail: 'ERROR',
+        summary: "You haven't made any change in data",
+        duration: 3000,
+      });
+      return;
+    } 
+    else 
+    {
+      this.toast.success({
+        detail: 'SUCCESS',
+        summary: "Your data is saved successful",
+        duration: 3000,
+      });
+    }
+
     let result: any = [];
     let a, b, c, d;
     let t: any[] = [];
@@ -726,23 +919,23 @@ export class EditingPageComponent implements AfterViewInit {
       c = -1;
       d = -1;
       t = [];
-      for (let j = 0; j < this.question_entity_indexs[i].length; j++) 
+      for (let j = 0; j < this.question_entity_ids[i].length; j++) 
       {
-        if (a > this.json_input[this.question_entity_indexs[i][j]].box[0])
-          a = this.json_input[this.question_entity_indexs[i][j]].box[0];
+        if (a > this.token_cord_for_image[this.question_entity_ids[i][j]].box[0])
+          a = this.token_cord_for_image[this.question_entity_ids[i][j]].box[0];
 
-        if (b > this.json_input[this.question_entity_indexs[i][j]].box[1])
-          b = this.json_input[this.question_entity_indexs[i][j]].box[1];
+        if (b > this.token_cord_for_image[this.question_entity_ids[i][j]].box[1])
+          b = this.token_cord_for_image[this.question_entity_ids[i][j]].box[1];
 
-        if (c < this.json_input[this.question_entity_indexs[i][j]].box[2])
-          c = this.json_input[this.question_entity_indexs[i][j]].box[2];
+        if (c < this.token_cord_for_image[this.question_entity_ids[i][j]].box[2])
+          c = this.token_cord_for_image[this.question_entity_ids[i][j]].box[2];
 
-        if (d < this.json_input[this.question_entity_indexs[i][j]].box[3])
-          d = this.json_input[this.question_entity_indexs[i][j]].box[3];
+        if (d < this.token_cord_for_image[this.question_entity_ids[i][j]].box[3])
+          d = this.token_cord_for_image[this.question_entity_ids[i][j]].box[3];
 
         t.push({
-          box: this.json_input[this.question_entity_indexs[i][j]].box,
-          text: this.json_input[this.question_entity_indexs[i][j]].text,
+          box: this.token_cord_for_image[this.question_entity_ids[i][j]].box,
+          text: this.token_cord_for_image[this.question_entity_ids[i][j]].text,
         });
       }
       result.push({
@@ -759,22 +952,22 @@ export class EditingPageComponent implements AfterViewInit {
       c = -1;
       d = -1;
       t = [];
-      for (let j = 0; j < this.answer_entity_indexs[i].length; j++) {
-        if (a > this.json_input[this.answer_entity_indexs[i][j]].box[0])
-          a = this.json_input[this.answer_entity_indexs[i][j]].box[0];
+      for (let j = 0; j < this.answer_entity_ids[i].length; j++) {
+        if (a > this.token_cord_for_image[this.answer_entity_ids[i][j]].box[0])
+          a = this.token_cord_for_image[this.answer_entity_ids[i][j]].box[0];
 
-        if (b > this.json_input[this.answer_entity_indexs[i][j]].box[1])
-          b = this.json_input[this.answer_entity_indexs[i][j]].box[1];
+        if (b > this.token_cord_for_image[this.answer_entity_ids[i][j]].box[1])
+          b = this.token_cord_for_image[this.answer_entity_ids[i][j]].box[1];
 
-        if (c < this.json_input[this.answer_entity_indexs[i][j]].box[2])
-          c = this.json_input[this.answer_entity_indexs[i][j]].box[2];
+        if (c < this.token_cord_for_image[this.answer_entity_ids[i][j]].box[2])
+          c = this.token_cord_for_image[this.answer_entity_ids[i][j]].box[2];
 
-        if (d < this.json_input[this.answer_entity_indexs[i][j]].box[3])
-          d = this.json_input[this.answer_entity_indexs[i][j]].box[3];
+        if (d < this.token_cord_for_image[this.answer_entity_ids[i][j]].box[3])
+          d = this.token_cord_for_image[this.answer_entity_ids[i][j]].box[3];
 
         t.push({
-          box: this.json_input[this.answer_entity_indexs[i][j]].box,
-          text: this.json_input[this.answer_entity_indexs[i][j]].text,
+          box: this.token_cord_for_image[this.answer_entity_ids[i][j]].box,
+          text: this.token_cord_for_image[this.answer_entity_ids[i][j]].text,
         });
       }
       result.push({
@@ -787,28 +980,30 @@ export class EditingPageComponent implements AfterViewInit {
       });
     }
 
-    for (let i = 0; i < this.header_entity_strings.length; i++) {
+    for (let i = 0; i < this.header_entity_strings.length; i++) 
+    {
       a = 99999;
       b = 99999;
       c = -1;
       d = -1;
       t = [];
-      for (let j = 0; j < this.header_entity_indexs[i].length; j++) {
-        if (a > this.json_input[this.header_entity_indexs[i][j]].box[0])
-          a = this.json_input[this.header_entity_indexs[i][j]].box[0];
+      for (let j = 0; j < this.header_entity_ids[i].length; j++)
+      {
+        if (a > this.token_cord_for_image[this.header_entity_ids[i][j]].box[0])
+          a = this.token_cord_for_image[this.header_entity_ids[i][j]].box[0];
 
-        if (b > this.json_input[this.header_entity_indexs[i][j]].box[1])
-          b = this.json_input[this.header_entity_indexs[i][j]].box[1];
+        if (b > this.token_cord_for_image[this.header_entity_ids[i][j]].box[1])
+          b = this.token_cord_for_image[this.header_entity_ids[i][j]].box[1];
 
-        if (c < this.json_input[this.header_entity_indexs[i][j]].box[2])
-          c = this.json_input[this.header_entity_indexs[i][j]].box[2];
+        if (c < this.token_cord_for_image[this.header_entity_ids[i][j]].box[2])
+          c = this.token_cord_for_image[this.header_entity_ids[i][j]].box[2];
 
-        if (d < this.json_input[this.header_entity_indexs[i][j]].box[3])
-          d = this.json_input[this.header_entity_indexs[i][j]].box[3];
+        if (d < this.token_cord_for_image[this.header_entity_ids[i][j]].box[3])
+          d = this.token_cord_for_image[this.header_entity_ids[i][j]].box[3];
 
         t.push({
-          box: this.json_input[this.header_entity_indexs[i][j]].box,
-          text: this.json_input[this.header_entity_indexs[i][j]].text,
+          box: this.token_cord_for_image[this.header_entity_ids[i][j]].box,
+          text: this.token_cord_for_image[this.header_entity_ids[i][j]].text,
         });
       }
       result.push({
@@ -821,28 +1016,29 @@ export class EditingPageComponent implements AfterViewInit {
       });
     }
 
-    for (let i = 0; i < this.other_entity_strings.length; i++) {
+    for (let i = 0; i < this.other_entity_strings.length; i++) 
+    {
       a = 99999;
       b = 99999;
       c = -1;
       d = -1;
       t = [];
-      for (let j = 0; j < this.other_entity_indexs[i].length; j++) {
-        if (a > this.json_input[this.other_entity_indexs[i][j]].box[0])
-          a = this.json_input[this.other_entity_indexs[i][j]].box[0];
+      for (let j = 0; j < this.other_entity_ids[i].length; j++) {
+        if (a > this.token_cord_for_image[this.other_entity_ids[i][j]].box[0])
+          a = this.token_cord_for_image[this.other_entity_ids[i][j]].box[0];
 
-        if (b > this.json_input[this.other_entity_indexs[i][j]].box[1])
-          b = this.json_input[this.other_entity_indexs[i][j]].box[1];
+        if (b > this.token_cord_for_image[this.other_entity_ids[i][j]].box[1])
+          b = this.token_cord_for_image[this.other_entity_ids[i][j]].box[1];
 
-        if (c < this.json_input[this.other_entity_indexs[i][j]].box[2])
-          c = this.json_input[this.other_entity_indexs[i][j]].box[2];
+        if (c < this.token_cord_for_image[this.other_entity_ids[i][j]].box[2])
+          c = this.token_cord_for_image[this.other_entity_ids[i][j]].box[2];
 
-        if (d < this.json_input[this.other_entity_indexs[i][j]].box[3])
-          d = this.json_input[this.other_entity_indexs[i][j]].box[3];
+        if (d < this.token_cord_for_image[this.other_entity_ids[i][j]].box[3])
+          d = this.token_cord_for_image[this.other_entity_ids[i][j]].box[3];
 
         t.push({
-          box: this.json_input[this.other_entity_indexs[i][j]].box,
-          text: this.json_input[this.other_entity_indexs[i][j]].text,
+          box: this.token_cord_for_image[this.other_entity_ids[i][j]].box,
+          text: this.token_cord_for_image[this.other_entity_ids[i][j]].text,
         });
       }
       result.push({
@@ -856,7 +1052,8 @@ export class EditingPageComponent implements AfterViewInit {
     }
     //result contains updated kvpdata
 
-    let final = {
+    let final = 
+    {
       _id: this.api_result._id,
       imgid: this.api_result.imgid,
       documentId: this.api_result.documentId,
@@ -870,26 +1067,21 @@ export class EditingPageComponent implements AfterViewInit {
       correctedBy: '',
       correctedOn: '',
     };
-    this.apiData.update_page_data(final).subscribe((data) => {
+    
+    this.apiData.update_page_data(final).subscribe((data) => 
+    {
       console.warn(data);
     });
 
-    if (condition == 0) {
+    if (condition == 0) 
+    {
       this.exit();
     } 
     else
     {
-      this.doc_id_index++;
-      // if (this.doc_id_index >= this.alldoc.length)
-      // {
-      //   alert('This is the last document of the batch');
-      // } 
-      // else
-      // {
-        window.sessionStorage.setItem('global_doc_id',this.doc_id_index);
-        // console.log(window.sessionStorage.getItem('global_doc_id'));
-        window.location.reload();
-      // }
+      this.doc_id++;
+      window.sessionStorage.setItem('global_doc_id',this.doc_id);
+      window.location.reload();
     }
   }
 
@@ -904,135 +1096,91 @@ export class EditingPageComponent implements AfterViewInit {
     this.router.navigateByUrl('/batches');
   }
 
-  entity_click(type: string, index: number,entity_ref:any)
+
+  entity_click(type: string, index: number, entity_ref: any)
   {
     var x = 99999,
       y = 99999,
       x2 = -1,
       y2 = -1;
-    if (type == 'q') {
-      for (let i = 0; i < this.question_entity_indexs[index].length; i++) {
-        if (
-          x >
-          this.coordinate_array[this.question_entity_indexs[index][i]].box[0]
-        )
-          x =
-            this.coordinate_array[this.question_entity_indexs[index][i]].box[0];
-
-        if (
-          y >
-          this.coordinate_array[this.question_entity_indexs[index][i]].box[1]
-        )
-          y =
-            this.coordinate_array[this.question_entity_indexs[index][0]].box[1];
-
-        if (
-          x2 <
-          this.coordinate_array[this.question_entity_indexs[index][i]].box[2]
-        )
-          x2 =
-            this.coordinate_array[this.question_entity_indexs[index][i]].box[2];
-
-        if (
-          y2 <
-          this.coordinate_array[this.question_entity_indexs[index][i]].box[3]
-        )
-          y2 =
-            this.coordinate_array[this.question_entity_indexs[index][i]].box[3];
-      }
-    } else if (type == 'a') {
-      for (let i = 0; i < this.answer_entity_indexs[index].length; i++) {
-        if (
-          x > this.coordinate_array[this.answer_entity_indexs[index][i]].box[0]
-        )
-          x = this.coordinate_array[this.answer_entity_indexs[index][i]].box[0];
-
-        if (
-          y > this.coordinate_array[this.answer_entity_indexs[index][i]].box[1]
-        )
-          y = this.coordinate_array[this.answer_entity_indexs[index][0]].box[1];
-
-        if (
-          x2 < this.coordinate_array[this.answer_entity_indexs[index][i]].box[2]
-        )
-          x2 =
-            this.coordinate_array[this.answer_entity_indexs[index][i]].box[2];
-
-        if (
-          y2 < this.coordinate_array[this.answer_entity_indexs[index][i]].box[3]
-        )
-          y2 =
-            this.coordinate_array[this.answer_entity_indexs[index][i]].box[3];
-      }
-    } else if (type == 'h') {
-      for (let i = 0; i < this.header_entity_indexs[index].length; i++) {
-        if (
-          x > this.coordinate_array[this.header_entity_indexs[index][i]].box[0]
-        )
-          x = this.coordinate_array[this.header_entity_indexs[index][i]].box[0];
-
-        if (
-          y > this.coordinate_array[this.header_entity_indexs[index][i]].box[1]
-        )
-          y = this.coordinate_array[this.header_entity_indexs[index][0]].box[1];
-
-        if (
-          x2 < this.coordinate_array[this.header_entity_indexs[index][i]].box[2]
-        )
-          x2 =
-            this.coordinate_array[this.header_entity_indexs[index][i]].box[2];
-
-        if (
-          y2 < this.coordinate_array[this.header_entity_indexs[index][i]].box[3]
-        )
-          y2 =
-            this.coordinate_array[this.header_entity_indexs[index][i]].box[3];
-      }
-    } else {
-      for (let i = 0; i < this.other_entity_indexs[index].length; i++) {
-        if (
-          x > this.coordinate_array[this.other_entity_indexs[index][i]].box[0]
-        )
-          x = this.coordinate_array[this.other_entity_indexs[index][i]].box[0];
-
-        if (
-          y > this.coordinate_array[this.other_entity_indexs[index][i]].box[1]
-        )
-          y = this.coordinate_array[this.other_entity_indexs[index][0]].box[1];
-
-        if (
-          x2 < this.coordinate_array[this.other_entity_indexs[index][i]].box[2]
-        )
-          x2 = this.coordinate_array[this.other_entity_indexs[index][i]].box[2];
-
-        if (
-          y2 < this.coordinate_array[this.other_entity_indexs[index][i]].box[3]
-        )
-          y2 = this.coordinate_array[this.other_entity_indexs[index][i]].box[3];
-      }
-    }
-   if(x!=99999)
-   {
-    this.display_entity_rect_ref.nativeElement.style.x = x;
-    this.display_entity_rect_ref.nativeElement.style.y = y;
-
-    this.display_entity_rect_ref.nativeElement.style.height = y2 - y;
-    this.display_entity_rect_ref.nativeElement.style.width = x2 - x;
-
-    //connecting-line stuff
-
-    if(this.entity_connector_line!=undefined)
+    if (type == 'q') 
     {
-      this.entity_connector_line.remove();
-      this.entity_connector_line=undefined;
+      for (let i = 0; i < this.question_entity_ids[index].length; i++) 
+      {
+        if(x>this.token_cord_for_image[this.question_entity_ids[index][i]].box[0])
+          x=this.token_cord_for_image[this.question_entity_ids[index][i]].box[0];
+        if(y>this.token_cord_for_image[this.question_entity_ids[index][i]].box[1])
+          y=this.token_cord_for_image[this.question_entity_ids[index][0]].box[1];
+        if(x2<this.token_cord_for_image[this.question_entity_ids[index][i]].box[2])
+          x2 =this.token_cord_for_image[this.question_entity_ids[index][i]].box[2];
+        if(y2 <this.token_cord_for_image[this.question_entity_ids[index][i]].box[3])
+          y2 =this.token_cord_for_image[this.question_entity_ids[index][i]].box[3];
+      }
     }
+    else if (type == 'a') 
+    {
+      for (let i = 0; i < this.answer_entity_ids[index].length; i++) 
+      {
+        if(x>this.token_cord_for_image[this.answer_entity_ids[index][i]].box[0])
+          x = this.token_cord_for_image[this.answer_entity_ids[index][i]].box[0];
+        if(y>this.token_cord_for_image[this.answer_entity_ids[index][i]].box[1])
+          y=this.token_cord_for_image[this.answer_entity_ids[index][0]].box[1];
+        if(x2<this.token_cord_for_image[this.answer_entity_ids[index][i]].box[2])
+          x2 =this.token_cord_for_image[this.answer_entity_ids[index][i]].box[2];
+        if(y2<this.token_cord_for_image[this.answer_entity_ids[index][i]].box[3])
+          y2=this.token_cord_for_image[this.answer_entity_ids[index][i]].box[3];
+      }
+    }
+    else if (type == 'h') 
+    {
+      for (let i = 0; i < this.header_entity_ids[index].length; i++)
+      {
+        if (x > this.token_cord_for_image[this.header_entity_ids[index][i]].box[0])
+          x = this.token_cord_for_image[this.header_entity_ids[index][i]].box[0];
+        if (y > this.token_cord_for_image[this.header_entity_ids[index][i]].box[1])
+          y = this.token_cord_for_image[this.header_entity_ids[index][0]].box[1];
+        if (x2 < this.token_cord_for_image[this.header_entity_ids[index][i]].box[2])
+          x2 = this.token_cord_for_image[this.header_entity_ids[index][i]].box[2];
+        if(y2 < this.token_cord_for_image[this.header_entity_ids[index][i]].box[3])
+          y2 =this.token_cord_for_image[this.header_entity_ids[index][i]].box[3];
+      }
+    }
+    else
+    {
+      for (let i = 0; i < this.other_entity_ids[index].length; i++) 
+      {
+        if (x > this.token_cord_for_image[this.other_entity_ids[index][i]].box[0])
+          x = this.token_cord_for_image[this.other_entity_ids[index][i]].box[0];
+        if (y > this.token_cord_for_image[this.other_entity_ids[index][i]].box[1])
+          y = this.token_cord_for_image[this.other_entity_ids[index][0]].box[1];
+        if (x2 < this.token_cord_for_image[this.other_entity_ids[index][i]].box[2])
+          x2 = this.token_cord_for_image[this.other_entity_ids[index][i]].box[2];
+        if (y2 < this.token_cord_for_image[this.other_entity_ids[index][i]].box[3])
+          y2 = this.token_cord_for_image[this.other_entity_ids[index][i]].box[3];
+      }
+    }
+    if (x != 99999) 
+    {
+      this.display_entity_rect_ref.nativeElement.style.x = x;
+      this.display_entity_rect_ref.nativeElement.style.y = y;
 
-    this.entity_connector_line=new LeaderLine(entity_ref,this.display_entity_rect_ref.nativeElement);
-    this.entity_connector_line.size=2.75;
-    this.entity_connector_line.dash=true;
-    this.entity_connector_line.path="grid";
-    this.entity_connector_line.color="#39a87a"; 
-   }   
+      this.display_entity_rect_ref.nativeElement.style.height = y2 - y;
+      this.display_entity_rect_ref.nativeElement.style.width = x2 - x;
+
+      //connecting-line stuff
+
+      if (this.entity_connector_line != undefined) 
+      {
+        this.entity_connector_line.remove();
+        this.entity_connector_line = undefined;
+      }
+
+      this.entity_connector_line = new LeaderLine(entity_ref,this.display_entity_rect_ref.nativeElement);
+      this.entity_connector_line.size = 2.75;
+      this.entity_connector_line.dash = true;
+      this.entity_connector_line.path = 'grid';
+      this.entity_connector_line.color = '#39a87a';
+    }
   }
 
   entity_line_adjuster()
@@ -1040,6 +1188,38 @@ export class EditingPageComponent implements AfterViewInit {
     if(this.entity_connector_line!=undefined)
     {
       this.entity_connector_line.position();
+    }
+  }
+
+  display_category_label(type:string)
+  {
+    if(type=='q')
+    {
+      if(this.display_question==0) 
+       this.display_question=1;
+      else
+      this.display_question=0; 
+    }
+    else if(type=='a')
+    {
+      if(this.display_answer==0) 
+       this.display_answer=1;
+      else
+      this.display_answer=0;
+    }
+    else if(type=='h')
+    {
+      if(this.display_header==0) 
+       this.display_header=1;
+      else
+      this.display_header=0;
+    }
+    else
+    {
+      if(this.display_other==0) 
+       this.display_other=1;
+      else
+      this.display_other=0;
     }
   }
 }
