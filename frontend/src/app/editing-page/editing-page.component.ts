@@ -1086,18 +1086,18 @@ export class EditingPageComponent implements AfterViewInit
    // ################ update api call format ###### //
     let final = 
       {
-        "_id": "63ac100db40131d4e0108719",
+        "_id": "63ad56c3248f8aeea06f3b21",
         "imgid":"1670858685002",
         "documentId": "2",
         "batchName":"bbbbbbbbbbb",
         "document_name":"aaaaaaaaaaaaaaa",
-        "isCorrected": "bbbbbbbbbbbb",
+        "isCorrected": "False",
         "imageStatus": "zzzzzzzzzzz",
         "imagePath": "rock on",
         "Type":"checkboxes",
         "Data": {
             "checkboxData": {},
-            "ocrData":{},
+            "ocrData":result,
             "kvpData":{}
         },
         "correctedData": {

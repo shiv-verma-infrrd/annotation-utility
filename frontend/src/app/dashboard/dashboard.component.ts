@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
   get_batch_id(id:any){
    this.apiData.batchData = id;
    window.sessionStorage.setItem('global_batch_id',id)
-   console.log( "this is batch data " + this.apiData.batchData);
+  //  console.log( "this is batch data " + this.apiData.batchData);
    
   }
 
@@ -59,11 +59,11 @@ export class DashboardComponent implements OnInit {
   }
 
   download(batchId:any,batch_name:any){
-    console.log("downloading...");
+    // console.log("downloading...");
     
     this.apiData.download_batch(batchId,batch_name).subscribe((data)=>{ 
       
-      console.log("data");
+      // console.log("data");
       
       console.log(data)
       let blob:Blob = data.body as Blob;
@@ -90,7 +90,7 @@ export class DashboardComponent implements OnInit {
 
   delete_batch(id:any){
 
-    console.log("batchid :"+id)
+    // console.log("batchid :"+id)
     this.apiData.delete_batch_id(id).subscribe((data)=>{ 
              console.log(data)
     })

@@ -4,7 +4,9 @@ import os
 import shutil
 from PIL import Image
 from flask import request
-
+import zipfile
+import uuid
+from io import BytesIO,StringIO
 
 def get_user(user_id, users):
     for user in users.find():
@@ -46,22 +48,6 @@ def image_to_jpg(batch_id, zip_file_name):
             os.remove(os.path.join(directory, filename))
 
 
-def extract_file(file_data, zp, batch_id, type):
-
-    validEXt = ['JPG', 'PNG', 'JSON']
-
-    for files in file_data:
-        print(files)
-        ext = files.rsplit(".", 1)[-1]
-        print(ext)
-        if ext.upper() in validEXt:
-            if type == 'form':
-                zp.extract(files, f'../assets/{batch_id}')
-            elif type == 'checkbox':
-                zp.extract(files, f'../assets/{batch_id}/{batch_id}')
-            # print(files)
-
-
 def rename_file(batch_id):
     directory = f"../assets/{batch_id}"
     for file1 in os.listdir(directory):
@@ -78,13 +64,20 @@ def get_last_file():
     return last_file_id
 
 
-def remove_filesystem_folder(path):
-    shutil.rmtree(path)
+def remove_filesystem_folder(batch_id):
+    
+    checkbox_dir = f"../assets/{batch_id}/checkboxes"
+    file_dir = f"../assets/{batch_id}/annotations"
+    if os.path.exists(checkbox_dir):
+       shutil.rmtree(checkbox_dir)
+    shutil.rmtree(file_dir)
 
 
 def get_checkbox_data(path, file_name):
     file_name = file_name.split('.')[0]+'_checkboxes.json'
-    path = '/'.join(path.split('/')[:-1]+['checkbox_data'])
+    # print(file_name)
+    path = '/'.join(path.split('/')[:-1]+['checkboxes'])
+    
     f = os.path.join(path, file_name)
     if os.path.isfile(f):
         with open(f) as file_1:
@@ -92,38 +85,30 @@ def get_checkbox_data(path, file_name):
     return file_data
 
 
-def push_json_data_in_db(batch_id, doc_type, db):
-    curr_dt = datetime.now()
-    docId = 0
-    imgId = int(round(curr_dt.timestamp())*1000)
-
-    fld = ""
-    if doc_type == 'checkboxes':
-        fld = "ocrs"
-    else:
-        fld = "annotations"
-
-    file_dir = f"../assets/{batch_id}/{batch_id}/{fld}"
+def push_json_data_in_db(batch_id, db):
+    doc_cnt = 0
+    checkbox_dir = f"../assets/{batch_id}/checkboxes"
+    file_dir = f"../assets/{batch_id}/annotations"
+    doc_type = False
+    if os.path.exists(checkbox_dir):
+         doc_type = True
     for filename in os.listdir(file_dir):
         # print('fname: ',filename)
         f = os.path.join(file_dir, filename)
         if os.path.isfile(f):
             with open(f) as file_1:
                 file_data = json.load(file_1)
-        #  print(file_data)
-        #  print(os.path.splitext(filename)[0])
-                docId = docId + 1
-                imgId = imgId + 1
+                # print(file_data)
+                  #  print(os.path.splitext(filename)[0])
                 data = {
-                    "imgid": imgId,
-                    "batchId": batch_id,
-                    "documentId": docId,
+                    "imgid": str(uuid.uuid4()),
+                    "batchId": str(batch_id),
+                    "documentId": str(uuid.uuid4()),
                     "batchName": request.form['batch_name'],
                     "document_name": str(os.path.splitext(filename)[0]),
                     "isCorrected": "False",
                     "imageStatus": "Not Corrected",
                     "imagePath": f"/{batch_id}/{os.path.splitext(filename)[0]}",
-                    "Type": str(doc_type),
                     "correctedData": {
                         "checkboxData": {},
                         "ocrData": {},
@@ -133,31 +118,33 @@ def push_json_data_in_db(batch_id, doc_type, db):
                     "correctedOn": ""
 
                 }
-                print(fld)
-                if fld == 'ocrs':
+                
+                if doc_type:
                     checkbox_data = get_checkbox_data(file_dir, filename)
                     image_data = {
                         "checkboxData": checkbox_data,
                         "ocrData": file_data,
                         "kvpData": {},
                     }
-                elif fld == 'annotations':
+                    data['type'] = 'checkboxes'
+                else:
                     image_data = {
                         "checkboxData": {},
                         "ocrData": {},
                         "kvpData": file_data,
                     }
-                print(image_data)
+                    data['type'] = 'fields'
+                # print(image_data)
                 data['Data'] = image_data
+                doc_cnt += 1
                 db.pages.insert_one(data)
 
 
 ##################### Inserting Batches data in Db #######################
     b_data = {
-        "batchId": batch_id,
+        "batchId": str(batch_id),
         "batchName": request.form['batch_name'],
-        "documentCount": docId,
-        "Type": str(doc_type),
+        "documentCount": doc_cnt,
         "isCorrected": "False",
         "allocatedBy": "admin",
         "allocatedTo": request.form['user_id'],
@@ -165,8 +152,12 @@ def push_json_data_in_db(batch_id, doc_type, db):
         "createdOn": "8/12/2022",
         "createdBy": "admin"
     }
+    if doc_type:
+        b_data['type'] = "checkboxes"
+    else:
+        b_data['type'] = "fields"     
     db.batches.insert_one(b_data)
-    
+    # print(b_data)
 
 def transform_data(file_data,checkbox_data):
         
@@ -313,4 +304,88 @@ def retransform_checkbox_data(data):
     # print(result)
     # print("result run")
     return result  
+
+def extract_file(file_data, zp, batch_id, type):
+
+    validEXt = ['JPG', 'PNG', 'JSON']
+
+    for files in file_data:
+        print(files)
+        ext = files.rsplit(".", 1)[-1]
+        print(ext)
+        if ext.upper() in validEXt:
+            if type == 'form':
+                zp.extract(files, f'../assets/{batch_id}')
+            elif type == 'checkbox':
+                zp.extract(files, f'../assets/{batch_id}/{batch_id}')
+            # print(files)
+
         
+def extract_file(my_zip,db,batch_id):
+    
+    
+    up_dir = "../assets"
+    my_dir = os.path.join(up_dir,str(batch_id))
+    checkbox_dir = os.path.join(my_dir,"checkboxes")
+    annotations_dir = os.path.join(my_dir,"annotations")
+    image_dir = my_dir
+    
+    if not os.path.exists(my_dir):
+        os.mkdir(my_dir)
+    
+    
+    
+    with zipfile.ZipFile(my_zip) as zip_file:
+        
+        for member in zip_file.namelist():
+            # print("****kkkkk",uuid.uuid4())
+            filename = os.path.basename(member)
+            if filename.endswith('_checkboxes.json'):
+            #    print(filename)
+               
+               if not os.path.exists(checkbox_dir):
+                    os.mkdir(checkbox_dir)
+              
+                      
+               source = zip_file.open(member)
+               target = open(os.path.join(checkbox_dir, filename), "wb")
+               with source, target:
+                 shutil.copyfileobj(source, target)
+                 
+            if filename.endswith('.json'):
+                 
+                 if not filename.endswith('_checkboxes.json'): 
+                    # print(filename)
+                    
+                    if not os.path.exists(annotations_dir):
+                            os.mkdir(annotations_dir)
+                        
+                    source = zip_file.open(member)
+                    target = open(os.path.join(annotations_dir, filename), "wb")
+                    with source, target:
+                        shutil.copyfileobj(source, target)
+            if filename.endswith('.jpg') or filename.endswith('.png'): 
+                    # print(filename)
+                    
+                    if not os.path.exists(image_dir):
+                            os.mkdir(image_dir)
+                        
+                    source = zip_file.open(member)
+                    target = open(os.path.join(image_dir, filename), "wb")
+                    with source, target:
+                        shutil.copyfileobj(source, target)            
+                 
+            if not filename:
+                continue
+          
+           
+            
+            
+    # for filename in os.listdir(my_dir):
+    #     if filename.endswith('.json'):
+    #         d = os.path.join(my_dir,filename)
+    #         os.remove(d)
+    #     if filename.endswith('.jpg'):
+    #         d = os.path.join(my_dir,filename)
+    #         os.remove(d)    
+                   

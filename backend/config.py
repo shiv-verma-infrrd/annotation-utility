@@ -1,31 +1,29 @@
 class Config(object):
+    
+    ENV = "development"
     DEBUG = False
     TESTING = False
 
-    DB_NAME = "CorrectionUIdb2"
+    DB_NAME = "CorrectionUI"
     HOST = "mongodb+srv://admin:1234@cluster0.p6bfznx.mongodb.net/test"
-    ZIP_FILE_UPLOAD_DIRECTORY = 'uploads/'
-    ZIP_FILE_EXTRACT_DIRECTORY = 'assets/'
-    ALLOWED_EXTENTIONS = '.zip' 
-    FILE_JSON_DIRECTORY = r"assets\annotations"
+    DEBUG=True
+    SECRET_KEY="secret"
+    SESSION_COOKIE_HTTPONLY=True
+    REMEMBER_COOKIE_HTTPONLY=True
+    SESSION_COOKIE_SECURE=True
+    SESSION_COOKIE_SAMESITE="None"
+    ALLOWED_EXTENTIONS = ".zip"
     
 class ProductionConfig(Config):
     pass
 
 class DevelopmentConfig(Config):
      DEBUG = True
-     DB_NAME = "CorrectionUIdb2"
-     ZIP_FILE_UPLOAD_DIRECTORY = 'uploads/'
-     ZIP_FILE_EXTRACT_DIRECTORY = 'assets/'
-     ALLOWED_EXTENTIONS = '.zip' 
-     FILE_JSON_DIRECTORY = r"assets\annotations"
-      
-
+     DB_NAME = "CorrectionUI_Development"
+     ENV = 'development'
+  
 class TestingConfig(Config):
      TESTING = True
-     DB_NAME = "CorrectionUIdb2"
-     ZIP_FILE_UPLOAD_DIRECTORY = 'uploads/'
-     ZIP_FILE_EXTRACT_DIRECTORY = 'assets/'
-     ALLOWED_EXTENTIONS = '.zip' 
-     FILE_JSON_DIRECTORY = r"assets\annotations"
+     DB_NAME = "CorrectionUI_Testing"
+     
          

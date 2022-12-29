@@ -15,10 +15,13 @@ from flask_login import (
 )
 import pymongo
 import utils
+from flask_swagger_ui import get_swaggerui_blueprint
+import uuid
 
 app = Flask(__name__)
-app.config["ENV"] = "development"
-print(app.config["ENV"])
+
+app.config['ENV'] = "development"
+# print(app.config["ENV"])
 
 if app.config['ENV'] == "production":
     app.config.from_object("config.ProductionConfig")
@@ -27,16 +30,6 @@ elif app.config['ENV'] == 'testing':
 else:
     app.config.from_object("config.DevelopmentConfig")
 
-app.config.update(
-    DEBUG=True,
-    SECRET_KEY="secret",
-    SESSION_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,
-    SESSION_COOKIE_SAMESITE="None",
-)
-
-
 try:
     mongo = pymongo.MongoClient(
         host="mongodb+srv://admin:1234@cluster0.p6bfznx.mongodb.net/test",
@@ -44,10 +37,10 @@ try:
         serverSelectionTimeoutMS=100
     )
 
-    print('Connected')
+    # print('Connected')
     db = mongo.CorrectionUIdb2
     users = db.Users
-    print('Connected')
+    # print('Connected')
     mongo.server_info()
 
 except:
@@ -110,7 +103,7 @@ def logout():
 @app.route("/batches/<userId>", methods=["GET"])
 @login_required
 def get_batches(userId):
-    print('Entered batches')
+    # print('Entered batches')
     try:
         data = list(db.batches.find({'allocatedTo': userId}))
         return Response(response=json.dumps(data, default=str),
@@ -134,7 +127,7 @@ def get_batches(userId):
 def get_kvp_data_one(id):
 
     try:
-        data = list(db.pages.find({"batchId": int(id)}, {'Data':0, 'correctedData':0}))
+        data = list(db.pages.find({"batchId": str(id)}, {'Data':0, 'correctedData':0}))
 
         return Response(
             response=json.dumps(data,default=str),
@@ -150,11 +143,12 @@ def get_kvp_data_one(id):
 def get_kvp_data(batchId, docId):
 
     try:
+        
         data = list(db.pages.find(
-            {"documentId": int(docId), "batchId": int(batchId)}))
+            {"documentId": str(docId), "batchId": str(batchId)}))
 
         if str(data[0]["isCorrected"]).lower() == 'false':
-            if data[0]['Type'] == "checkboxes":
+            if data[0]['type'] == "checkboxes":
             
                 form = utils.transform_data(data[0]['Data']['ocrData'],data[0]['Data']['checkboxData'])
                 data[0]['Data']['ocrData'] = form
@@ -172,10 +166,31 @@ def get_kvp_data(batchId, docId):
 @app.route('/<batchId>/<image>', methods=['GET'])
 # @login_required
 def myapp(batchId, image):
-    img_file = f'../assets/{batchId}/{batchId}/images/{image}.jpg'
+    img_file = f'../assets/{batchId}/{image}.jpg'
+    no_img = f'../assets/no-preview.png'
     if os.path.isfile(img_file):
         return send_file(img_file)
-    return "shiv"
+    
+    elif os.path.isfile(img_file.replace('jpg','png')):
+        return send_file(img_file.replace('jpg','png'))
+    
+    elif os.path.isfile(img_file.replace('jpg','jpeg')):
+        return send_file(img_file.replace('jpg','jpeg'))
+    
+    elif os.path.isfile(img_file.replace('jpg','jfif')):
+        return send_file(img_file.replace('jpg','jfif'))
+    
+    elif os.path.isfile(img_file.replace('jpg','pjpeg')):
+        return send_file(img_file.replace('jpg','pjpeg'))
+    
+    elif os.path.isfile(img_file.replace('jpg','pjp')):
+        return send_file(img_file.replace('jpg','pjp'))
+    
+    elif os.path.isfile(img_file.replace('jpg','webp')):
+        return send_file(img_file.replace('jpg','webp'))
+    
+    else:
+        return send_file(no_img)
 
 
 @app.route("/pages", methods=["PUT"])
@@ -187,19 +202,14 @@ def put_ocr_data():
         
         # print(raw_data["Type"])
         if raw_data["Type"] == "checkboxes":
-            data = raw_data['correctedData']['ocrData']
+            data = raw_data['correctedData']['checkboxData']
             transformed_checkbox_data = utils.retransform_checkbox_data(data)   
             raw_data['correctedData']['checkboxData'] = transformed_checkbox_data
         
         db.pages.update_one({"_id": ObjectId(raw_data['_id'])}, {"$set": {
             
-            #  "documentId": raw_data['documentId'],
-            # "document_name": raw_data['document_name'],
-            # "batchName": raw_data['batchName'],
             "isCorrected": raw_data['isCorrected'],
             "imageStatus": raw_data['imageStatus'],
-            #  "imagePath": raw_data['imageStatus'] ,
-            # 'kvpData': raw_data['kvpData'],
             "correctedData": raw_data['correctedData'],
             "correctedBy": raw_data['correctedBy'],
             "correctedOn": raw_data['correctedOn']
@@ -229,13 +239,18 @@ def put_ocr_data():
 def send_zip_file():
     try:
         raw_data = request.json
-        data = list(db.pages.find({"batchId": int(raw_data['batchId'])}))
-
+        data = list(db.pages.find({"batchId": str(raw_data['batchId'])}))
+        name = ""
         for batch in data:
 
-            batch['_id'] = str(batch['_id'])
-            json_object = json.dumps(batch['correctedData'])
-            with open(""+str(batch['documentId'])+".json", "w") as outfile:
+            # batch['_id'] = str(batch['_id'])
+            if batch['type'] == 'checkboxes':
+                name = batch['document_name'] +"_checkboxes"
+                json_object = json.dumps(batch['correctedData']['checkboxData'])
+            elif batch['type'] == 'fields':
+                name = batch['document_name']
+                json_object = json.dumps(batch['correctedData']['kvpdata'])    
+            with open(""+name+".json", "w") as outfile:
                 outfile.write(json_object)
 
         path = os.getcwd()
@@ -280,8 +295,8 @@ def send_zip_file():
 @login_required
 def delete_batches(id):
     try:
-        dbResponse = db.batches.delete_one({"batchId": int(id)})
-        dbResponse2 = db.pages.delete_many({"batchId": int(id)})
+        dbResponse = db.batches.delete_one({"batchId": str(id)})
+        dbResponse2 = db.pages.delete_many({"batchId": str(id)})
         
         path = os.path.join("../assets/", str(id))
         shutil.rmtree(path)
@@ -319,58 +334,13 @@ def upload_zip():
                     mimetype="application/json"
                 )
 
-            batch_id = utils.generate_batch_id(db)
-
-            with ZipFile(zip_file, mode='r') as zp:
-                dirs = list(set([os.path.dirname(x) for x in zp.namelist()]))
-                file_data = zp.namelist()
-
-            #   folder_check = ['annotations','images','checkbox_data','ocr']
-
-            #   for fld in dirs:
-
-            #     fld_name = fld.rsplit('/',1)[-1]
-            #     if fld_name in folder_check:
-            #       print(fld_name," folder present")
-
-                if len(dirs) == 2:
-                    path = os.path.join("../assets/", str(batch_id))
-                    if os.path.exists(path):
-                        utils.remove_filesystem_folder(path)
-                    utils.extract_file(file_data, zp, batch_id, 'form')
-                    utils.rename_file(batch_id)
-                    utils.image_to_jpg(batch_id, zip_file_name)
-
-                    utils.push_json_data_in_db(batch_id, "form", db)
-
-                    path = f"../assets/{batch_id}/{batch_id}/annotations"
-                    utils.remove_filesystem_folder(path)
-
-                elif len(dirs) == 3:
-                    path = os.path.join("../assets/", str(batch_id))
-                    if os.path.exists(path):
-                        utils.remove_filesystem_folder(path)
-                    utils.extract_file(file_data, zp, batch_id, 'checkbox')
-                    utils.rename_file(batch_id)
-                    utils.image_to_jpg(batch_id, zip_file_name)
-                    # print('renamed')
-                    utils.push_json_data_in_db(batch_id, "checkboxes", db)
-
-                    path = f"../assets/{batch_id}/{batch_id}/checkbox_data"
-                    utils.remove_filesystem_folder(path)
-
-                    path = f"../assets/{batch_id}/{batch_id}/ocrs"
-                    utils.remove_filesystem_folder(path)
-
-                else:
-                    print("folder structure is not right")
-                    return Response(
-                        response=json.dumps(
-                            {"Message": "Folder structure not right"}),
-                        status=200,
-                        mimetype="application/json"
-                    )
-
+            batch_id = uuid.uuid4()
+            # print("***id****",batch_id)
+            
+            utils.extract_file(zip_file,db,batch_id)
+            utils.push_json_data_in_db(batch_id, db)
+            utils.remove_filesystem_folder(batch_id)
+            
         return Response(
             response=json.dumps({"Message": "File Uploaded Successfully"}),
             status=200,
