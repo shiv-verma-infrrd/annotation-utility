@@ -136,11 +136,8 @@ def get_kvp_data_one(id):
     try:
         data = list(db.pages.find({"batchId": int(id)}, {'Data':0, 'correctedData':0}))
 
-        for ocrDataKvpUid in data:
-            ocrDataKvpUid['_id'] = str(ocrDataKvpUid["_id"])
-
         return Response(
-            response=json.dumps(data),
+            response=json.dumps(data,default=str),
             status=200,
             mimetype="application/json"
         )
@@ -187,17 +184,26 @@ def put_ocr_data():
 
     try:
         raw_data = request.json
+        
+        # print(raw_data["Type"])
+        if raw_data["Type"] == "checkboxes":
+            data = raw_data['correctedData']['ocrData']
+            transformed_checkbox_data = utils.retransform_checkbox_data(data)   
+            raw_data['correctedData']['checkboxData'] = transformed_checkbox_data
+        
         db.pages.update_one({"_id": ObjectId(raw_data['_id'])}, {"$set": {
+            
             #  "documentId": raw_data['documentId'],
-            "document_name": raw_data['document_name'],
-            "batchName": raw_data['batchName'],
+            # "document_name": raw_data['document_name'],
+            # "batchName": raw_data['batchName'],
             "isCorrected": raw_data['isCorrected'],
             "imageStatus": raw_data['imageStatus'],
             #  "imagePath": raw_data['imageStatus'] ,
-            'kvpData': raw_data['kvpData'],
+            # 'kvpData': raw_data['kvpData'],
             "correctedData": raw_data['correctedData'],
             "correctedBy": raw_data['correctedBy'],
             "correctedOn": raw_data['correctedOn']
+            
         }})
 
         return Response(

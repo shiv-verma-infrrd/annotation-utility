@@ -212,7 +212,8 @@ def transform_data(file_data,checkbox_data):
                             "text" : "checkbox"
                                     }],
                         "linking":[_id+1,_id],
-                        "id" : _id + 1
+                        "id" : _id + 1,
+                        "question_id":"null"
                         }
                     
                     
@@ -223,7 +224,8 @@ def transform_data(file_data,checkbox_data):
                                file_data[checkbox_data['checkboxes'][j]['token_indexes'][-1]][1]['br']['y']],
                         "label":"checkbox_string",
                         "linking":[_id,_id+1],
-                        "id" : _id
+                        "id" : _id,
+                        "question_id":"null"
                            }
                     # print(entity)
                     text = ""
@@ -258,8 +260,57 @@ def transform_data(file_data,checkbox_data):
             
             
                 
-            # print(form)  
+        # print(form[28])
+        # print(form[29])  
              
         return form        
     
+def retransform_checkbox_data(data):
     
+    
+    checkboxes = []
+    questions = []
+    token_ids = []
+    for i in range(len(data)):
+        # print(data[i]['label'])
+        if data[i]['label'] == 'checkbox':
+           
+            
+            d = {
+                    "tl": {
+                        "x": data[i]['box'][0],
+                        "y": data[i]['box'][1]
+                    },
+                    "br": {
+                        "x": data[i]['box'][2],
+                        "y": data[i]['box'][3]
+                    },
+                    "label":  data[i]['check'],
+                    "confidence": 0,
+                    "token_indexes": data[i]['linking'],
+                    "question_id":  data[i]['question_id'],
+                    "id":data[i]['id']
+                }
+            checkboxes.append(d)
+            # print(checkboxes)  
+                    
+        if data[i]['label'] == 'checkbox_question': 
+            
+            token_ids.append(data[i]['id'])
+            
+                
+    q_data ={
+                "id": 0,
+                "token_indexes": token_ids
+               }         
+    questions.append(q_data) 
+    result = {
+            
+             "checkboxes":checkboxes,
+             "questions":questions
+          
+             }  
+    # print(result)
+    # print("result run")
+    return result  
+        

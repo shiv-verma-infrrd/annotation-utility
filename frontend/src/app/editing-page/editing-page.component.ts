@@ -82,7 +82,7 @@ export class EditingPageComponent implements AfterViewInit
     {    
         console.log(data)    
         this.image_src = data[0].imagePath;
-        
+
         if(data[0].Type == 'checkboxes'){
           this.api_result=JSON.parse(JSON.stringify((data[0].Data.ocrData)));
           this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.ocrData))));
@@ -1063,21 +1063,52 @@ export class EditingPageComponent implements AfterViewInit
     }
     //result contains updated kvpdata
 
+    // let final = 
+    // {
+    //   _id: this.api_result._id,
+    //   imgid: this.api_result.imgid,
+    //   documentId: this.api_result.documentId,
+    //   batchName: this.api_result.batchName,
+    //   document_name: this.api_result.document_name,
+    //   isCorrected: 'true',
+    //   Type:"checkboxes",
+    //   imageStatus: this.api_result.imageStatus,
+    //   imagePath: this.api_result.imagePath,
+    //   // kvpData: this.api_result.kvpData,
+    //   correctedData: { 
+    //     checkboxData:[],
+    //     ocrData:result,
+    //     kvpData:[]
+    //    },
+    //   correctedBy: '',
+    //   correctedOn: '',
+    // };
+   // ################ update api call format ###### //
     let final = 
-    {
-      _id: this.api_result._id,
-      imgid: this.api_result.imgid,
-      documentId: this.api_result.documentId,
-      batchName: this.api_result.batchName,
-      document_name: this.api_result.document_name,
-      isCorrected: 'true',
-      imageStatus: this.api_result.imageStatus,
-      imagePath: this.api_result.imagePath,
-      kvpData: this.api_result.kvpData,
-      correctedData: { result },
-      correctedBy: '',
-      correctedOn: '',
-    };
+      {
+        "_id": "63ac100db40131d4e0108719",
+        "imgid":"1670858685002",
+        "documentId": "2",
+        "batchName":"bbbbbbbbbbb",
+        "document_name":"aaaaaaaaaaaaaaa",
+        "isCorrected": "bbbbbbbbbbbb",
+        "imageStatus": "zzzzzzzzzzz",
+        "imagePath": "rock on",
+        "Type":"checkboxes",
+        "Data": {
+            "checkboxData": {},
+            "ocrData":{},
+            "kvpData":{}
+        },
+        "correctedData": {
+            "checkboxData":[],
+            "ocrData":result,
+            "kvpData":"aaaa"
+        },
+        "correctedBy": "",
+        "correctedOn": ""
+    }
+    
     
     this.apiData.update_page_data(final).subscribe((data) => 
     {

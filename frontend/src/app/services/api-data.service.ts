@@ -37,7 +37,7 @@ export class ApiDataService {
     
     const headers = { 'content-type': 'application/json'}
     const body=JSON.stringify(data);
-    return this.http.put(this.URL+'pages',data, {'headers':headers} );
+    return this.http.put(this.URL+'pages',body, {'headers':headers} );
   
   }
 
