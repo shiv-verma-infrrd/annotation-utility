@@ -7,7 +7,7 @@ import { TokenStorageService } from './token-storage.service';
 })
 export class UploadFileService {
 
-  baseApiUrl = "http://127.0.0.1:80/"
+  baseApiUrl = "http://127.0.0.1:5000/"
   name:any;
   constructor(private http:HttpClient, private tokenStorageService: TokenStorageService) { }
 

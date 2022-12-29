@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
         
         this.isLoginFailed = false;
         this.loginService.isLoggedIn = true;
+        window.sessionStorage.setItem('loggedIn', 'true')
         this.toast.success({detail:"Success Message",summary:"Logged in Succesfully",duration:3000});
         this.roles = this.tokenStorage.getUser().roles;
         this.router.navigate(['batches'])

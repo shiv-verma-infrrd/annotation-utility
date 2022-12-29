@@ -134,7 +134,7 @@ def get_batches(userId):
 def get_kvp_data_one(id):
 
     try:
-        data = list(db.pages.find({"batchId": int(id)}))
+        data = list(db.pages.find({"batchId": int(id)}, {'Data':0, 'correctedData':0}))
 
         for ocrDataKvpUid in data:
             ocrDataKvpUid['_id'] = str(ocrDataKvpUid["_id"])

@@ -10,14 +10,12 @@ import { Router } from '@angular/router';
 export class AuthGuard implements CanActivate {
   constructor(private loginService: LoginService, private router: Router){}
 
-  canActivate(): boolean{
-    if(this.loginService.isLoggedIn == true){
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
+    if(window.sessionStorage.getItem('loggedIn')){
       return true
     }
-    else{
-      this.router.navigate([''])
-      return false
-    }
+    this.router.navigate([''])
+    return false
   }
   
 }

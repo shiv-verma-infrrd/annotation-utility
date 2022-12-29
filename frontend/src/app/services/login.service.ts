@@ -12,7 +12,7 @@ const httpOptions = {
 })
 
 export class LoginService {
-    URL = "http://127.0.0.1:80"
+    URL = "http://127.0.0.1:5000"
     isLoggedIn = false;
     CSRFToken = ''
     
