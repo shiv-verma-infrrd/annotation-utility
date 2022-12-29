@@ -148,37 +148,6 @@ def get_kvp_data_one(id):
         print(ex)
 
 
-@app.route("/documents", methods=['GET'])
-@login_required
-def get_documents():
-
-    try:
-        data = list(db.documents.find())
-
-        return Response(response=json.dumps(data, default=str),
-                        status=200,
-                        mimetype="application/json")
-
-    except Exception as ex:
-        print(ex)
-
-
-@app.route("/documents/<id>", methods=["GET"])
-@login_required
-def get_single_documents(id):
-
-    try:
-        data = list(db.documents.find({"batchId": id}))
-        # print(data)
-
-        return Response(response=json.dumps(data, default=str),
-                        status=200,
-                        mimetype="application/json")
-
-    except Exception as ex:
-        print(ex)
-
-
 @app.route("/pages/<batchId>/<docId>", methods=["GET"])
 @login_required
 def get_kvp_data(batchId, docId):
@@ -187,11 +156,15 @@ def get_kvp_data(batchId, docId):
         data = list(db.pages.find(
             {"documentId": int(docId), "batchId": int(batchId)}))
 
-        for ocrDataKvpUid in data:
-            ocrDataKvpUid['_id'] = str(ocrDataKvpUid["_id"])
+        if str(data[0]["isCorrected"]).lower() == 'false':
+            if data[0]['Type'] == "checkboxes":
+            
+                form = utils.transform_data(data[0]['Data']['ocrData'],data[0]['Data']['checkboxData'])
+                data[0]['Data']['ocrData'] = form
+            
 
         return Response(
-            response=json.dumps(data),
+            response=json.dumps(data,default=str),
             status=200,
             mimetype="application/json"
         )
@@ -303,7 +276,7 @@ def delete_batches(id):
     try:
         dbResponse = db.batches.delete_one({"batchId": int(id)})
         dbResponse2 = db.pages.delete_many({"batchId": int(id)})
-        dbResponse3 = db.checkboxes.delete_many({"batchId": int(id)})
+        
         path = os.path.join("../assets/", str(id))
         shutil.rmtree(path)
         return Response(
@@ -374,7 +347,7 @@ def upload_zip():
                     utils.extract_file(file_data, zp, batch_id, 'checkbox')
                     utils.rename_file(batch_id)
                     utils.image_to_jpg(batch_id, zip_file_name)
-                    print('renamed')
+                    # print('renamed')
                     utils.push_json_data_in_db(batch_id, "checkboxes", db)
 
                     path = f"../assets/{batch_id}/{batch_id}/checkbox_data"
@@ -402,32 +375,6 @@ def upload_zip():
         print(ex)
         return Response(
             response=json.dumps({"Message": "File cannot be Uploaded "}),
-            status=500,
-            mimetype="application/json"
-        )
-
-############################################################################
-
-
-@app.route("/checkboxes/<doc_name>", methods=["GET"])
-@login_required
-def get_checkboxes(doc_name):
-
-    try:
-        data = list(db.checkboxes.find(
-            {"document_name": str(doc_name)+"_checkboxes"}))
-        return Response(
-            response=json.dumps(data, default=str),
-            status=200,
-            mimetype="application/json"
-        )
-    except Exception as ex:
-        print(ex)
-        return Response(
-            response=json.dumps(
-                {
-                    "message": "cannot read batches",
-                }),
             status=500,
             mimetype="application/json"
         )

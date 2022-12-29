@@ -79,11 +79,22 @@ export class EditingPageComponent implements AfterViewInit
     this.doc_id= window.sessionStorage.getItem('global_doc_id');
     
     this.apiData.get_pages(this.apiData.batchData, this.apiData.docData).subscribe((data) => 
-    {        
+    {    
+        console.log(data)    
         this.image_src = data[0].imagePath;
+        
+        if(data[0].Type == 'checkboxes'){
+          this.api_result=JSON.parse(JSON.stringify((data[0].Data.ocrData)));
+          this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.ocrData))));
+          this.kvp_label_initialization();
+      }
+      else{
+
         this.api_result=JSON.parse(JSON.stringify((data[0].Data.kvpData.form)));
         this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.kvpData.form))));
         this.kvp_label_initialization();
+
+      }
     });
 
      

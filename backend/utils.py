@@ -166,3 +166,100 @@ def push_json_data_in_db(batch_id, doc_type, db):
         "createdBy": "admin"
     }
     db.batches.insert_one(b_data)
+    
+
+def transform_data(file_data,checkbox_data):
+        
+        form = []
+        question = checkbox_data['questions'][0]['token_indexes']
+        for i in range(len(file_data)): 
+            
+            data = {
+                        "box" : [file_data[i][1]['tl']['x'],file_data[i][1]['tl']['y'],file_data[i][1]['br']['x'],file_data[i][1]['br']['y']],
+                        "text" : file_data[i][0],
+                        "label" : "",
+                        "words" : [{ 
+                            "box" : [file_data[i][1]['tl']['x'],file_data[i][1]['tl']['y'],file_data[i][1]['br']['x'],file_data[i][1]['br']['y']],
+                            "text" : file_data[i][0]
+                                    }],
+                        "linking":[],
+                        "id" : i
+                  }
+            
+            if i in question:
+                data["label"] = 'checkbox_question'      
+           
+            form.append(data) 
+           
+                 
+            for j in range(len(checkbox_data['checkboxes'])):
+                
+                
+                
+                # print(checkbox_data['checkboxes'][j]['label'])
+                if i == checkbox_data['checkboxes'][j]['token_indexes'][-1]:
+                    # print("before i**** ",i)
+                     
+                    _id = checkbox_data['checkboxes'][j]['token_indexes'][-1] - (len(checkbox_data['checkboxes'][j]['token_indexes']) - 1) 
+                    
+                    checkbox = {
+                        "box" : [checkbox_data['checkboxes'][j]['tl']['x'],checkbox_data['checkboxes'][j]['tl']['y'],checkbox_data['checkboxes'][j]['br']['x'],checkbox_data['checkboxes'][j]['br']['y']],
+                        "text" : "checkbox",
+                        "label" : "checkbox",
+                        "check":checkbox_data['checkboxes'][j]['label'],
+                        "words" : [{ 
+                            "box" : [checkbox_data['checkboxes'][j]['tl']['x'],checkbox_data['checkboxes'][j]['tl']['y'],checkbox_data['checkboxes'][j]['br']['x'],checkbox_data['checkboxes'][j]['br']['y']],
+                            "text" : "checkbox"
+                                    }],
+                        "linking":[_id+1,_id],
+                        "id" : _id + 1
+                        }
+                    
+                    
+                    entity = {
+                        "box":[file_data[checkbox_data['checkboxes'][j]['token_indexes'][0]][1]['tl']['x'],
+                               file_data[checkbox_data['checkboxes'][j]['token_indexes'][0]][1]['tl']['y'],
+                               file_data[checkbox_data['checkboxes'][j]['token_indexes'][-1]][1]['br']['x'],
+                               file_data[checkbox_data['checkboxes'][j]['token_indexes'][-1]][1]['br']['y']],
+                        "label":"checkbox_string",
+                        "linking":[_id,_id+1],
+                        "id" : _id
+                           }
+                    # print(entity)
+                    text = ""
+                    words = []
+                    for k in range(len(checkbox_data['checkboxes'][j]['token_indexes'])):
+                        text = text + " " +file_data[checkbox_data['checkboxes'][j]['token_indexes'][k]][0]
+                        words.append({
+                            "box":[
+                               file_data[checkbox_data['checkboxes'][j]['token_indexes'][k]][1]['tl']['x'],
+                               file_data[checkbox_data['checkboxes'][j]['token_indexes'][k]][1]['tl']['y'],
+                               file_data[checkbox_data['checkboxes'][j]['token_indexes'][k]][1]['br']['x'],
+                               file_data[checkbox_data['checkboxes'][j]['token_indexes'][k]][1]['br']['y']
+                               ],
+                            "text": file_data[checkbox_data['checkboxes'][j]['token_indexes'][k]][0]
+                            
+                        })
+                        form.pop()
+                        if (_id - k) in question:
+                            entity['question_id'] = (_id - k) 
+                            checkbox['question_id'] = (_id - k)
+                    # print(text)
+                    # print(words) 
+                      
+                    entity['text'] = text
+                    entity['words'] = words
+                    # print(entity)
+                    form.append(entity)
+                    form.append(checkbox)
+                     
+                       
+            
+            
+            
+                
+            # print(form)  
+             
+        return form        
+    
+    

@@ -23,10 +23,6 @@ export class ApiDataService {
     return this.http.get(this.URL+'/batches/'+userId)
   }
 
-  documents(){
-    return this.http.get(this.URL+'/documents')
-  }
-
   get_one_doc(batchId:any):Observable<any>{
     return this.http.get(this.URL+'/pages/'+batchId)
   }
@@ -50,9 +46,9 @@ export class ApiDataService {
     const data = {
       "batchId": batchId,
       "batch_name":batch_name
-      // "allocatedTo":"sfkdnkw"
+      
   }    
-  // const headers = { 'content-type': 'application/json'}
+  
     return this.http.post(this.URL+'downloads',data ,{observe:'response',responseType:"blob", headers: headers})
   }
 
@@ -62,16 +58,6 @@ export class ApiDataService {
     return this.http.delete(this.URL+'batch/'+batchId, {'headers':headers})
   }
 
-  checkboxes(doc_name: string){
-    return this.http.get(this.URL+'/checkboxes/'+doc_name)
-  }
-
-  
   
 }
 
-
-// const headers = new Headers({
-//   'Authorization': `Bearer ${auth_token}`
-// })
-// return this.http.get(apiUrl, { headers: headers })
