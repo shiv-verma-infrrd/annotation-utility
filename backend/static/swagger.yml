@@ -1,0 +1,69 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: API Documentation
+  description: A simple API for demonstrating Swagger documentation
+host: localhost:5000
+schemes:
+  - http
+paths:
+  /login:
+    post:
+      summary: "Login user"
+      description: "Logs in user and returns required user details"
+      parameters:
+      - in: "body"
+        name: "Credentials"
+        description: "Accepts object having email and password values"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: string
+              example : "sample@gmail.com"
+            password:
+              type: string
+              example : "sample@password"
+      responses:
+        200:
+          description: "Login Successful"
+          headers: 
+            Set-Cookie:
+              schema: 
+                type: string
+                example: session=abcde12345; Secure; HttpOnly; Path=/; SameSite=None
+        401:
+          description: "Invalid credentials"
+  /batches/{user_id}:
+    get:
+      summary: "Batch list"
+      description: "Displays list of batches allocated to user"
+      # security:
+      #   - cookieAuth:
+      #     type: apiKey
+      #     in: cookie
+      #     name: session
+      parameters:
+      - in: path
+        name: userId
+        # description: "Accepts dictionary having email and password values"
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Login Successful"
+      #   401:
+      #     description: "Invalid credentials"
+  /pages/{batch_id}:
+    get:
+      summary: "Document List"
+      description: "Displays list of documents in a batch"
+      parameters:
+      - in: "path"
+        name: "id"
+        # description: "Accepts dictionary having email and password values"
+        required: true
+        schema:
+          type: string
