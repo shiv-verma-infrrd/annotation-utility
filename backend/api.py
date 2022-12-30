@@ -15,7 +15,9 @@ from flask_login import (
 )
 import pymongo
 import utils
-from flask_swagger_ui import get_swaggerui_blueprint
+# from flask_swagger_ui import get_swaggerui_blueprint
+from flasgger import Swagger
+from flasgger.utils import swag_from
 import uuid
 
 app = Flask(__name__)
@@ -56,6 +58,22 @@ cors = CORS(
     supports_credentials=True,
 )
 
+app.config["SWAGGER"] = {"title": "API Documentation", "uiversion": 3}
+swagger_config = {
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": "apispec",
+            "route": "/apispecs.json",
+            # "rule_filter": lambda rule: True,
+            # "model_filter": lambda tag: True
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    "swagger_ui": True,
+    "specs_route": "/swagger/",
+}
+swagger = Swagger(app, config=swagger_config)
 
 class User(UserMixin):
     ...
@@ -72,6 +90,7 @@ def user_loader(id):
 
 
 @app.route("/login", methods=["POST"])
+@swag_from("config/login.yml")
 def login():
     data = request.json
     email = data.get("email")
@@ -101,6 +120,7 @@ def logout():
 
 
 @app.route("/batches/<userId>", methods=["GET"])
+@swag_from("config/batches.yml")
 @login_required
 def get_batches(userId):
     # print('Entered batches')
@@ -123,6 +143,7 @@ def get_batches(userId):
 
 
 @app.route("/pages/<id>", methods=["GET"])
+@swag_from("config/documents.yml")
 @login_required
 def get_kvp_data_one(id):
 

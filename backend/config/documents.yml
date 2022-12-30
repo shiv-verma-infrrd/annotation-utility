@@ -1,0 +1,9 @@
+summary: "Document List"
+description: "Displays list of documents in a batch"
+parameters:
+- in: "path"
+  name: "id"
+  # description: "Accepts dictionary having email and password values"
+  required: true
+  schema:
+    type: string

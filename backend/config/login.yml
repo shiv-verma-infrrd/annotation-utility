@@ -1,0 +1,26 @@
+summary: "Login user"
+description: "Logs in user and returns required user details"
+parameters:
+- in: "body"
+  name: "Credentials"
+  description: "Accepts object having email and password values"
+  required: true
+  schema:
+    type: "object"
+    properties:
+      email:
+        type: string
+        example : "sample@gmail.com"
+      password:
+        type: string
+        example : "sample@password"
+responses:
+  200:
+    description: "Login Successful"
+    headers: 
+      Set-Cookie:
+        schema: 
+          type: string
+          example: session=abcde12345; Secure; HttpOnly; Path=/; SameSite=None
+  401:
+    description: "Invalid credentials"
