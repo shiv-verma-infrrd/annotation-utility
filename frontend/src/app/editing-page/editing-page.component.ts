@@ -4,6 +4,7 @@ import 'leader-line';
 import { ApiDataService } from '../services/api-data.service';
 import { PlatformLocation } from '@angular/common' 
 import { NgToastService } from 'ng-angular-popup';
+import { ConnectableObservable } from 'rxjs';
 
 declare let LeaderLine: any;
 @Component({
@@ -80,7 +81,21 @@ export class EditingPageComponent implements AfterViewInit
     
     this.apiData.get_pages(this.apiData.batchData, this.apiData.docData).subscribe((data) => 
     {    
-        console.log(data)    
+        console.log(data[0].Data.ocrData) 
+        
+        for(let i in data[0].Data.ocrData){
+         
+          if(data[0].Data.ocrData[i].label == 'checkbox_question')
+             console.log(i,data[0].Data.ocrData[i]) 
+          // if(data[0].Data.ocrData[i].label == 'checkbox_question')
+        }
+
+        for(let i in data[0].Data.ocrData){
+         
+          if(data[0].Data.ocrData[i].label == 'checkbox_string')
+            console.log(i,data[0].Data.ocrData[i])   
+          // if(data[0].Data.ocrData[i].label == 'checkbox_question')
+        }
         this.image_src = data[0].imagePath;
 
         if(data[0].Type == 'checkboxes'){

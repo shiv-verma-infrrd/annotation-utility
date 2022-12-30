@@ -161,8 +161,10 @@ def push_json_data_in_db(batch_id, db):
 
 def transform_data(file_data,checkbox_data):
         
+        # print(checkbox_data['questions'])
+        print(file_data[103])
+        print(file_data[38])
         form = []
-        question = checkbox_data['questions'][0]['token_indexes']
         for i in range(len(file_data)): 
             
             data = {
@@ -177,9 +179,12 @@ def transform_data(file_data,checkbox_data):
                         "id" : i
                   }
             
-            if i in question:
-                data["label"] = 'checkbox_question'      
-           
+            for l in range(len(checkbox_data['questions'])):
+               question = checkbox_data['questions'][l]['token_indexes']
+               if i in question:
+                    data["label"] = 'checkbox_question'      
+                    # print(data)
+            
             form.append(data) 
            
                  
@@ -234,15 +239,20 @@ def transform_data(file_data,checkbox_data):
                             
                         })
                         form.pop()
-                        if (_id - k) in question:
-                            entity['question_id'] = (_id - k) 
-                            checkbox['question_id'] = (_id - k)
-                    # print(text)
-                    # print(words) 
-                      
+                        
+                  
                     entity['text'] = text
                     entity['words'] = words
-                    # print(entity)
+                    
+                    # print(checkbox_data['checkboxes'][j]['question_id'])
+                    for t in range(len(checkbox_data['questions'])):
+                      if checkbox_data['checkboxes'][j]['question_id'] == checkbox_data['questions'][t]['id']:
+                        #   print(checkbox_data['questions'][t]['token_indexes'])
+                          checkbox['question_id'] = checkbox_data['questions'][t]['token_indexes'][0]
+                          entity['question_id'] = checkbox_data['questions'][t]['token_indexes'][0]
+                          checkbox['question_ids'] = checkbox_data['questions'][t]['token_indexes']
+                          entity['question_ids'] = checkbox_data['questions'][t]['token_indexes']
+                          
                     form.append(entity)
                     form.append(checkbox)
                      
@@ -251,8 +261,7 @@ def transform_data(file_data,checkbox_data):
             
             
                 
-        # print(form[28])
-        # print(form[29])  
+      
              
         return form        
     
