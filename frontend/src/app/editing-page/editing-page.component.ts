@@ -94,7 +94,8 @@ export class EditingPageComponent implements AfterViewInit
          
           if(data[0].Data.ocrData[i].label == 'checkbox_string')
             console.log(i,data[0].Data.ocrData[i])   
-          // if(data[0].Data.ocrData[i].label == 'checkbox_question')
+          if(data[0].Data.ocrData[i].label == 'checkbox')
+            console.log(i,data[0].Data.ocrData[i]) 
         }
         this.image_src = data[0].imagePath;
 
