@@ -83,18 +83,9 @@ export class EditingPageComponent implements AfterViewInit
    
     this.apiData.get_pages(this.apiData.batchData, this.apiData.docData).subscribe((data) => 
     {    
-        // console.log("doc ",this.apiData.docarray) 
-
-        // for(let i in this.apiData.docarray){
-        //   console.log(i)
-        //   if( this.apiData.docarray[i].documentId== this.doc_id){
-        //     let a:Number = Number(i+1)
-        //     console.log('doc array if',this.apiData.docarray[a])
-        //     // this.doc_id = this.apiData.docarray[i + 1].documentId
-        //   }
-        // }
         
-       
+       console.log("unchanged",this.doc_id)
+
         this.image_src = data[0].imagePath;
         this.saving_data_result = data[0]
 
@@ -107,8 +98,8 @@ export class EditingPageComponent implements AfterViewInit
 
         if(data[0].isCorrected == 'true'){
 
-        this.api_result=JSON.parse(JSON.stringify((data[0].correctedData.kvpData)));
-        this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].correctedData.kvpData))));
+        this.api_result=JSON.parse(JSON.stringify((data[0].correctedData.kvpData.form)));
+        this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].correctedData.kvpData.form))));
         this.kvp_label_initialization();
 
 
@@ -1112,7 +1103,7 @@ export class EditingPageComponent implements AfterViewInit
         },
         "correctedData": {
             "checkboxData":[],
-            "ocrData":result,
+            "ocrData":{ "form":result },
             "kvpData":{}
         },
         "correctedBy": "",
@@ -1143,7 +1134,7 @@ export class EditingPageComponent implements AfterViewInit
         "correctedData": {
             "checkboxData":[],
             "ocrData":{},
-            "kvpData":result
+            "kvpData": {"form":result}
         },
         "correctedBy": "",
         "correctedOn": ""
@@ -1165,8 +1156,17 @@ export class EditingPageComponent implements AfterViewInit
     } 
     else
     {
-      
-      this.doc_id;
+
+      for(let i in this.apiData.docarray){
+        console.log(i)
+        if( this.apiData.docarray[i].documentId== this.doc_id){
+          
+          console.log('doc array if',this.apiData.docarray[i])
+          this.doc_id = this.apiData.docarray[Number(i) + 1].documentId
+          break
+        }
+      }
+      console.log('doc id ch',this.doc_id)
       window.sessionStorage.setItem('global_doc_id',this.doc_id);
       window.location.reload();
     }
