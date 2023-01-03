@@ -211,7 +211,7 @@ def put_ocr_data():
         raw_data = request.json
         
         # print(raw_data["Type"])
-        if raw_data["Type"] == "checkboxes":
+        if raw_data["type"] == "checkboxes":
             data = raw_data['correctedData']['checkboxData']
             transformed_checkbox_data = utils.retransform_checkbox_data(data)   
             raw_data['correctedData']['checkboxData'] = transformed_checkbox_data
@@ -219,7 +219,7 @@ def put_ocr_data():
         db.pages.update_one({"_id": ObjectId(raw_data['_id'])}, {"$set": {
             
             "isCorrected": raw_data['isCorrected'],
-            "imageStatus": raw_data['imageStatus'],
+            # "imageStatus": raw_data['imageStatus'],
             "correctedData": raw_data['correctedData'],
             "correctedBy": raw_data['correctedBy'],
             "correctedOn": raw_data['correctedOn']
@@ -251,15 +251,17 @@ def send_zip_file():
         raw_data = request.json
         data = list(db.pages.find({"batchId": str(raw_data['batchId'])}))
         name = ""
+        # print(data)
         for batch in data:
-
-            # batch['_id'] = str(batch['_id'])
+            
+            # print(batch['correctedData']['kvpData'])
+            batch['_id'] = str(batch['_id'])
             if batch['type'] == 'checkboxes':
                 name = batch['document_name'] +"_checkboxes"
                 json_object = json.dumps(batch['correctedData']['checkboxData'])
             elif batch['type'] == 'fields':
                 name = batch['document_name']
-                json_object = json.dumps(batch['correctedData']['kvpdata'])    
+                json_object = json.dumps(batch['correctedData']['kvpData'])    
             with open(""+name+".json", "w") as outfile:
                 outfile.write(json_object)
 

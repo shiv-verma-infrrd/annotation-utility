@@ -112,7 +112,7 @@ def push_json_data_in_db(batch_id, db):
                     "correctedData": {
                         "checkboxData": {},
                         "ocrData": {},
-                        "kvpdata": {},
+                        "kvpData": {},
                     },
                     "correctedBy": "",
                     "correctedOn": ""

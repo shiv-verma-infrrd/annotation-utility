@@ -26,6 +26,7 @@ export class EditingPageComponent implements AfterViewInit
   doc_id:any;
 
   api_result:any;
+  saving_data_result:any;
 
   image_src:any;
   token_cord_for_image:any=[];
@@ -70,7 +71,7 @@ export class EditingPageComponent implements AfterViewInit
   display_answer:number=0;
   display_header:number=0;
   display_other:number=0;
-
+  
   constructor(private apiData: ApiDataService, private router:Router, private location:PlatformLocation, private toast:NgToastService)
   {
     this.apiData.docData = window.sessionStorage.getItem('global_doc_id');
@@ -78,37 +79,48 @@ export class EditingPageComponent implements AfterViewInit
     this.imageUrl = this.apiData.URL;
 
     this.doc_id= window.sessionStorage.getItem('global_doc_id');
-    
+
+   
     this.apiData.get_pages(this.apiData.batchData, this.apiData.docData).subscribe((data) => 
     {    
-        console.log(data[0].Data.ocrData) 
+        // console.log("doc ",this.apiData.docarray) 
+
+        // for(let i in this.apiData.docarray){
+        //   console.log(i)
+        //   if( this.apiData.docarray[i].documentId== this.doc_id){
+        //     let a:Number = Number(i+1)
+        //     console.log('doc array if',this.apiData.docarray[a])
+        //     // this.doc_id = this.apiData.docarray[i + 1].documentId
+        //   }
+        // }
         
-        for(let i in data[0].Data.ocrData){
-         
-          if(data[0].Data.ocrData[i].label == 'checkbox_question')
-             console.log(i,data[0].Data.ocrData[i]) 
-          // if(data[0].Data.ocrData[i].label == 'checkbox_question')
-        }
-
-        for(let i in data[0].Data.ocrData){
-         
-          if(data[0].Data.ocrData[i].label == 'checkbox_string')
-            console.log(i,data[0].Data.ocrData[i])   
-          if(data[0].Data.ocrData[i].label == 'checkbox')
-            console.log(i,data[0].Data.ocrData[i]) 
-        }
+       
         this.image_src = data[0].imagePath;
+        this.saving_data_result = data[0]
 
-        if(data[0].Type == 'checkboxes'){
+      if(data[0].type == 'checkboxes'){
           this.api_result=JSON.parse(JSON.stringify((data[0].Data.ocrData)));
           this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.ocrData))));
           this.kvp_label_initialization();
       }
       else{
 
+        if(data[0].isCorrected == 'true'){
+
+        this.api_result=JSON.parse(JSON.stringify((data[0].correctedData.kvpData)));
+        this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].correctedData.kvpData))));
+        this.kvp_label_initialization();
+
+
+        }
+        else{
+
         this.api_result=JSON.parse(JSON.stringify((data[0].Data.kvpData.form)));
         this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.kvpData.form))));
         this.kvp_label_initialization();
+
+        }  
+        
 
       }
     });
@@ -1077,57 +1089,73 @@ export class EditingPageComponent implements AfterViewInit
         id: result.length,
       });
     }
-    //result contains updated kvpdata
+  
+   let final:any;
 
-    // let final = 
-    // {
-    //   _id: this.api_result._id,
-    //   imgid: this.api_result.imgid,
-    //   documentId: this.api_result.documentId,
-    //   batchName: this.api_result.batchName,
-    //   document_name: this.api_result.document_name,
-    //   isCorrected: 'true',
-    //   Type:"checkboxes",
-    //   imageStatus: this.api_result.imageStatus,
-    //   imagePath: this.api_result.imagePath,
-    //   // kvpData: this.api_result.kvpData,
-    //   correctedData: { 
-    //     checkboxData:[],
-    //     ocrData:result,
-    //     kvpData:[]
-    //    },
-    //   correctedBy: '',
-    //   correctedOn: '',
-    // };
-   // ################ update api call format ###### //
-    let final = 
+    if(this.saving_data_result.type == "checkboxes"){
+
+     final = 
       {
-        "_id": "63ad56c3248f8aeea06f3b21",
-        "imgid":"1670858685002",
-        "documentId": "2",
-        "batchName":"bbbbbbbbbbb",
-        "document_name":"aaaaaaaaaaaaaaa",
-        "isCorrected": "False",
-        "imageStatus": "zzzzzzzzzzz",
-        "imagePath": "rock on",
-        "Type":"checkboxes",
+        "_id": this.saving_data_result._id,
+        "imgid":this.saving_data_result.imgid,
+        "documentId": this.saving_data_result.documentId,
+        "batchName":this.saving_data_result.batchName,
+        "document_name":this.saving_data_result.document_name,
+        "isCorrected": "True",
+        "imageStatus": this.saving_data_result.imageStatus,
+        "imagePath": this.saving_data_result.imagePath,
+        "type":this.saving_data_result.type,
         "Data": {
             "checkboxData": {},
-            "ocrData":result,
+            "ocrData":{},
             "kvpData":{}
         },
         "correctedData": {
             "checkboxData":[],
             "ocrData":result,
-            "kvpData":"aaaa"
+            "kvpData":{}
         },
         "correctedBy": "",
         "correctedOn": ""
     }
-    
+
+           
+      
+    }
+    else{
+
+      final = 
+      {
+        "_id": this.saving_data_result._id,
+        "imgid":this.saving_data_result.imgid,
+        "documentId": this.saving_data_result.documentId,
+        "batchName":this.saving_data_result.batchName,
+        "document_name":this.saving_data_result.document_name,
+        "isCorrected": "true",
+        "imageStatus": this.saving_data_result.imageStatus,
+        "imagePath": this.saving_data_result.imagePath,
+        "type":this.saving_data_result.type,
+        "Data": {
+            "checkboxData": {},
+            "ocrData":{},
+            "kvpData":{}
+        },
+        "correctedData": {
+            "checkboxData":[],
+            "ocrData":{},
+            "kvpData":result
+        },
+        "correctedBy": "",
+        "correctedOn": ""
+    }
+
+
+    }
+    console.log(this.saving_data_result._id)
     
     this.apiData.update_page_data(final).subscribe((data) => 
     {
+      // console.log(this.api_result._id)
       console.warn(data);
     });
 
@@ -1137,7 +1165,8 @@ export class EditingPageComponent implements AfterViewInit
     } 
     else
     {
-      this.doc_id++;
+      
+      this.doc_id;
       window.sessionStorage.setItem('global_doc_id',this.doc_id);
       window.location.reload();
     }

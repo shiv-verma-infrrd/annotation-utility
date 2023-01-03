@@ -29,7 +29,7 @@ export class DocumentsComponent implements OnInit {
     this.apiData.get_one_doc(this.apiData.batchData).subscribe((data)=>{
       this.apiData.docarray = data;
       this.apiPage = data; 
-      console.log("apipage****in document page***",data)
+      // console.log("apipage****in document page***",data)
     });
 
     
