@@ -157,12 +157,16 @@ def get_kvp_data(batchId, docId):
         data = list(db.pages.find(
             {"documentId": str(docId), "batchId": str(batchId)}))
 
-        if str(data[0]["isCorrected"]).lower() == 'false':
-            if data[0]['type'] == "checkboxes":
-            
+        
+        if data[0]['type'] == "checkboxes":    
+            if str(data[0]["isCorrected"]).lower() == 'true':
+                # print(data[0]['correctedData']['ocrData']['form'])
+                form = utils.transform_data_for_corrected_data(data[0]['correctedData']['ocrData'])
+                data[0]['correctedData']['ocrData'] = form
+                
+            else:
                 form = utils.transform_data(data[0]['Data']['ocrData'],data[0]['Data']['checkboxData'])
                 data[0]['Data']['ocrData'] = form
-            
 
         return Response(
             response=json.dumps(data,default=str),
@@ -210,11 +214,13 @@ def put_ocr_data():
     try:
         raw_data = request.json
         
-        # print(raw_data["Type"])
+        
         if raw_data["type"] == "checkboxes":
-            data = raw_data['correctedData']['checkboxData']
-            transformed_checkbox_data = utils.retransform_checkbox_data(data)   
-            raw_data['correctedData']['checkboxData'] = transformed_checkbox_data
+            data = raw_data['correctedData']['ocrData']
+            # print("inside****")
+            # print(data)
+            transformed_data = utils.retransform_data(data)   
+            raw_data['correctedData']['ocrData'] = transformed_data
         
         db.pages.update_one({"_id": ObjectId(raw_data['_id'])}, {"$set": {
             
@@ -244,6 +250,7 @@ def put_ocr_data():
 ############## downloading file using batch name ###############
 
 
+
 @app.route('/downloads', methods=['POST'])
 @login_required
 def send_zip_file():
@@ -259,11 +266,17 @@ def send_zip_file():
             if batch['type'] == 'checkboxes':
                 name = batch['document_name'] +"_checkboxes"
                 json_object = json.dumps(batch['correctedData']['checkboxData'])
+                json_object2 = json.dumps(batch['correctedData']['ocrData'])
+                with open(""+name+".json", "w") as outfile:
+                   outfile.write(json_object)
+                with open(""+batch['document_name']+".json", "w") as outfile:
+                   outfile.write(json_object2)
+                
             elif batch['type'] == 'fields':
                 name = batch['document_name']
                 json_object = json.dumps(batch['correctedData']['kvpData'])    
-            with open(""+name+".json", "w") as outfile:
-                outfile.write(json_object)
+                with open(""+name+".json", "w") as outfile:
+                   outfile.write(json_object)
 
         path = os.getcwd()
 

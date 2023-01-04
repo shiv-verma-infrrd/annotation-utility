@@ -104,6 +104,11 @@ export class EditingPageComponent implements AfterViewInit
     this.imageUrl = this.apiData.URL;
 
     this.doc_id= window.sessionStorage.getItem('global_doc_id');
+
+    
+    this.apiData.get_one_doc(this.apiData.batchData).subscribe((data)=>{
+    this.apiData.docarray = data; 
+  });
     
     this.apiData.get_pages(this.apiData.batchData, this.apiData.docData).subscribe((data) => 
     {    
@@ -115,9 +120,19 @@ export class EditingPageComponent implements AfterViewInit
       
 
     if(data[0].type == 'checkboxes'){
+
+      if(data[0].isCorrected == 'true'){
+        this.api_result=JSON.parse(JSON.stringify((data[0].correctedData.ocrData)));
+        this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].correctedData.ocrData))));
+        console.log("checkboxes being called");
+      }
+      else{
+
         this.api_result=JSON.parse(JSON.stringify((data[0].Data.ocrData)));
         this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.ocrData))));
         console.log("checkboxes being called");
+      }
+        
         
     }
     else{
@@ -1943,29 +1958,6 @@ clear_custom_option_cell()
     console.log({"checkboxes": checkboxes, "questions": questions});
     
 
-    //result contains updated kvpdata
-
-    // let final = 
-    // {
-    //   _id: this.api_result._id,
-    //   imgid: this.api_result.imgid,
-    //   documentId: this.api_result.documentId,
-    //   batchName: this.api_result.batchName,
-    //   document_name: this.api_result.document_name,
-    //   isCorrected: 'true',
-    //   Type:"checkboxes",
-    //   imageStatus: this.api_result.imageStatus,
-    //   imagePath: this.api_result.imagePath,
-    //   // kvpData: this.api_result.kvpData,
-    //   correctedData: { 
-    //     checkboxData:[],
-    //     ocrData:result,
-    //     kvpData:[]
-    //    },
-    //   correctedBy: '',
-    //   correctedOn: '',
-    // };
-   // ################ update api call format ###### //
    let final:any;
 
 
@@ -1978,7 +1970,7 @@ clear_custom_option_cell()
        "documentId": this.saving_data_result.documentId,
        "batchName":this.saving_data_result.batchName,
        "document_name":this.saving_data_result.document_name,
-       "isCorrected": "True",
+       "isCorrected": "true",
        "imageStatus": this.saving_data_result.imageStatus,
        "imagePath": this.saving_data_result.imagePath,
        "type":this.saving_data_result.type,
@@ -2029,7 +2021,7 @@ clear_custom_option_cell()
 
   }
 
-   console.log(final);
+  //  console.log(final);
    
     
     this.apiData.update_page_data(final).subscribe((data) => 
@@ -2042,10 +2034,36 @@ clear_custom_option_cell()
       this.exit();
     } 
     else
-    {
-      this.doc_id++;
-      window.sessionStorage.setItem('global_doc_id',this.doc_id);
-      window.location.reload();
+    { 
+    //   this.apiData.batchData = window.sessionStorage.getItem('global_batch_id')
+    
+    //   this.apiData.get_one_doc(this.apiData.batchData).subscribe((data)=>{
+    //   this.apiData.docarray = data; 
+    // });
+
+
+        for(let i=0;i<this.apiData.docarray.length;i++){
+          
+          if(this.apiData.docarray[Number(i)].documentId == this.doc_id){
+
+            if(i == this.apiData.docarray.length - 1 ){
+
+              this.doc_id = this.apiData.docarray[0].documentId;
+              window.sessionStorage.setItem('global_doc_id',this.doc_id);
+              window.location.reload();
+
+            }
+            else{// console.log(this.apiData.docarray[Number(i)+1])
+                this.doc_id = this.apiData.docarray[Number(i)+1].documentId;
+                window.sessionStorage.setItem('global_doc_id',this.doc_id);
+                window.location.reload();
+            }
+            break
+          }
+            
+
+        }
+      
     }
   }
 

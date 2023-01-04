@@ -304,54 +304,60 @@ def transform_data(file_data,checkbox_data):
         
         return form        
     
-def retransform_checkbox_data(data):
+def retransform_data(data):
     
     
-    checkboxes = []
-    questions = []
-    token_ids = []
-    for i in range(len(data)):
-        # print(data[i]['label'])
-        if data[i]['label'] == 'checkbox':
-           
-            
+    result = []
+    for i in range(len(data['form'])):
+            # print(data['form'][i])
             d = {
+                    "text":data['form'][i]['text'],
                     "tl": {
-                        "x": data[i]['box'][0],
-                        "y": data[i]['box'][1]
+                        "x": data['form'][i]['box'][0],
+                        "y": data['form'][i]['box'][1]
                     },
                     "br": {
-                        "x": data[i]['box'][2],
-                        "y": data[i]['box'][3]
+                        "x": data['form'][i]['box'][2],
+                        "y": data['form'][i]['box'][3]
                     },
-                    "label":  data[i]['check'],
-                    "confidence": 0,
-                    "token_indexes": data[i]['linking'],
-                    "question_id":  data[i]['question_id'],
-                    "id":data[i]['id']
+                    "id":data['form'][i]['id']
                 }
-            checkboxes.append(d)
-            # print(checkboxes)  
-                    
-        if data[i]['label'] == 'checkbox_question': 
-            
-            token_ids.append(data[i]['id'])
-            
-                
-    q_data ={
-                "id": 0,
-                "token_indexes": token_ids
-               }         
-    questions.append(q_data) 
-    result = {
-            
-             "checkboxes":checkboxes,
-             "questions":questions
-          
-             }  
+            result.append(d)
+    
     # print(result)
-    # print("result run")
-    return result  
+    
+    # form = { "form" : result}      
+    return result 
+
+def transform_data_for_corrected_data(data):
+    
+    result = []
+    print(data[0])
+    # print(data[0]['tl']['x'])
+    print(data[0]['text'])
+    # print(data[0]['br']['x'])
+    # print(data[0]['id'])
+    
+    for i in range(len(data)):
+       
+        d = {
+                            "box" : [data[i]['tl']['x'],data[i]['tl']['y'],data[i]['br']['x'],data[i]['br']['y']],
+                            "text" : data[i]['text'],
+                            "label" : "",
+                            "words" : [{ 
+                                "box" : [data[i]['tl']['x'],data[i]['tl']['y'],data[i]['br']['x'],data[i]['br']['y']],
+                                "text" : data[i]['text']
+                                        }],
+                            "linking":[],
+                            "id" : data[i]['id']
+                }
+        result.append(d)
+    # print(result[0])    
+    # form = {'form':result}
+        
+    return result
+
+
 
 def extract_file(file_data, zp, batch_id, type):
 
