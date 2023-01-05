@@ -2,7 +2,7 @@ from io import BytesIO
 import json
 import os
 import shutil
-from zipfile import ZipFile
+from zipfile import ZIP_DEFLATED, ZipFile
 from bson import ObjectId
 from flask import Flask, Response, jsonify, make_response, request, send_file
 from flask_cors import CORS
@@ -258,12 +258,14 @@ def send_zip_file():
         raw_data = request.json
         data = list(db.pages.find({"batchId": str(raw_data['batchId'])}))
         name = ""
+        type = data[0]['type']
+        # print('type: ', type)
         # print(data)
         for batch in data:
             
             # print(batch['correctedData']['kvpData'])
             batch['_id'] = str(batch['_id'])
-            if batch['type'] == 'checkboxes':
+            if type == 'checkboxes':
                 name = batch['document_name'] +"_checkboxes"
                 json_object = json.dumps(batch['correctedData']['checkboxData'])
                 json_object2 = json.dumps(batch['correctedData']['ocrData'])
@@ -272,7 +274,7 @@ def send_zip_file():
                 with open(""+batch['document_name']+".json", "w") as outfile:
                    outfile.write(json_object2)
                 
-            elif batch['type'] == 'fields':
+            elif type == 'fields':
                 name = batch['document_name']
                 json_object = json.dumps(batch['correctedData']['kvpData'])    
                 with open(""+name+".json", "w") as outfile:
@@ -282,9 +284,17 @@ def send_zip_file():
 
         with ZipFile(""+raw_data['batch_name']+'.zip', 'w') as zip:
             for filename in os.listdir(path):
-                if filename.endswith(".json"):
-                    print(filename)
-                    zip.write(filename)
+                if type == 'fields':
+                    if filename.endswith(".json"):
+                        print(filename)
+                        zip.write(filename, raw_data['batch_name']+"_output/"+filename, ZIP_DEFLATED)
+                elif type == 'checkboxes':
+                    if filename.endswith("_checkboxes.json"):
+                        print(filename)
+                        zip.write(filename, "checkbox_data/"+filename, ZIP_DEFLATED)
+                    elif filename.endswith(".json"):
+                        print(filename)
+                        zip.write(filename, "ocrs/"+filename, ZIP_DEFLATED)
 
         return_file = BytesIO()
 
