@@ -8,6 +8,9 @@ import zipfile
 import uuid
 from io import BytesIO,StringIO
 
+
+
+
 def get_user(user_id, users):
     for user in users.find():
         if user_id == str(user['_id']):
@@ -35,39 +38,39 @@ def get_batch_type(path):
         return 'checkbox'
 
 
-def image_to_jpg(batch_id, zip_file_name):
-    directory = f'../assets/{batch_id}/{batch_id}/images'
+# def image_to_jpg(batch_id, zip_file_name):
+#     directory = f'../assets/{batch_id}/{batch_id}/images'
 
-    for filename in os.listdir(directory):
-        if not filename.endswith('jpg'):
-            exten = filename.rsplit('.', 1)[-1]
-            im = Image.open(os.path.join(directory, filename))
-            name = os.path.join(directory, filename.replace(exten, 'jpg'))
-            rgb_im = im.convert('RGB')
-            rgb_im.save(name)
-            os.remove(os.path.join(directory, filename))
-
-
-def rename_file(batch_id):
-    directory = f"../assets/{batch_id}"
-    for file1 in os.listdir(directory):
-        os.rename(os.path.join(directory, file1),
-                  os.path.join(directory, str(batch_id)))
+#     for filename in os.listdir(directory):
+#         if not filename.endswith('jpg'):
+#             exten = filename.rsplit('.', 1)[-1]
+#             im = Image.open(os.path.join(directory, filename))
+#             name = os.path.join(directory, filename.replace(exten, 'jpg'))
+#             rgb_im = im.convert('RGB')
+#             rgb_im.save(name)
+#             os.remove(os.path.join(directory, filename))
 
 
-def get_last_file():
-    di = f"../assets"
-    last_file_id = 0
-    for file1 in os.listdir(di):
-        if int(file1) > last_file_id:
-            last_file_id = int(file1)
-    return last_file_id
+# def rename_file(batch_id):
+#     directory = f"../assets/{batch_id}"
+#     for file1 in os.listdir(directory):
+#         os.rename(os.path.join(directory, file1),
+#                   os.path.join(directory, str(batch_id)))
 
 
-def remove_filesystem_folder(batch_id):
+# def get_last_file():
+#     di = f"../assets"
+#     last_file_id = 0
+#     for file1 in os.listdir(di):
+#         if int(file1) > last_file_id:
+#             last_file_id = int(file1)
+#     return last_file_id
+
+
+def remove_filesystem_folder(batch_id,up_dir):
     
-    checkbox_dir = f"../assets/{batch_id}/checkboxes"
-    file_dir = f"../assets/{batch_id}/annotations"
+    checkbox_dir = os.path.join(up_dir,f"{batch_id}/checkboxes")
+    file_dir = os.path.join(up_dir,f"{batch_id}/annotations")
     if os.path.exists(checkbox_dir):
        shutil.rmtree(checkbox_dir)
     shutil.rmtree(file_dir)
@@ -85,10 +88,10 @@ def get_checkbox_data(path, file_name):
     return file_data
 
 
-def push_json_data_in_db(batch_id, db):
+def push_json_data_in_db(batch_id, db, up_dir ):
     doc_cnt = 0
-    checkbox_dir = f"../assets/{batch_id}/checkboxes"
-    file_dir = f"../assets/{batch_id}/annotations"
+    checkbox_dir = os.path.join(up_dir,f"{batch_id}/checkboxes")
+    file_dir = os.path.join(up_dir,f"{batch_id}/annotations")
     doc_type = False
     if os.path.exists(checkbox_dir):
          doc_type = True
@@ -359,26 +362,28 @@ def transform_data_for_corrected_data(data):
 
 
 
-def extract_file(file_data, zp, batch_id, type):
+# def extract_file(file_data, zp, batch_id, type,path):
+    
+#     upload_path_forms = os.path.join(path,{batch_id})
 
-    validEXt = ['JPG', 'PNG', 'JSON']
+#     validEXt = ['JPG', 'PNG', 'JSON']
 
-    for files in file_data:
-        print(files)
-        ext = files.rsplit(".", 1)[-1]
-        print(ext)
-        if ext.upper() in validEXt:
-            if type == 'form':
-                zp.extract(files, f'../assets/{batch_id}')
-            elif type == 'checkbox':
-                zp.extract(files, f'../assets/{batch_id}/{batch_id}')
-            # print(files)
+#     for files in file_data:
+#         print(files)
+#         ext = files.rsplit(".", 1)[-1]
+#         print(ext)
+#         if ext.upper() in validEXt:
+#             if type == 'form':
+#                 zp.extract(files, upload_path)
+#             elif type == 'checkbox':
+#                 zp.extract(files, f'../assets/{batch_id}/{batch_id}')
+#             # print(files)
 
         
-def extract_file(my_zip,db,batch_id):
+def extract_file(my_zip,db,batch_id,up_dir):
     
     
-    up_dir = "../assets"
+    # up_dir = "../assets"
     my_dir = os.path.join(up_dir,str(batch_id))
     checkbox_dir = os.path.join(my_dir,"checkboxes")
     annotations_dir = os.path.join(my_dir,"annotations")

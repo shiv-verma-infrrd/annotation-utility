@@ -32,13 +32,13 @@ else:
 
 try:
     mongo = pymongo.MongoClient(
-        host="mongodb+srv://admin:1234@cluster0.p6bfznx.mongodb.net/test",
+        host=app.config['HOST'],
         port=27017,
         serverSelectionTimeoutMS=100
     )
 
     # print('Connected')
-    db = mongo.CorrectionUIdb2
+    db = mongo[app.config['DB_NAME']]
     users = db.Users
     # print('Connected')
     mongo.server_info()
@@ -181,8 +181,10 @@ def get_kvp_data(batchId, docId):
 @app.route('/<batchId>/<image>', methods=['GET'])
 @login_required
 def myapp(batchId, image):
-    img_file = f'../assets/{batchId}/{image}.jpg'
-    no_img = f'../assets/no-preview.png'
+  
+    img_file = os.path.join(app.config['IMAGE_PATH'],f'{batchId}/{image}.jpg')
+    no_img =  os.path.join(app.config['IMAGE_PATH'],f'no-preview.png')
+    # print("###############",img_file)
     if os.path.isfile(img_file):
         return send_file(img_file)
     
@@ -206,6 +208,8 @@ def myapp(batchId, image):
     
     else:
         return send_file(no_img)
+
+
 
 
 @app.route("/pages", methods=["PUT"])
@@ -322,6 +326,8 @@ def send_zip_file():
             status=500,
             mimetype="application/json"
         )
+        
+        
 #################################################################
 #################################################################
 ################ Delete Btaches #################################
@@ -334,7 +340,7 @@ def delete_batches(id):
         dbResponse = db.batches.delete_one({"batchId": str(id)})
         dbResponse2 = db.pages.delete_many({"batchId": str(id)})
         
-        path = os.path.join("../assets/", str(id))
+        path = os.path.join(app.config['IMAGE_PATH'] ,f'{str(id)}')
         shutil.rmtree(path)
         return Response(
             response=json.dumps({"Message": "Batch deleted", "id": f"{id}"}),
@@ -349,8 +355,8 @@ def delete_batches(id):
             mimetype="application/json"
         )
 
-#########################################################################
 
+#########################################################################
 
 @app.route("/uploads", methods=["POST"])
 @login_required
@@ -373,9 +379,9 @@ def upload_zip():
             batch_id = uuid.uuid4()
             # print("***id****",batch_id)
             
-            utils.extract_file(zip_file,db,batch_id)
-            utils.push_json_data_in_db(batch_id, db)
-            utils.remove_filesystem_folder(batch_id)
+            utils.extract_file(zip_file,db,batch_id,app.config['IMAGE_PATH'])
+            utils.push_json_data_in_db(batch_id, db,app.config['IMAGE_PATH'] )
+            utils.remove_filesystem_folder(batch_id,app.config['IMAGE_PATH'])
             
         return Response(
             response=json.dumps({"Message": "File Uploaded Successfully"}),
@@ -390,6 +396,7 @@ def upload_zip():
             status=500,
             mimetype="application/json"
         )
+
 
 
 if __name__ == "__main__":

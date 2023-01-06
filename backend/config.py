@@ -1,10 +1,15 @@
+import os
 class Config(object):
     
+   
+    
+    IMAGE_PATH = os.environ.get("BATCH_IMAGES_PATH")
+    # print("image :", IMAGE_PATH)
     ENV = "development"
     DEBUG = False
     TESTING = False
-
-    DB_NAME = "CorrectionUI"
+    
+    DB_NAME = "CorrectionUIdb2"
     HOST = "mongodb+srv://admin:1234@cluster0.p6bfznx.mongodb.net/test"
     DEBUG=True
     SECRET_KEY="secret"
@@ -19,7 +24,7 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
      DEBUG = True
-     DB_NAME = "CorrectionUI_Development"
+     DB_NAME = "CorrectionUIdb2"
      ENV = 'development'
   
 class TestingConfig(Config):
@@ -27,3 +32,4 @@ class TestingConfig(Config):
      DB_NAME = "CorrectionUI_Testing"
      
          
+
