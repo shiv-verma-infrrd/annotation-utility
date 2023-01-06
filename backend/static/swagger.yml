@@ -39,31 +39,111 @@ paths:
     get:
       summary: "Batch list"
       description: "Displays list of batches allocated to user"
-      # security:
-      #   - cookieAuth:
-      #     type: apiKey
-      #     in: cookie
-      #     name: session
       parameters:
       - in: path
-        name: userId
-        # description: "Accepts dictionary having email and password values"
+        name: user_id
         required: true
         schema:
           type: string
       responses:
         200:
-          description: "Login Successful"
-      #   401:
-      #     description: "Invalid credentials"
+          description: "Batch list retrieved"
+        500:
+          description: "Request failed"
   /pages/{batch_id}:
     get:
       summary: "Document List"
       description: "Displays list of documents in a batch"
       parameters:
-      - in: "path"
-        name: "id"
-        # description: "Accepts dictionary having email and password values"
+      - in: path
+        name: batch_id
         required: true
         schema:
           type: string
+      responses:
+        200:
+          description: "Document list retrieved"
+        500:
+          description: "Request failed"
+  /pages/{batch_id}/{doc_id}:
+    get:
+      summary: "Document Data"
+      description: "Retrieves data of specific document"
+      parameters:
+      - in: path
+        name: batch_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: doc_id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Document data retrieved"
+        500:
+          description: "Request failed"
+  /{batch_id}/{image}:
+    get:
+      summary: "Image"
+      description: "Retrieves Image"
+      parameters:
+      - in: path
+        name: batch_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: image
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Image retrieved"
+        500:
+          description: "Image request failed"
+  /pages:
+    put:
+      summary: "Update data"
+      description: "Update changes in data to database"
+      responses:
+        200:
+          description: "Data updated successfully"
+        500:
+          description: "Data update failed"
+  /downloads:
+    post:
+      summary: "Download data"
+      description: "Download data as a zip file"
+      responses:
+        200:
+          description: "Download successful"
+        500:
+          description: "Download failed"
+  /batches/{batch_id}:
+    delete:
+      summary: "Delete batch"
+      description: "Delete a batch from the database"
+      parameters:
+      - in: path
+        name: batch_id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Batch delete successfull"
+        500:
+          description: "Batch delete failed"
+  /uploads:
+    post:
+      summary: "Upload data"
+      description: "Upload batch data as a zip file"
+      responses:
+        200:
+          description: "Data upload successful"
+        500:
+          description: "Data upload failed"

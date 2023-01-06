@@ -116,7 +116,8 @@ def logout():
 def get_batches(userId):
     # print('Entered batches')
     try:
-        data = list(db.batches.find({'allocatedTo': userId}))
+        data = list(db.batches.find())
+        # data = list(db.batches.find({'allocatedTo': userId}))
         return Response(response=json.dumps(data, default=str),
                         status=200,
                         mimetype="application/json")
@@ -178,7 +179,7 @@ def get_kvp_data(batchId, docId):
 
 
 @app.route('/<batchId>/<image>', methods=['GET'])
-# @login_required
+@login_required
 def myapp(batchId, image):
     img_file = f'../assets/{batchId}/{image}.jpg'
     no_img = f'../assets/no-preview.png'
