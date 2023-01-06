@@ -2078,4 +2078,17 @@ clear_custom_option_cell()
     this.router.navigateByUrl('/batches');
   }
 
+
+  
+
+  strip_open: boolean = true;
+  strip_closed: boolean = false;
+
+  strip()
+  {
+    this.strip_open = !this.strip_open;
+    this.strip_closed = !this.strip_closed;
+  }
+
+
 }

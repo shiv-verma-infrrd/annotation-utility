@@ -3,18 +3,13 @@
     <div class="logo" routerLink="/batches"></div>
   </div>
   <div class="navbar-2">
-    <div (click)="image_zoom_in()" class="zoom_in_button">+</div>
-    <div (click)="image_zoom_out()" class="zoom_out_button">-</div>
-    <div class="display-all-question-on-click" (click)="display_category_label('q')">Question</div>
-    <div class="display-all-answer-on-click" (click)="display_category_label('a')">Answer</div>
-    <div class="display-all-header-on-click" (click)="display_category_label('h')">Header</div>
-    <div class="display-all-other-on-click" (click)="display_category_label('o')">Other</div>
   </div>
 
   <div (click)="make_custom_token(custom_token_input)" #custom_token_input class="custom-token-input" >+</div> 
 
 
   <div class="page-left-section" (scroll)="entity_line_adjuster()">
+    <div class="page-left-section-image">
       <img #image_ref src={{imageUrl+image_src}}>
       <svg:svg (mousedown)="custom_token_process_start($event,image_ref,custom_token_input)" (mousemove)="custom_token_process_between($event,image_ref)" (mouseup)="custom_token_process_end($event,custom_token_input)" #svg_ref [attr.height]="image_height" [attr.width]="image_width">
         <rect #r class="image_rect" *ngFor="let i of token_cord_for_image;let ind=index" [attr.x]="i.box[0]"
@@ -53,6 +48,30 @@
      <!--  -->
       </svg>
   </div>
+
+  <div class="display_strip_background">
+
+    <div class="strip_open" *ngIf="strip_closed" (click)="strip()">
+      <i class="arrow"></i>
+    </div>
+
+    <div class="strip_closed" *ngIf="strip_open" (click)="strip()">X</div>
+
+    <div class="strip" *ngIf="strip_open">
+      <div class="line">
+        <div (click)="image_zoom_in()" class="zoom_in_button">+</div>
+        <div (click)="image_zoom_out()" class="zoom_out_button">-</div>
+      </div>
+
+      <div class="label">
+        <div class="display-all-question-on-click" (click)="display_category_label('q')">Q</div>
+        <div class="display-all-answer-on-click" (click)="display_category_label('a')">A</div>
+        <div class="display-all-header-on-click" (click)="display_category_label('h')">H</div>
+        <div class="display-all-other-on-click" (click)="display_category_label('o')">O</div>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div class="page-right-section"> 
     
