@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
       console.log(data)
       let blob:Blob = data.body as Blob;
       let a = document.createElement('a')
-      a.download = batch_name
+      a.download = batch_name+'_output'
       a.href = window.URL.createObjectURL(blob)
       a.click();
     

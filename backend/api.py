@@ -2,7 +2,7 @@ from io import BytesIO
 import json
 import os
 import shutil
-from zipfile import ZipFile
+from zipfile import ZIP_DEFLATED, ZipFile
 from bson import ObjectId
 from flask import Flask, Response, jsonify, make_response, request, send_file
 from flask_cors import CORS
@@ -157,12 +157,16 @@ def get_kvp_data(batchId, docId):
         data = list(db.pages.find(
             {"documentId": str(docId), "batchId": str(batchId)}))
 
-        if str(data[0]["isCorrected"]).lower() == 'false':
-            if data[0]['type'] == "checkboxes":
-            
+        
+        if data[0]['type'] == "checkboxes":    
+            if str(data[0]["isCorrected"]).lower() == 'true':
+                # print(data[0]['correctedData']['ocrData']['form'])
+                form = utils.transform_data_for_corrected_data(data[0]['correctedData']['ocrData'])
+                data[0]['correctedData']['ocrData'] = form
+                
+            else:
                 form = utils.transform_data(data[0]['Data']['ocrData'],data[0]['Data']['checkboxData'])
                 data[0]['Data']['ocrData'] = form
-            
 
         return Response(
             response=json.dumps(data,default=str),
@@ -210,11 +214,13 @@ def put_ocr_data():
     try:
         raw_data = request.json
         
-        # print(raw_data["Type"])
+        
         if raw_data["type"] == "checkboxes":
-            data = raw_data['correctedData']['checkboxData']
-            transformed_checkbox_data = utils.retransform_checkbox_data(data)   
-            raw_data['correctedData']['checkboxData'] = transformed_checkbox_data
+            data = raw_data['correctedData']['ocrData']
+            # print("inside****")
+            # print(data)
+            transformed_data = utils.retransform_data(data)   
+            raw_data['correctedData']['ocrData'] = transformed_data
         
         db.pages.update_one({"_id": ObjectId(raw_data['_id'])}, {"$set": {
             
@@ -244,6 +250,7 @@ def put_ocr_data():
 ############## downloading file using batch name ###############
 
 
+
 @app.route('/downloads', methods=['POST'])
 @login_required
 def send_zip_file():
@@ -251,27 +258,43 @@ def send_zip_file():
         raw_data = request.json
         data = list(db.pages.find({"batchId": str(raw_data['batchId'])}))
         name = ""
+        type = data[0]['type']
+        # print('type: ', type)
         # print(data)
         for batch in data:
             
             # print(batch['correctedData']['kvpData'])
             batch['_id'] = str(batch['_id'])
-            if batch['type'] == 'checkboxes':
+            if type == 'checkboxes':
                 name = batch['document_name'] +"_checkboxes"
                 json_object = json.dumps(batch['correctedData']['checkboxData'])
-            elif batch['type'] == 'fields':
+                json_object2 = json.dumps(batch['correctedData']['ocrData'])
+                with open(""+name+".json", "w") as outfile:
+                   outfile.write(json_object)
+                with open(""+batch['document_name']+".json", "w") as outfile:
+                   outfile.write(json_object2)
+                
+            elif type == 'fields':
                 name = batch['document_name']
                 json_object = json.dumps(batch['correctedData']['kvpData'])    
-            with open(""+name+".json", "w") as outfile:
-                outfile.write(json_object)
+                with open(""+name+".json", "w") as outfile:
+                   outfile.write(json_object)
 
         path = os.getcwd()
 
         with ZipFile(""+raw_data['batch_name']+'.zip', 'w') as zip:
             for filename in os.listdir(path):
-                if filename.endswith(".json"):
-                    print(filename)
-                    zip.write(filename)
+                if type == 'fields':
+                    if filename.endswith(".json"):
+                        print(filename)
+                        zip.write(filename, raw_data['batch_name']+"_output/"+filename, ZIP_DEFLATED)
+                elif type == 'checkboxes':
+                    if filename.endswith("_checkboxes.json"):
+                        print(filename)
+                        zip.write(filename, "checkbox_data/"+filename, ZIP_DEFLATED)
+                    elif filename.endswith(".json"):
+                        print(filename)
+                        zip.write(filename, "ocrs/"+filename, ZIP_DEFLATED)
 
         return_file = BytesIO()
 
