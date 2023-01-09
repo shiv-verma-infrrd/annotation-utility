@@ -49,5 +49,35 @@
               </ng-container>
           </svg>
       </div>
+
+      <div class="image-control-container-background">
+
+        <div class="image-control-container-dropdown" *ngIf="image_control_container_closed" (click)="image_control_container()"> <i class="dropdown-sign"></i> </div>
+
+        <div class="image-control-container" *ngIf="image_control_container_open">
+
+          <div class="zoom-control">
+            <div (click)="image_zoom_in()" class="zoom-in-button">+</div>
+            <div (click)="image_zoom_out()" class="zoom-out-button">-</div>
+          </div>
+
+          <div class="label-type">
+            <div class="display-all-question-on-click" (click)="display_category_label('q')">Q</div>
+            <div class="display-all-answer-on-click" (click)="display_category_label('a')">A</div>
+            <div class="display-all-header-on-click" (click)="display_category_label('h')">H</div>
+            <div class="display-all-other-on-click" (click)="display_category_label('o')">O</div>
+          </div>
+        </div>
+
+        <div class="image-control-container-close" *ngIf="image_control_container_open" (click)="image_control_container()">X</div>
+      </div>
+    </div>
+
+    <div class="page-right-section"> 
+      <!-- *****************************************Field/Checkbox selection buttons******************************* -->
+      <div class="field-checkbox-selection">
+        <div class="fields" #field (click)="show_fields_section(field, checkbox)">Fields</div>
+        <div class="checkbox" #checkbox (click)="show_checkboxes_section(field, checkbox)">Checkboxes</div>
+      </div>
     </div>
 </div>

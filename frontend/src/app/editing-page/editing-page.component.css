@@ -143,3 +143,238 @@ svg
     stroke:orange;
     stroke-width: 1px;
 }
+
+
+.image-control-container-background
+{
+    height: 89%;
+    width: 5%;
+    position: absolute;
+    left: 2%;
+    top: 11%;
+}
+
+.image-control-container-dropdown
+{
+    background-color: rgba(0, 0, 0, 0.78);
+    position: absolute;
+    top: 3%;
+    left: 12.5%;
+    height: 5%;
+    width: 75%;
+    border-radius: 3rem;
+    cursor: pointer;
+}
+.dropdown-sign
+{
+    position: absolute;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    left: 34.5%;
+    top: 30%;
+    padding: 3px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.image-control-container
+{
+    height: 60%;
+    width: 100%;
+    position: absolute;
+    top: 10%;
+    left: 0%; 
+    background-color: rgba(0, 0, 0, 0.78);
+    border-radius: 0.4rem;
+}
+
+.zoom-control
+{
+    width: 100%;
+    height: 25%;
+    border-top:1px solid #23875e;
+    top: 75%;
+    position: absolute;
+}
+
+.zoom-in-button 
+{
+    height: 4%;
+    width: 70%;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    /* border: 1px solid white; */
+    position: absolute;
+    top: 70%;
+    left: 11%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.zoom-out-button 
+{
+    height: 4%;
+    width: 70%;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    /* border: 1px solid white; */
+    position: absolute;
+    top: 30%;
+    left: 19%;
+    cursor: pointer;
+    user-select: none;
+    transform: rotate(90deg);
+}
+
+.label-type
+{
+    height: 70%;
+    width: 100%;
+    position: absolute;
+    top: 5%;
+    left: 0%;
+    border-top: 1px solid #23875e;
+}
+
+.display-all-question-on-click
+{
+    height: 10%;
+    width: 60%;
+    font-size: .7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    color: white;
+    position: absolute;
+    top: 80%;
+    left: 20%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.display-all-answer-on-click
+{
+    height: 10%;
+    width: 60%;
+    font-size: .7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+    color: white;
+    position: absolute;
+    top: 55%;
+    left: 20%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.display-all-header-on-click
+{
+    height: 10%;
+    width: 60%;
+    font-size: .7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:purple;
+    color: white;
+    position: absolute;
+    top: 30%;
+    left: 20%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.display-all-other-on-click
+{
+    height: 10%;
+    width: 60%;
+    font-size: .7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:orange;
+    color: white;
+    position: absolute;
+    top: 5%;
+    left: 20%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.display-all-answer-on-click:hover, .display-all-question-on-click:hover, .display-all-header-on-click:hover, .display-all-other-on-click:hover
+{
+    position: absolute;
+    left:0%;
+    height: 20%;
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+.image-control-container-close
+{
+    background-color: rgba(0, 0, 0, 0.78);
+    position: absolute;
+    top: 3%;
+    left: 12.5%;
+    height: 5%;
+    width: 75%;
+    border-radius: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.05rem;
+    color: white;
+    user-select: none;
+    cursor: pointer;
+}
+
+.page-right-section 
+{
+    height: 89%;
+    width: 50%;
+    border-left: 2px solid black;
+    overflow-y: auto;
+    position: absolute;
+    top: 11%;
+    left: 50%;
+}
+
+.field-checkbox-selection
+{
+    height: 7%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.fields
+{
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    width: 20%;
+    cursor: pointer;
+    border-bottom: 7px solid #39a87a;
+}
+
+.checkbox
+{
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    left: 30%;
+    width: 25%;
+    cursor: pointer;
+}

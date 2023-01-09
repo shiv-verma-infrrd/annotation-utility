@@ -86,6 +86,28 @@ export class EditingPageComponent implements AfterViewInit
 
   saving_data_result:any;
 
+  ///////////////////////checkbox ka variable hai ye////////////////////////
+  checkbox_question_string:string[] = [];
+  checkbox_question_id:number[][] = [];
+
+  options_string:string[][] = []; 
+  options_string_id:number[][][] = []; 
+
+  actual_checkbox_id:number[][] = [];
+  actual_checkbox_value:string[][] = [];
+
+  custom_option_array1:number[]=[];
+  custom_option_array2:number[]=[];
+
+  header_checkbox:number = 0;
+  header_fields:number = 1;
+
+  /////////////// image control container variables /////////////////
+  image_control_container_open: boolean = true;
+  image_control_container_closed: boolean = false;
+
+
+
   constructor(private apiData: ApiDataService, private router:Router, private location:PlatformLocation, private toast:NgToastService)
   {
     
@@ -477,13 +499,77 @@ make_custom_token(custom_token_input_ref:any)
   this.custom_token_h=0;
 }
 
- entity_line_adjuster()
- {
+////////////////// Left side image control container ////////////
+  
+image_control_container()
+{
+  this.image_control_container_open = !this.image_control_container_open;
+  this.image_control_container_closed = !this.image_control_container_closed;
+}
+
+image_zoom_in()
+{
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+
   if(this.entity_connector_line!=undefined)
   {
-    this.entity_connector_line.position();
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
   }
- }
+
+  if (this.times >= 2.5) 
+  return;
+
+  this.times += 0.2;
+  this.image_ref.nativeElement.style.height = this.l * this.times + 'px';
+  this.image_ref.nativeElement.style.width = this.c * this.times + 'px';
+  this.image_height = this.l * this.times;
+  this.image_width = this.c * this.times;
+
+  for (let i = 0; i < this.token_cord_for_image.length; i++) 
+  {
+    this.token_cord_for_image[i].box[0] = (this.token_cord_for_image[i].box[0] / (this.times - 0.2)) * this.times;
+    this.token_cord_for_image[i].box[1] = (this.token_cord_for_image[i].box[1] / (this.times - 0.2)) * this.times;
+    this.token_cord_for_image[i].box[2] = (this.token_cord_for_image[i].box[2] / (this.times - 0.2)) * this.times;
+    this.token_cord_for_image[i].box[3] = (this.token_cord_for_image[i].box[3] / (this.times - 0.2)) * this.times;
+  }
+}
+
+image_zoom_out()
+{
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+
+  if(this.times<=0.4)
+  return;
+
+  this.times -= 0.2;
+  this.image_ref.nativeElement.style.height = this.l * this.times + 'px';
+  this.image_ref.nativeElement.style.width = this.c * this.times + 'px';
+  this.image_height = this.l * this.times;
+  this.image_width = this.c * this.times;
+
+  for (let i = 0; i < this.token_cord_for_image.length; i++) 
+  {
+    this.token_cord_for_image[i].box[0] = (this.token_cord_for_image[i].box[0] / (this.times + 0.2)) * this.times;
+    this.token_cord_for_image[i].box[1] = (this.token_cord_for_image[i].box[1] / (this.times + 0.2)) * this.times;
+    this.token_cord_for_image[i].box[2] = (this.token_cord_for_image[i].box[2] / (this.times + 0.2)) * this.times;
+    this.token_cord_for_image[i].box[3] = (this.token_cord_for_image[i].box[3] / (this.times + 0.2)) * this.times;
+  }
+}
+
+
 
  image_token_click(token_id:number)
 {
@@ -561,6 +647,142 @@ make_custom_token(custom_token_input_ref:any)
         this.custom_input_array1.push(token_id);
       }
     }
+    
+    else if(this.selected_input_type_checkbox == 'checkbox_option_string')
+    {
+      this.used_token_map.set(token_id, 1);
+      this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox].push(token_id);
+      this.options_string[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox] += ' '+this.token_cord_for_image[token_id].text;
+    }
+
+    else if(this.selected_input_type_checkbox == 'checkbox_question' || this.selected_input_type_checkbox == 'custom_checkbox_option_string' || this.selected_input_type_checkbox == "custom_actual_checkbox_string")
+    { 
+      if(this.selected_input_type_checkbox == 'checkbox_question')
+      {
+        this.used_token_map.set(token_id, 1)
+        // this.selected_input_ref.value += ' ' + this.token_cord_for_image[token_id].text;
+        this.checkbox_question_string[this.selected_input_index_checkbox]+=' ' + this.token_cord_for_image[token_id].text;
+        this.checkbox_question_id[this.selected_input_index_checkbox].push(token_id);
+      }
+
+      else if(this.selected_input_type_checkbox == 'custom_checkbox_option_string')
+      {
+        this.used_token_map.set(token_id, 1);
+        this.selected_input_ref_checkbox.value += ' ' + this.token_cord_for_image[token_id].text;
+        this.custom_option_array1.push(token_id);
+      }
+
+      else if(this.selected_input_type_checkbox == "custom_actual_checkbox_string")
+      {
+        this.used_token_map.set(token_id, 1)
+        this.selected_input_ref_checkbox.value += 'Checkbox Selected';
+        this.custom_option_array2.push(token_id);
+      }
+    } 
   }
- }
+} 
+
+display_category_label(type:string)
+{
+  if(type=='q')
+  {
+    if(this.display_question_token==0) 
+      this.display_question_token=1;
+    else
+    this.display_question_token=0; 
+  }
+  else if(type=='a')
+  {
+    if(this.display_answer_token==0) 
+      this.display_answer_token=1;
+    else
+    this.display_answer_token=0;
+  }
+  else if(type=='h')
+  {
+    if(this.display_header_token==0) 
+      this.display_header_token=1;
+    else
+    this.display_header_token=0;
+  }
+  else
+  {
+    if(this.display_other_token==0) 
+      this.display_other_token=1;
+    else
+    this.display_other_token=0;
+  }
+}
+
+////////////////////////////////////////////// Common Functions //////////////////////////////////////////////////////
+
+entity_line_adjuster()
+{
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.position();
+  }
+}
+
+show_fields_section(fields_border:any, checkboxes_border:any)
+{
+  fields_border.style.borderBottom = "7px solid #39a87a";
+  checkboxes_border.style.borderBottom = "none";
+  this.header_fields = 1;
+  this.header_checkbox = 0;
+
+
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+
+
+  /////////remove selected input in checkbox section////////
+  if(this.custom_option_array1.length>0)
+  {
+    for(let i = 0; i<this.custom_option_array1.length; i++)
+    {
+      this.used_token_map.delete(this.custom_option_array1[i]);
+    }
+
+    for(let i = 0; i<this.custom_option_array2.length; i++)
+    {
+      this.used_token_map.delete(this.custom_option_array2[i]);
+    }
+  }
+
+  this.custom_option_array1 = [];
+  this.custom_option_array2 = [];
+}
+
+show_checkboxes_section(fields_border:any, checkboxes_border:any)
+{
+  checkboxes_border.style.borderBottom = "7px solid #39a87a";
+  fields_border.style.borderBottom = "none";
+  this.header_fields = 0;
+  this.header_checkbox = 1;
+
+
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+}
+
+
 }
