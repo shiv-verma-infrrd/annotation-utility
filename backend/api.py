@@ -407,7 +407,7 @@ def upload_zip():
         )
 
 #### Admin APIs ####
-@app.route("/users", methods=["GET"])
+@app.route("/userss", methods=["GET"])
 @login_required
 @admin_permission.require()
 def get_users():
