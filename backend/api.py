@@ -17,6 +17,7 @@ import pymongo
 import utils
 from flask_swagger_ui import get_swaggerui_blueprint
 import uuid
+from flask_principal import Principal, Permission, RoleNeed, Identity
 
 app = Flask(__name__)
 
@@ -44,7 +45,7 @@ try:
     mongo.server_info()
 
 except:
-    print("Error - cannot connet to db")
+    print("Error - cannot connect to db")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -59,6 +60,8 @@ cors = CORS(
 class User(UserMixin):
     ...
 
+principals = Principal()
+admin_permission = Permission(RoleNeed('admin'))
 
 SWAGGER_URL = '/api/docs'
 API_URL = '/static/swagger.yml'
@@ -78,6 +81,13 @@ def user_loader(id):
     if user:
         user_model = User()
         user_model.id = user["_id"]
+        
+        # Identify and set user role
+        role = user['role']
+        identity = Identity(user["_id"])
+        identity.provides.add(RoleNeed(role))
+        principals.set_identity(identity=identity)
+
         return user_model
     return None
 
@@ -96,8 +106,7 @@ def login():
         return_data = jsonify(
             userId=str(user_query['_id']),
             username=user_query['name'],
-            email=user_query['email'],
-            userRole=user_query['isAdmin']
+            email=user_query['email']
         )
         return return_data, 200
 
@@ -397,7 +406,27 @@ def upload_zip():
             mimetype="application/json"
         )
 
+#### Admin APIs ####
+@app.route("/users", methods=["GET"])
+@login_required
+@admin_permission.require()
+def get_users():
+    try:
+        data = list(db.Users.find())
+        return Response(response=json.dumps(data, default=str),
+                        status=200,
+                        mimetype="application/json")
 
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {
+                    "message": "cannot read users",
+                }),
+            status=500,
+            mimetype="application/json"
+        )
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
