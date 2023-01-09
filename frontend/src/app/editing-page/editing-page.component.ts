@@ -569,8 +569,6 @@ image_zoom_out()
   }
 }
 
-
-
  image_token_click(token_id:number)
 {
   if(this.used_token_map.has(token_id))
@@ -783,6 +781,945 @@ show_checkboxes_section(fields_border:any, checkboxes_border:any)
     this.entity_connector_line=undefined;
   }
 }
+//////////////////////////////////////////////////////////Field Functions/////////////////////////////////////////////////////////////
+
+select_field_for_editing(ref: any, type: any, index: number)
+{
+  this.selected_input_ref_field = ref;
+  this.selected_input_type_field = type;
+  this.selected_input_index_field = index;  
+  
+  if (type == 'cq' || type == 'ca' || type == 'ch' || type == 'co') 
+  {
+    //if any entity is getting pointed in image
+    this.display_entity_rect_ref.nativeElement.style.x = 0;
+    this.display_entity_rect_ref.nativeElement.style.y = 0;
+
+    this.display_entity_rect_ref.nativeElement.style.height = 0;
+    this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line=undefined;
+    }
+  }
+}
+
+make_custom_field_entity()
+{
+  if (this.custom_input_type == 'Header') 
+  {
+    if (this.custom_header_input_ref.nativeElement.value == '') 
+    {
+      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
+    } 
+    else 
+    {
+      this.some_changes_done=1;
+
+      for (let i = 0; i < this.custom_input_array1.length; i++) 
+      {
+        this.used_token_map.set(this.custom_input_array1[i], 1);
+      }
+
+      // this.header_entity_indexs.push(this.custom_input_array1);
+      // this.header_entity_strings.push(this.custom_header_input_ref.nativeElement.value);
+      
+      this.header_entity_ids.unshift(this.custom_input_array1);
+      this.header_entity_strings.unshift(this.custom_header_input_ref.nativeElement.value);
+
+      this.custom_input_array1 = [];
+      this.custom_header_input_ref.nativeElement.value = '';
+    }
+  } 
+
+  else if (this.custom_input_type == 'Other')
+  {
+    if (this.custom_other_input_ref.nativeElement.value == '') 
+    {
+      
+      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
+
+    }
+    else
+    {
+      this.some_changes_done=1;
+
+      for (let i = 0; i < this.custom_input_array1.length; i++) 
+      {
+        this.used_token_map.set(this.custom_input_array1[i], 1);
+      }
+
+      // this.other_entity_indexs.push(this.custom_input_array1);
+      // this.other_entity_strings.push(this.custom_other_input_ref.nativeElement.value);
+      
+      this.other_entity_ids.unshift(this.custom_input_array1);
+      this.other_entity_strings.unshift(this.custom_other_input_ref.nativeElement.value);
+
+      this.custom_input_array1 = [];
+      this.custom_other_input_ref.nativeElement.value = '';
+    }
+  } 
+
+  else 
+  {
+    if (this.custom_question_input_ref.nativeElement.value == '' || this.custom_answer_input_ref.nativeElement.value == '') 
+    {
+      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
+
+    } 
+    else 
+    {
+      this.some_changes_done=1;
+      
+      for (let i = 0; i < this.custom_input_array1.length; i++) 
+      {
+        this.used_token_map.set(this.custom_input_array1[i], 1);
+      }
+
+      for (let i = 0; i < this.custom_input_array2.length; i++) 
+      {
+        this.used_token_map.set(this.custom_input_array2[i], 1);
+      }
+
+      // this.question_entity_indexs.push(this.custom_input_array1);
+      // this.question_entity_strings.push(this.custom_question_input_ref.nativeElement.value);
+      
+      this.question_entity_ids.unshift(this.custom_input_array1);
+      this.question_entity_strings.unshift(this.custom_question_input_ref.nativeElement.value);
+
+      // this.answer_entity_indexs.push(this.custom_input_array2);
+      // this.answer_entity_strings.push(this.custom_answer_input_ref.nativeElement.value);
+
+      this.answer_entity_ids.unshift(this.custom_input_array2);
+      this.answer_entity_strings.unshift(this.custom_answer_input_ref.nativeElement.value);
+      
+
+      this.custom_input_array1 = [];
+      this.custom_input_array2 = [];
+
+      this.custom_question_input_ref.nativeElement.value = '';
+      this.custom_answer_input_ref.nativeElement.value = '';
+    }
+  }
+}
 
 
+
+next_button_click()
+{
+  this.clear_custom_field_input();
+  this.clear_selected_field_input_ref();
+
+  if (this.custom_input_type == 'Header') 
+  {
+    this.custom_input_type = 'Q&A';
+    this.custom_question_input_ref.nativeElement.style.display = 'block';
+    this.custom_answer_input_ref.nativeElement.style.display = 'block';
+    this.custom_header_input_ref.nativeElement.style.display = 'none';
+    this.custom_other_input_ref.nativeElement.style.display = 'none';
+  }
+  else if (this.custom_input_type == 'Q&A') 
+  {
+    this.custom_input_type = 'Other';
+    this.custom_header_input_ref.nativeElement.style.display = 'none';
+    this.custom_question_input_ref.nativeElement.style.display = 'none';
+    this.custom_answer_input_ref.nativeElement.style.display = 'none';
+    this.custom_other_input_ref.nativeElement.style.display = 'block';
+  } 
+  else
+  {
+    this.custom_input_type = 'Header';
+    this.custom_header_input_ref.nativeElement.style.display = 'block';
+    this.custom_question_input_ref.nativeElement.style.display = 'none';
+    this.custom_answer_input_ref.nativeElement.style.display = 'none';
+    this.custom_other_input_ref.nativeElement.style.display = 'none';
+  }
+}
+
+  
+
+clear_custom_field_input() 
+{
+  if (this.custom_input_type == 'Header' ||this.custom_input_type == 'Other') 
+  {
+    for (let i = 0; i < this.custom_input_array1.length; i++)
+    {
+      this.used_token_map.delete(this.custom_input_array1[i]);
+    }
+
+    this.custom_input_array1 = [];
+
+    this.custom_header_input_ref.nativeElement.value = '';
+    this.custom_other_input_ref.nativeElement.value = '';
+  } 
+  else
+  {
+    for (let i = 0; i < this.custom_input_array1.length; i++)
+    {
+      this.used_token_map.delete(this.custom_input_array1[i]);
+    }
+    
+    for (let i = 0; i < this.custom_input_array2.length; i++)
+    {
+      this.used_token_map.delete(this.custom_input_array2[i]);
+    }
+    this.custom_input_array1 = [];
+    this.custom_input_array2 = [];
+
+    this.custom_question_input_ref.nativeElement.value = '';
+    this.custom_answer_input_ref.nativeElement.value = '';
+  }
+}
+  
+  // clear_custom_field_input_cell() 
+  // {
+  //   if (this.selected_input_type == 'ch' ||this.selected_input_type == 'co' ||this.selected_input_type == 'cq')
+  //   {
+  //     for (let i = 0; i < this.custom_input_array1.length; i++) 
+  //     {
+  //       this.used_token_map.delete(this.custom_input_array1[i]);
+  //     }
+
+  //     this.custom_input_array1 = [];
+  //     this.selected_input_ref.value = '';
+  //   } 
+  //   else
+  //   {
+  //     for (let i = 0; i < this.custom_input_array2.length; i++) 
+  //     {
+  //       this.used_token_map.delete(this.custom_input_array2[i]);
+  //     }
+
+  //     this.custom_input_array2 = [];
+  //     this.selected_input_ref.value = '';
+  //   }
+  // }
+
+
+clear_selected_field_input_ref()
+{
+  this.selected_input_ref_field = undefined;
+  this.selected_input_type_field = '';
+  this.selected_input_index_field = -1;
+}
+
+pop_token_from_field_entity()
+{ 
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+
+
+  this.some_changes_done=1;
+
+  if (this.selected_input_type_field == 'q') 
+  {
+      let remain_length=this.question_entity_ids[this.selected_input_index_field].length;
+
+      if(remain_length==0)
+      return;
+
+      this.used_token_map.delete(this.question_entity_ids[this.selected_input_index_field][remain_length-1]);
+
+      let deleted_token_id=this.question_entity_ids[this.selected_input_index_field][remain_length-1];
+      this.question_entity_ids[this.selected_input_index_field].pop();
+
+      var pos=this.question_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+
+      this.question_entity_strings[this.selected_input_index_field]=
+      this.question_entity_strings[this.selected_input_index_field].substring(0,pos)
+      +
+      this.question_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.question_entity_strings[this.selected_input_index_field].length);
+
+      //check if only spaces left
+      let space_count=0;
+      for(let k=0;k<this.question_entity_strings[this.selected_input_index_field].length;k++)
+      {
+        if(this.question_entity_strings[this.selected_input_index_field][k]==' ')
+        space_count++;
+      }
+
+      if(space_count==this.question_entity_strings[this.selected_input_index_field].length)
+      this.question_entity_strings[this.selected_input_index_field]='';
+  } 
+  else if (this.selected_input_type_field == 'a')
+  {
+    let remain_length=this.answer_entity_ids[this.selected_input_index_field].length;
+
+    if(remain_length==0)
+    return;
+
+    this.used_token_map.delete(this.answer_entity_ids[this.selected_input_index_field][remain_length-1]);
+
+    let deleted_token_id=this.answer_entity_ids[this.selected_input_index_field][remain_length-1];
+    this.answer_entity_ids[this.selected_input_index_field].pop();
+
+    var pos=this.answer_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+
+    this.answer_entity_strings[this.selected_input_index_field]=
+    this.answer_entity_strings[this.selected_input_index_field].substring(0,pos)
+    +
+    this.answer_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.answer_entity_strings[this.selected_input_index_field].length);
+
+    //check if only spaces left
+    let space_count=0;
+    for(let k=0;k<this.answer_entity_strings[this.selected_input_index_field].length;k++)
+    {
+      if(this.answer_entity_strings[this.selected_input_index_field][k]==' ')
+      space_count++;
+    }
+
+    if(space_count==this.answer_entity_strings[this.selected_input_index_field].length)
+    this.answer_entity_strings[this.selected_input_index_field]='';
+  } 
+  else if (this.selected_input_type_field == 'h') 
+  {
+    let remain_length=this.header_entity_ids[this.selected_input_index_field].length;
+
+    if(remain_length==0)
+    return;
+
+    this.used_token_map.delete(this.header_entity_ids[this.selected_input_index_field][remain_length-1]);
+
+    let deleted_token_id=this.header_entity_ids[this.selected_input_index_field][remain_length-1];
+    this.header_entity_ids[this.selected_input_index_field].pop();
+
+    var pos=this.header_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+
+    this.header_entity_strings[this.selected_input_index_field]=
+    this.header_entity_strings[this.selected_input_index_field].substring(0,pos)
+    +
+    this.header_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.header_entity_strings[this.selected_input_index_field].length);
+
+    //check if only spaces left
+    let space_count=0;
+    for(let k=0;k<this.header_entity_strings[this.selected_input_index_field].length;k++)
+    {
+      if(this.header_entity_strings[this.selected_input_index_field][k]==' ')
+      space_count++;
+    }
+
+    if(space_count==this.header_entity_strings[this.selected_input_index_field].length)
+    this.header_entity_strings[this.selected_input_index_field]='';
+  } 
+  else if (this.selected_input_type_field == 'o')
+  {
+    let remain_length=this.other_entity_ids[this.selected_input_index_field].length;
+
+    if(remain_length==0)
+    return;
+
+    this.used_token_map.delete(this.other_entity_ids[this.selected_input_index_field][remain_length-1]);
+
+    let deleted_token_id=this.other_entity_ids[this.selected_input_index_field][remain_length-1];
+    this.other_entity_ids[this.selected_input_index_field].pop();
+
+    var pos=this.other_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+
+    this.other_entity_strings[this.selected_input_index_field]=
+    this.other_entity_strings[this.selected_input_index_field].substring(0,pos)
+    +
+    this.other_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.other_entity_strings[this.selected_input_index_field].length);
+
+    //check if only spaces left
+    let space_count=0;
+    for(let k=0;k<this.other_entity_strings[this.selected_input_index_field].length;k++)
+    {
+      if(this.other_entity_strings[this.selected_input_index_field][k]==' ')
+      space_count++;
+    }
+
+    if(space_count==this.other_entity_strings[this.selected_input_index_field].length)
+    this.other_entity_strings[this.selected_input_index_field]='';
+  }
+
+  else if(this.selected_input_type_field == 'cq')
+  {
+    if(this.custom_input_array1.length == 0)
+    return;
+
+    else
+    {
+
+      this.used_token_map.delete(this.custom_input_array1[this.custom_input_array1.length-1]);
+      this.custom_input_array1.pop();
+
+      let t="";
+
+      for(let i = 0; i<this.custom_input_array1.length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.custom_input_array1[i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.custom_input_array1[i]].text;
+      }
+
+      this.selected_input_ref_field.value = t;
+    }
+  }
+
+  else if(this.selected_input_type_field == 'ca')
+  {
+    if(this.custom_input_array2.length == 0)
+    return;
+
+    else
+    {
+
+      this.used_token_map.delete(this.custom_input_array2[this.custom_input_array2.length-1]);
+      this.custom_input_array2.pop();
+
+      let t="";
+
+      for(let i = 0; i<this.custom_input_array2.length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.custom_input_array2[i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.custom_input_array2[i]].text;
+      }
+
+      this.selected_input_ref_field.value = t;
+    }
+  }
+
+  else if(this.selected_input_type_field == 'ch')
+  {
+    if(this.custom_input_array1.length == 0)
+    return;
+
+    else
+    {
+
+      this.used_token_map.delete(this.custom_input_array1[this.custom_input_array1.length-1]);
+      this.custom_input_array1.pop();
+
+      let t="";
+
+      for(let i = 0; i<this.custom_input_array1.length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.custom_input_array1[i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.custom_input_array1[i]].text;
+      }
+
+      this.selected_input_ref_field.value = t;
+    }
+  }
+
+  else if(this.selected_input_type_field == 'co')
+  {
+    if(this.custom_input_array1.length == 0)
+    return;
+
+    else
+    {
+
+      this.used_token_map.delete(this.custom_input_array1[this.custom_input_array1.length-1]);
+      this.custom_input_array1.pop();
+
+      let t="";
+
+      for(let i = 0; i<this.custom_input_array1.length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.custom_input_array1[i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.custom_input_array1[i]].text;
+      }
+
+      this.selected_input_ref_field.value = t;
+    }
+  }
+}
+
+delete_field_entity(type:string,index:number)
+{
+  this.some_changes_done = 1;
+
+  // if any entity is getting pointed in image
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+  if (this.entity_connector_line != undefined) 
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line = undefined;
+  }
+
+  if (type == 'q') 
+  {
+    // console.log(this.question_entity_ids[index]);
+    // console.log(this.answer_entity_ids[index]);
+    
+    for (let i = 0; i < this.question_entity_ids[index].length; i++)
+    {
+      this.used_token_map.delete(this.question_entity_ids[index][i]);
+    }
+    
+    for (let j = 0; j < this.answer_entity_ids[index].length; j++) 
+    {
+      this.used_token_map.delete(this.answer_entity_ids[index][j]);
+    }
+
+    this.question_entity_strings.splice(index, 1);
+    this.question_entity_ids.splice(index, 1);
+    this.answer_entity_strings.splice(index, 1);
+    this.answer_entity_ids.splice(index, 1);
+  } 
+  else if (type == 'h') 
+  {
+    for (let i = 0; i < this.header_entity_ids[index].length; i++) 
+    {
+      this.used_token_map.delete(this.header_entity_ids[index][i]);
+    }
+
+    this.header_entity_strings.splice(index, 1);
+    this.header_entity_ids.splice(index, 1);
+  } 
+  else if (type == 'o')
+  {
+    for (let i = 0; i < this.other_entity_ids[index].length; i++) 
+    {
+      this.used_token_map.delete(this.other_entity_ids[index][i]);
+    }
+    this.other_entity_strings.splice(index, 1);
+    this.other_entity_ids.splice(index, 1);
+  }
+}
+
+field_entity_click(type: string, index: number, entity_ref: any)
+{
+  var x = 99999,
+    y = 99999,
+    x2 = -1,
+    y2 = -1;
+  if (type == 'q') 
+  {
+    for (let i = 0; i < this.question_entity_ids[index].length; i++) 
+    {
+      if(x>this.token_cord_for_image[this.question_entity_ids[index][i]].box[0])
+        x=this.token_cord_for_image[this.question_entity_ids[index][i]].box[0];
+      if(y>this.token_cord_for_image[this.question_entity_ids[index][i]].box[1])
+        y=this.token_cord_for_image[this.question_entity_ids[index][i]].box[1];
+      if(x2<this.token_cord_for_image[this.question_entity_ids[index][i]].box[2])
+        x2 =this.token_cord_for_image[this.question_entity_ids[index][i]].box[2];
+      if(y2 <this.token_cord_for_image[this.question_entity_ids[index][i]].box[3])
+        y2 =this.token_cord_for_image[this.question_entity_ids[index][i]].box[3];
+    }
+  }
+
+  else if (type == 'a') 
+  {
+    for (let i = 0; i < this.answer_entity_ids[index].length; i++) 
+    {
+      if(x>this.token_cord_for_image[this.answer_entity_ids[index][i]].box[0])
+        x = this.token_cord_for_image[this.answer_entity_ids[index][i]].box[0];
+      if(y>this.token_cord_for_image[this.answer_entity_ids[index][i]].box[1])
+        y=this.token_cord_for_image[this.answer_entity_ids[index][i]].box[1];
+      if(x2<this.token_cord_for_image[this.answer_entity_ids[index][i]].box[2])
+        x2 =this.token_cord_for_image[this.answer_entity_ids[index][i]].box[2];
+      if(y2<this.token_cord_for_image[this.answer_entity_ids[index][i]].box[3])
+        y2=this.token_cord_for_image[this.answer_entity_ids[index][i]].box[3];
+    }
+  }
+
+  else if (type == 'h') 
+  {
+    for (let i = 0; i < this.header_entity_ids[index].length; i++)
+    {
+      if (x > this.token_cord_for_image[this.header_entity_ids[index][i]].box[0])
+        x = this.token_cord_for_image[this.header_entity_ids[index][i]].box[0];
+      if (y > this.token_cord_for_image[this.header_entity_ids[index][i]].box[1])
+        y = this.token_cord_for_image[this.header_entity_ids[index][i]].box[1];
+      if (x2 < this.token_cord_for_image[this.header_entity_ids[index][i]].box[2])
+        x2 = this.token_cord_for_image[this.header_entity_ids[index][i]].box[2];
+      if(y2 < this.token_cord_for_image[this.header_entity_ids[index][i]].box[3])
+        y2 =this.token_cord_for_image[this.header_entity_ids[index][i]].box[3];
+    }
+  }
+
+  else
+  {
+    for (let i = 0; i < this.other_entity_ids[index].length; i++) 
+    {
+      if (x > this.token_cord_for_image[this.other_entity_ids[index][i]].box[0])
+        x = this.token_cord_for_image[this.other_entity_ids[index][i]].box[0];
+      if (y > this.token_cord_for_image[this.other_entity_ids[index][i]].box[1])
+        y = this.token_cord_for_image[this.other_entity_ids[index][i]].box[1];
+      if (x2 < this.token_cord_for_image[this.other_entity_ids[index][i]].box[2])
+        x2 = this.token_cord_for_image[this.other_entity_ids[index][i]].box[2];
+      if (y2 < this.token_cord_for_image[this.other_entity_ids[index][i]].box[3])
+        y2 = this.token_cord_for_image[this.other_entity_ids[index][i]].box[3];
+    }
+  }
+
+  if (x != 99999) 
+  {
+    this.display_entity_rect_ref.nativeElement.style.x = x;
+    this.display_entity_rect_ref.nativeElement.style.y = y;
+
+    this.display_entity_rect_ref.nativeElement.style.height = y2 - y;
+    this.display_entity_rect_ref.nativeElement.style.width = x2 - x;
+
+    //connecting-line stuff
+
+    if (this.entity_connector_line != undefined) 
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line = undefined;
+    }
+
+    this.entity_connector_line = new LeaderLine(entity_ref,this.display_entity_rect_ref.nativeElement);
+    this.entity_connector_line.size = 2.75;
+    this.entity_connector_line.dash = true;
+    this.entity_connector_line.path = 'grid';
+    this.entity_connector_line.color = '#39a87a';
+
+  }
+}
+///////////////////////////////////////////////Common function//////////////////////////////////////////////
+
+save_all_data(condition: number) 
+{
+  // if (this.question_entity_strings.find((element) => element == '') !=undefined || this.answer_entity_strings.find((element) => element == '') != undefined) 
+  // {
+  //   this.toast.error({
+  //     detail: 'ERROR',
+  //     summary: 'The data is not corrected properly',
+  //     duration: 3000,
+  //   });
+  //   return;
+  // } 
+  // else if (this.some_changes_done == 0)
+  // {
+  //   this.toast.error({
+  //     detail: 'ERROR',
+  //     summary: "You haven't made any change in data",
+  //     duration: 3000,
+  //   });
+  //   return;
+  // } 
+  // else 
+  // {
+  //   this.toast.success({
+  //     detail: 'SUCCESS',
+  //     summary: "Your data is saved successful",
+  //     duration: 3000,
+  //   });
+  // }
+
+  let result: any = [];
+  let a, b, c, d;
+  let t: any[] = [];
+
+  for (let i = 0; i < this.question_entity_strings.length; i++) 
+  {
+    a = 99999;
+    b = 99999;
+    c = -1;
+    d = -1;
+    t = [];
+    for (let j = 0; j < this.question_entity_ids[i].length; j++) 
+    {
+      if (a > this.token_cord_for_cal[this.question_entity_ids[i][j]].box[0])
+        a = this.token_cord_for_cal[this.question_entity_ids[i][j]].box[0];
+
+      if (b > this.token_cord_for_cal[this.question_entity_ids[i][j]].box[1])
+        b = this.token_cord_for_cal[this.question_entity_ids[i][j]].box[1];
+
+      if (c < this.token_cord_for_cal[this.question_entity_ids[i][j]].box[2])
+        c = this.token_cord_for_cal[this.question_entity_ids[i][j]].box[2];
+
+      if (d < this.token_cord_for_cal[this.question_entity_ids[i][j]].box[3])
+        d = this.token_cord_for_cal[this.question_entity_ids[i][j]].box[3];
+
+      t.push({
+        box: this.token_cord_for_cal[this.question_entity_ids[i][j]].box,
+        text: this.token_cord_for_cal[this.question_entity_ids[i][j]].text,
+      });
+    }
+    result.push({
+      box: [a, b, c, d],
+      text: this.question_entity_strings[i],
+      label: 'question',
+      words: t,
+      linking: [{ linking: [result.length, result.length + 1] }],
+      id: result.length,
+    });
+
+    a = 99999;
+    b = 99999;
+    c = -1;
+    d = -1;
+    t = [];
+    for (let j = 0; j < this.answer_entity_ids[i].length; j++) 
+    {
+      if (a > this.token_cord_for_cal[this.answer_entity_ids[i][j]].box[0])
+        a = this.token_cord_for_cal[this.answer_entity_ids[i][j]].box[0];
+
+      if (b > this.token_cord_for_cal[this.answer_entity_ids[i][j]].box[1])
+        b = this.token_cord_for_cal[this.answer_entity_ids[i][j]].box[1];
+
+      if (c < this.token_cord_for_cal[this.answer_entity_ids[i][j]].box[2])
+        c = this.token_cord_for_cal[this.answer_entity_ids[i][j]].box[2];
+
+      if (d < this.token_cord_for_cal[this.answer_entity_ids[i][j]].box[3])
+        d = this.token_cord_for_cal[this.answer_entity_ids[i][j]].box[3];
+
+      t.push({
+        box: this.token_cord_for_cal[this.answer_entity_ids[i][j]].box,
+        text: this.token_cord_for_cal[this.answer_entity_ids[i][j]].text,
+      });
+    }
+
+    result.push({
+      box: [a, b, c, d],
+      text: this.answer_entity_strings[i],
+      label: 'answer',
+      words: t,
+      linking: [{ linking: [result.length, result.length - 1] }],
+      id: result.length,
+    });
+  }
+
+  for (let i = 0; i < this.header_entity_strings.length; i++) 
+  {
+    a = 99999;
+    b = 99999;
+    c = -1;
+    d = -1;
+    t = [];
+    for (let j = 0; j < this.header_entity_ids[i].length; j++)
+    {
+      if (a > this.token_cord_for_cal[this.header_entity_ids[i][j]].box[0])
+        a = this.token_cord_for_cal[this.header_entity_ids[i][j]].box[0];
+
+      if (b > this.token_cord_for_cal[this.header_entity_ids[i][j]].box[1])
+        b = this.token_cord_for_cal[this.header_entity_ids[i][j]].box[1];
+
+      if (c < this.token_cord_for_cal[this.header_entity_ids[i][j]].box[2])
+        c = this.token_cord_for_cal[this.header_entity_ids[i][j]].box[2];
+
+      if (d < this.token_cord_for_cal[this.header_entity_ids[i][j]].box[3])
+        d = this.token_cord_for_cal[this.header_entity_ids[i][j]].box[3];
+
+      t.push({
+        box: this.token_cord_for_cal[this.header_entity_ids[i][j]].box,
+        text: this.token_cord_for_cal[this.header_entity_ids[i][j]].text,
+      });
+    }
+    result.push({
+      box: [a, b, c, d],
+      text: this.header_entity_strings[i],
+      label: 'header',
+      words: t,
+      linking: [{ linking: [] }],
+      id: result.length,
+    });
+  }
+
+  for (let i = 0; i < this.other_entity_strings.length; i++) 
+  {
+    a = 99999;
+    b = 99999;
+    c = -1;
+    d = -1;
+    t = [];
+    for (let j = 0; j < this.other_entity_ids[i].length; j++) {
+      if (a > this.token_cord_for_cal[this.other_entity_ids[i][j]].box[0])
+        a = this.token_cord_for_cal[this.other_entity_ids[i][j]].box[0];
+
+      if (b > this.token_cord_for_cal[this.other_entity_ids[i][j]].box[1])
+        b = this.token_cord_for_cal[this.other_entity_ids[i][j]].box[1];
+
+      if (c < this.token_cord_for_cal[this.other_entity_ids[i][j]].box[2])
+        c = this.token_cord_for_cal[this.other_entity_ids[i][j]].box[2];
+
+      if (d < this.token_cord_for_cal[this.other_entity_ids[i][j]].box[3])
+        d = this.token_cord_for_cal[this.other_entity_ids[i][j]].box[3];
+
+      t.push({
+        box: this.token_cord_for_cal[this.other_entity_ids[i][j]].box,
+        text: this.token_cord_for_cal[this.other_entity_ids[i][j]].text,
+      });
+    }
+    result.push({
+      box: [a, b, c, d],
+      text: this.other_entity_strings[i],
+      label: 'other',
+      words: t,
+      linking: [{ linking: [] }],
+      id: result.length,
+    });
+  }
+
+  let checkboxes:any[] = [];
+  let questions:any[] = [];
+
+  for(let z = 0; z<this.checkbox_question_id.length; z++)
+  {
+    for(let z2=0; z2 < this.options_string_id[z].length; z2++)
+    {
+      let token_index = [];
+      
+      let token_label = this.actual_checkbox_value[z][z2];
+      // let 
+
+      for(let z3 = 0; z3 < this.options_string_id[z][z2].length; z3++)
+      {
+        token_index.push(this.options_string_id[z][z2][z3]);
+      }
+
+      let obj = {
+        'tl': { 'x': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[0], 'y': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[1]},
+        'br': { 'x': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[2], 'y': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[3]},
+        'label': token_label,
+        'confidence': 1.0,
+        'token_indexes': token_index,
+        'question_id': z
+      }
+      
+      checkboxes.push(obj);
+    }
+
+    let question_index = [];
+
+    for(let z2 = 0; z2 < this.checkbox_question_id[z].length; z2++)
+    {
+      question_index.push(this.checkbox_question_id[z][z2]);
+    }
+
+    let ques = {
+      'id': z,
+      'token_indexes': question_index 
+    }
+    
+    questions.push(ques);
+  }
+
+  // console.log({"checkboxes": checkboxes, "questions": questions});
+    
+  let final:any;
+
+  if(this.saving_data_result.type == "checkboxes")
+  {
+
+    final = {
+      "_id": this.saving_data_result._id,
+      "imgid":this.saving_data_result.imgid,
+      "documentId": this.saving_data_result.documentId,
+      "batchName":this.saving_data_result.batchName,
+      "document_name":this.saving_data_result.document_name,
+      "isCorrected": "true",
+      "imageStatus": this.saving_data_result.imageStatus,
+      "imagePath": this.saving_data_result.imagePath,
+      "type":this.saving_data_result.type,
+      "Data": {
+          "checkboxData": {},
+          "ocrData":{},
+          "kvpData":{}
+      },
+      "correctedData": {
+          "checkboxData":{"checkboxes": checkboxes, "questions": questions},
+          "ocrData":{"form":this.token_cord_for_cal},
+          "kvpData":{}
+      },
+      "correctedBy": "",
+      "correctedOn": ""
+    }
+  }
+
+  else
+  {
+    final = {
+      "_id": this.saving_data_result._id,
+      "imgid":this.saving_data_result.imgid,
+      "documentId": this.saving_data_result.documentId,
+      "batchName":this.saving_data_result.batchName,
+      "document_name":this.saving_data_result.document_name,
+      "isCorrected": "true",
+      "imageStatus": this.saving_data_result.imageStatus,
+      "imagePath": this.saving_data_result.imagePath,
+      "type":this.saving_data_result.type,
+      "Data": {
+          "checkboxData": {},
+          "ocrData":{},
+          "kvpData":{}
+      },
+      "correctedData": {
+          "checkboxData":[],
+          "ocrData":{},
+          "kvpData": {"form":result}
+      },
+      "correctedBy": "",
+      "correctedOn": ""
+    }
+  }
+
+   //  console.log(final);
+   
+    
+  this.apiData.update_page_data(final).subscribe((data) => 
+  {
+    console.warn(data);
+  });
+
+  if (condition == 0) 
+  {
+    this.exit();
+  } 
+
+  else
+  { 
+    for(let i=0;i<this.apiData.docarray.length;i++)
+    {    
+      if(this.apiData.docarray[Number(i)].documentId == this.doc_id)
+      {
+
+        if(i == this.apiData.docarray.length - 1 )
+        {
+          this.doc_id = this.apiData.docarray[0].documentId;
+          window.sessionStorage.setItem('global_doc_id',this.doc_id);
+          window.location.reload();
+        }
+
+        else{// console.log(this.apiData.docarray[Number(i)+1])
+            this.doc_id = this.apiData.docarray[Number(i)+1].documentId;
+            window.sessionStorage.setItem('global_doc_id',this.doc_id);
+            window.location.reload();
+        }
+        break
+      }
+    }
+  }
+}
+exit() 
+{
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+
+  this.router.navigateByUrl('/batches');
+}
 }

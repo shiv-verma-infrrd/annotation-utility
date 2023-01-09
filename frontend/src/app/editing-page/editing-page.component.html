@@ -74,10 +74,87 @@
     </div>
 
     <div class="page-right-section"> 
-      <!-- *****************************************Field/Checkbox selection buttons******************************* -->
+      <!-- **************************************Field/Checkbox selection buttons************************* -->
       <div class="field-checkbox-selection">
         <div class="fields" #field (click)="show_fields_section(field, checkbox)">Fields</div>
         <div class="checkbox" #checkbox (click)="show_checkboxes_section(field, checkbox)">Checkboxes</div>
       </div>
-    </div>
+
+      <!-- ***************Page right section top field************** -->
+      <div class="page-right-section-top-fields" *ngIf="header_fields">
+        <button class="add-entity-button" (click)="make_custom_field_entity()">Add {{custom_input_type}}</button>
+        <button class="next-button" (click)="next_button_click()">></button>  
+  
+        <input (keydown.backspace)="pop_token_from_field_entity()" (click)="select_field_for_editing(custom_header_input_ref,'ch',-1)" readonly #custom_header_input_ref class="custom-header-input" placeholder="Header Entity">
+        
+        <input (keydown.backspace)="pop_token_from_field_entity()" (click)="select_field_for_editing(custom_question_input_ref,'cq',-1)" readonly #custom_question_input_ref class="custom-question-input" placeholder="Question Entity">
+        <input (keydown.backspace)="pop_token_from_field_entity()" (click)="select_field_for_editing(custom_answer_input_ref,'ca',-1)" readonly #custom_answer_input_ref class="custom-answer-input" placeholder="Answer Entity">
+        
+        <input (keydown.backspace)="pop_token_from_field_entity()" (click)="select_field_for_editing(custom_other_input_ref,'co',-1)" readonly #custom_other_input_ref class="custom-other-input" placeholder="Other Entity">
+      </div>
+
+
+      <!-- ***************Page right section mid field************** -->
+      <div class="page-right-section-mid-fields"  *ngIf="header_fields"  (scroll)="entity_line_adjuster()">
+          <!-- ****** displaying question and answer ******* -->
+          <div class="display-field-entity" *ngFor="let i of question_entity_strings;let ind=index">
+            <!--question part-->
+            <div #q_struct_ref class="qa-entity-cell-structure q-entity-cell-pos" (click)="select_field_for_editing(q_i_r,'q',ind)"  (click)="field_entity_click('q',ind,q_i_r)">
+              <div class="qa-entity-cell-type">Q</div>
+              <input readonly #q_i_r class="qa-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
+            </div>
+            <!--end of question part-->
+            <!--answer part-->
+            <div #a_struct_ref class="qa-entity-cell-structure a-entity-cell-pos" (click)="select_field_for_editing(a_i_r,'a',ind)" (click)="field_entity_click('a',ind,a_i_r)">
+              <div class="qa-entity-cell-type">A</div>
+              <input readonly #a_i_r class="qa-entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="pop_token_from_field_entity()"/>
+            </div>
+            <!--end of answer part-->
+            <div class="delete-field-entity" (click)="delete_field_entity('q',ind)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+              </svg>
+            </div>
+          </div>
+          <!-- ****** end of displaying question and answer ******* -->
+          <!--****** displaying header *******-->
+          <div class="display-field-entity" *ngFor="let i of header_entity_strings;let ind=index">
+            <div #h_struct_ref class="ho-entity-cell-structure h-entity-cell-pos" (click)="select_field_for_editing(h_i_r,'h',ind)" (click)="field_entity_click('h',ind,h_i_r)">
+              <div class="ho-entity-cell-type">H</div>
+              <input #h_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
+            </div>
+      
+            <div class="delete-field-entity" (click)="delete_field_entity('h',ind)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+              </svg>
+            </div>
+          </div>
+          <!--****** end of displaying header *******-->    
+          <!--****** displaying other *******-->
+          <div class="display-field-entity" *ngFor="let i of other_entity_strings;let ind=index">
+            <div #o_struct_ref class="ho-entity-cell-structure o-entity-cell-pos" (click)="select_field_for_editing(o_i_r,'o',ind)" (click)="field_entity_click('o',ind,o_i_r)">
+              <div class="ho-entity-cell-type">O</div>
+              <input  #o_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
+            </div>
+    
+            <div class="delete-field-entity" (click)="delete_field_entity('o',ind)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+              </svg>
+            </div>
+          </div>
+          <!--****** end of displaying other *******-->
+      </div>
+<!-- ''''''''''''''''''''''''''''''''''''''''''End of page right section field'''''''''''''''''''''''''''''-->
+     <!-- ***************Page right section bottom************* -->
+      <div class="page-right-section-bottom">
+       <button class="save-and-exit" (click)="save_all_data(0)">Save and Exit</button>  
+       <button class="save-and-next" (click)="save_all_data(1)">Save and Next</button>
+       <button class="cancel-button" (click)="exit()">Cancel</button>
+      </div>
+  </div>
 </div>
