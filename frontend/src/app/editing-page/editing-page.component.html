@@ -1,212 +1,207 @@
 <div class="editing-page-body">
-  <div class="navbar-1">
-    <div class="logo" routerLink="/batches"></div>
-  </div>
-  <div class="navbar-2">
-  </div>
 
-  <div (click)="make_custom_token(custom_token_input)" #custom_token_input class="custom-token-input" >+</div> 
+  <div class="navbar-1">  <div class="logo" routerLink="/batches"></div>   </div>
+  <div class="navbar-2"></div>
 
+  <div (click)="make_custom_token(custom_token_input)" #custom_token_input class="custom-token-input">+</div> 
 
   <div class="page-left-section" (scroll)="entity_line_adjuster()">
-    <div class="page-left-section-image">
-      <img #image_ref src={{imageUrl+image_src}}>
-      <svg:svg (mousedown)="custom_token_process_start($event,image_ref,custom_token_input)" (mousemove)="custom_token_process_between($event,image_ref)" (mouseup)="custom_token_process_end($event,custom_token_input)" #svg_ref [attr.height]="image_height" [attr.width]="image_width">
-        <rect #r class="image_rect" *ngFor="let i of token_cord_for_image;let ind=index" [attr.x]="i.box[0]"
-          [attr.y]="i.box[1]" [attr.height]="i.box[3]-i.box[1]" [attr.width]="i.box[2]-i.box[0]"
-          (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="image_token_click(i.id)"/>
-        <rect class="entity_rect" #display_entity_rect_ref x="0" y="0" height="0" width="0" />
-      <!-- making custom token -->
+      
+      <div class="page-left-section-image">
 
-        <rect #custom_token_ref class="custom-token-rect" [attr.x]="custom_token_x" [attr.y]="custom_token_y" [attr.height]="custom_token_h" [attr.width]="custom_token_w"/>
+          <img #image_ref src={{imageUrl+image_src}}>
 
-       <!-- display entity on selecting option  -->
-        <!-- on click display question -->
-         <ng-container *ngIf="display_question==1"> 
-           <ng-container *ngFor="let q of question_entity_ids">
-             <rect class="mark-question-on-image"  *ngFor="let qj of q" [attr.x]="token_cord_for_image[qj].box[0]" [attr.y]="token_cord_for_image[qj].box[1]" [attr.height]="token_cord_for_image[qj].box[3]-token_cord_for_image[qj].box[1]" [attr.width]="token_cord_for_image[qj].box[2]-token_cord_for_image[qj].box[0]"/> 
-           </ng-container>
-        </ng-container>
-        <!-- on click display answer -->
-        <ng-container *ngIf="display_answer==1"> 
-          <ng-container *ngFor="let a of answer_entity_ids">
-            <rect class="mark-answer-on-image"  *ngFor="let aj of a" [attr.x]="token_cord_for_image[aj].box[0]" [attr.y]="token_cord_for_image[aj].box[1]" [attr.height]="token_cord_for_image[aj].box[3]-token_cord_for_image[aj].box[1]" [attr.width]="token_cord_for_image[aj].box[2]-token_cord_for_image[aj].box[0]"/> 
-          </ng-container>
-       </ng-container>
-       <!-- on click display header -->
-       <ng-container *ngIf="display_header==1"> 
-         <ng-container *ngFor="let h of header_entity_ids">
-           <rect class="mark-header-on-image"  *ngFor="let hj of h" [attr.x]="token_cord_for_image[hj].box[0]" [attr.y]="token_cord_for_image[hj].box[1]" [attr.height]="token_cord_for_image[hj].box[3]-token_cord_for_image[hj].box[1]" [attr.width]="token_cord_for_image[hj].box[2]-token_cord_for_image[hj].box[0]"/> 
-         </ng-container>
-      </ng-container>
-      <!-- on click display other -->
-      <ng-container *ngIf="display_other==1"> 
-        <ng-container *ngFor="let o of other_entity_ids">
-          <rect class="mark-other-on-image"  *ngFor="let oj of o" [attr.x]="token_cord_for_image[oj].box[0]" [attr.y]="token_cord_for_image[oj].box[1]" [attr.height]="token_cord_for_image[oj].box[3]-token_cord_for_image[oj].box[1]" [attr.width]="token_cord_for_image[oj].box[2]-token_cord_for_image[oj].box[0]"/> 
-        </ng-container>
-      </ng-container>
-     <!--  -->
-      </svg>
-  </div>
+          <svg:svg (mousedown)="custom_token_process_start($event,image_ref,custom_token_input)" (mousemove)="custom_token_process_between($event,image_ref)" (mouseup)="custom_token_process_end($event,custom_token_input)" #svg_ref [attr.height]="image_height" [attr.width]="image_width">
+              <rect #r class="image-rect" *ngFor="let i of token_cord_for_image;let ind=index" [attr.x]="i.box[0]" [attr.y]="i.box[1]" [attr.height]="i.box[3]-i.box[1]" [attr.width]="i.box[2]-i.box[0]" (mouseenter)="token_mouse_enter(r.style)" (mouseout)="token_mouse_out(r.style)" (click)="image_token_click(i.id)"/>
+              <rect class="entity-rect" #display_entity_rect_ref x="0" y="0" height="0" width="0" />
 
-  <div class="display_strip_background">
+              <!-- making custom token -->
+              <rect #custom_token_ref class="custom-token-rect" [attr.x]="custom_token_x" [attr.y]="custom_token_y" [attr.height]="custom_token_h" [attr.width]="custom_token_w"/>
 
-    <div class="strip_open" *ngIf="strip_closed" (click)="strip()">
-      <i class="arrow"></i>
-    </div>
+           <!-- *************display entity on selecting option************  -->
 
-    <div class="strip_closed" *ngIf="strip_open" (click)="strip()">X</div>
+              <!-- on click display question -->
+              <ng-container *ngIf="display_question_token==1"> 
+                <ng-container *ngFor="let q of question_entity_ids">
+                  <rect class="mark-question-on-image"  *ngFor="let qj of q" [attr.x]="token_cord_for_image[qj].box[0]" [attr.y]="token_cord_for_image[qj].box[1]" [attr.height]="token_cord_for_image[qj].box[3]-token_cord_for_image[qj].box[1]" [attr.width]="token_cord_for_image[qj].box[2]-token_cord_for_image[qj].box[0]"/> 
+                </ng-container>
+              </ng-container>
 
-    <div class="strip" *ngIf="strip_open">
-      <div class="line">
-        <div (click)="image_zoom_in()" class="zoom_in_button">+</div>
-        <div (click)="image_zoom_out()" class="zoom_out_button">-</div>
+              <!-- on click display answer -->
+              <ng-container *ngIf="display_answer_token==1"> 
+                <ng-container *ngFor="let a of answer_entity_ids">
+                  <rect class="mark-answer-on-image"  *ngFor="let aj of a" [attr.x]="token_cord_for_image[aj].box[0]" [attr.y]="token_cord_for_image[aj].box[1]" [attr.height]="token_cord_for_image[aj].box[3]-token_cord_for_image[aj].box[1]" [attr.width]="token_cord_for_image[aj].box[2]-token_cord_for_image[aj].box[0]"/> 
+                </ng-container>
+              </ng-container>
+
+              <!-- on click display header -->
+              <ng-container *ngIf="display_header_token==1"> 
+                <ng-container *ngFor="let h of header_entity_ids">
+                  <rect class="mark-header-on-image"  *ngFor="let hj of h" [attr.x]="token_cord_for_image[hj].box[0]" [attr.y]="token_cord_for_image[hj].box[1]" [attr.height]="token_cord_for_image[hj].box[3]-token_cord_for_image[hj].box[1]" [attr.width]="token_cord_for_image[hj].box[2]-token_cord_for_image[hj].box[0]"/> 
+                </ng-container>
+              </ng-container>
+
+              <!-- on click display other -->
+              <ng-container *ngIf="display_other_token==1"> 
+                <ng-container *ngFor="let o of other_entity_ids">
+                  <rect class="mark-other-on-image"  *ngFor="let oj of o" [attr.x]="token_cord_for_image[oj].box[0]" [attr.y]="token_cord_for_image[oj].box[1]" [attr.height]="token_cord_for_image[oj].box[3]-token_cord_for_image[oj].box[1]" [attr.width]="token_cord_for_image[oj].box[2]-token_cord_for_image[oj].box[0]"/> 
+                </ng-container>
+              </ng-container>
+          </svg>
       </div>
 
-      <div class="label">
-        <div class="display-all-question-on-click" (click)="display_category_label('q')">Q</div>
-        <div class="display-all-answer-on-click" (click)="display_category_label('a')">A</div>
-        <div class="display-all-header-on-click" (click)="display_category_label('h')">H</div>
-        <div class="display-all-other-on-click" (click)="display_category_label('o')">O</div>
+      <div class="image-control-container-background">
+
+        <div class="image-control-container-dropdown" *ngIf="image_control_container_closed" (click)="image_control_container()"> <i class="dropdown-sign"></i> </div>
+
+        <div class="image-control-container" *ngIf="image_control_container_open">
+
+          <div class="zoom-control">
+            <div (click)="image_zoom_in()" class="zoom-in-button">+</div>
+            <div (click)="image_zoom_out()" class="zoom-out-button">-</div>
+          </div>
+
+          <div class="label-type">
+            <div class="display-all-question-on-click" (click)="display_category_label('q')">Q</div>
+            <div class="display-all-answer-on-click" (click)="display_category_label('a')">A</div>
+            <div class="display-all-header-on-click" (click)="display_category_label('h')">H</div>
+            <div class="display-all-other-on-click" (click)="display_category_label('o')">O</div>
+          </div>
+        </div>
+
+        <div class="image-control-container-close" *ngIf="image_control_container_open" (click)="image_control_container()">X</div>
       </div>
     </div>
-  </div>
-</div>
 
   <div class="page-right-section"> 
-    
-<!-- *****************************************Field/Checkbox selection buttons******************************* -->
-    <div class="data-type-selection">
-      <div class="fields" #field (click)="enable_border_fields(field, checkbox)" >Fields</div>
-      <div class="checkbox" #checkbox (click)="enable_border_checkboxes(field, checkbox)">Checkboxes</div>
+    <!-- **************************************Field/Checkbox selection buttons************************* -->
+    <div class="field-checkbox-selection">
+      <div class="fields" #field (click)="show_fields_section(field, checkbox)">Fields</div>
+      <div class="checkbox" #checkbox (click)="show_checkboxes_section(field, checkbox)">Checkboxes</div>
     </div>
 
-<!-- *********************************************Field Top******************************************* -->
+    <!-- ***************Page right section top field************** -->
     <div class="page-right-section-top-fields" *ngIf="header_fields">
-      <button class="next-button" (click)="next_button_click()">></button>
-      <button class="add-entity-button" (click)="make_custom_entity()">Add {{custom_input_type}}</button>
+      <button class="add-entity-button" (click)="make_custom_field_entity()">Add {{custom_input_type}}</button>
+      <button class="next-button" (click)="next_button_click()">></button>  
 
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input_for_editing(custom_header_input_ref,'ch',-1)" readonly #custom_header_input_ref class="custom-header-input" placeholder="Header Entity">
+      <input (keydown.backspace)="pop_token_from_field_entity()" (click)="select_field_for_editing(custom_header_input_ref,'ch',-1)" readonly #custom_header_input_ref class="custom-header-input" placeholder="Header Entity">
       
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input_for_editing(custom_question_input_ref,'cq',-1)" readonly #custom_question_input_ref class="custom-question-input" placeholder="Question Entity">
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input_for_editing(custom_answer_input_ref,'ca',-1)" readonly #custom_answer_input_ref class="custom-answer-input" placeholder="Answer Entity">
+      <input (keydown.backspace)="pop_token_from_field_entity()" (click)="select_field_for_editing(custom_question_input_ref,'cq',-1)" readonly #custom_question_input_ref class="custom-question-input" placeholder="Question Entity">
+      <input (keydown.backspace)="pop_token_from_field_entity()" (click)="select_field_for_editing(custom_answer_input_ref,'ca',-1)" readonly #custom_answer_input_ref class="custom-answer-input" placeholder="Answer Entity">
       
-      <input (keydown.backspace)="clear_custom_input_cell()" (click)="select_input_for_editing(custom_other_input_ref,'co',-1)" readonly #custom_other_input_ref class="custom-other-input" placeholder="Other Entity">
-  </div>
-
-  
-    <div class="page-right-section-mid-fields" (scroll)="entity_line_adjuster()" *ngIf="header_fields">
-      <!-- ****************** displaying question and answer ******************* -->
-      <div class="display-entity" *ngFor="let i of question_entity_strings;let ind=index">
-        <!--question part-->
-        <div #q_struct_ref class="qa-entity-cell-structure q-entity-cell-pos" (click)="select_input_for_editing(q_i_r,'q',ind)"  (click)="entity_click('q',ind,q_i_r)">
-          <div class="qa-entity-cell-type">Q</div>
-          <input readonly #q_i_r class="qa-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_entity()"/>
-        </div>
-        <!--end of question part-->
-
-        <!--answer part-->
-        <div #a_struct_ref class="qa-entity-cell-structure a-entity-cell-pos" (click)="select_input_for_editing(a_i_r,'a',ind)" (click)="entity_click('a',ind,a_i_r)">
-          <div class="qa-entity-cell-type">A</div>
-          <input readonly #a_i_r class="qa-entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="pop_token_from_entity()"/>
-        </div>
-        <!--end of answer part-->
-
-        <div class="delete-entity" (click)="delete_entity('q',ind)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle"
-            viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-            <path
-              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-          </svg>
-        </div>
-      </div>
-      <!-- ****************** end of displaying question and answer ******************* -->
-      
-      <!--****************** displaying header *******************-->
-      <div class="display-entity" *ngFor="let i of header_entity_strings;let ind=index">
-        <div #h_struct_ref class="ho-entity-cell-structure h-entity-cell-pos" (click)="select_input_for_editing(h_i_r,'h',ind)" (click)="entity_click('h',ind,h_i_r)">
-          <div class="ho-entity-cell-type">H</div>
-          <input #h_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_entity()"/>
-        </div>
-       
-        <div class="delete-entity" (click)="delete_entity('h',ind)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle"
-            viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-            <path
-              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-          </svg>
-        </div>
-      </div>
-      <!--****************** end of displaying header *******************-->
-
-      <!--****************** displaying other *******************-->
-      <div class="display-entity" *ngFor="let i of other_entity_strings;let ind=index">
-        <div #o_struct_ref class="ho-entity-cell-structure o-entity-cell-pos" (click)="select_input_for_editing(o_i_r,'o',ind)" (click)="entity_click('o',ind,o_i_r)">
-          <div class="ho-entity-cell-type">O</div>
-          <input  #o_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_entity()"/>
-        </div>
-
-        <div class="delete-entity" (click)="delete_entity('o',ind)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle"
-            viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-            <path
-              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-          </svg>
-        </div>
-      </div>
-      <!--****************** end of displaying other *******************-->
+      <input (keydown.backspace)="pop_token_from_field_entity()" (click)="select_field_for_editing(custom_other_input_ref,'co',-1)" readonly #custom_other_input_ref class="custom-other-input" placeholder="Other Entity">
     </div>
 
-<!--************************** checkbox section************************************* --> 
-<div class="page-right-section-top-checkbox" *ngIf="header_checkbox">
-  <div class="add_button" (click)="add_checkbox()">+Add</div>
- </div>
 
-  <div class="page-right-section-mid-checkbox" *ngIf="header_checkbox" (scroll)="entity_line_adjuster()">
+    <!-- ***************Page right section mid field************** -->
+    <div class="page-right-section-mid-fields"  *ngIf="header_fields"  (scroll)="entity_line_adjuster()">
+        <!-- ****** displaying question and answer ******* -->
+        <div class="display-field-entity" *ngFor="let i of question_entity_strings;let ind=index">
+          <!--question part-->
+          <div #q_struct_ref class="qa-entity-cell-structure q-entity-cell-pos" (click)="select_field_for_editing(q_i_r,'q',ind)"  (click)="field_entity_click('q',ind,q_i_r)">
+            <div class="qa-entity-cell-type">Q</div>
+            <input readonly #q_i_r class="qa-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
+          </div>
+          <!--end of question part-->
+          <!--answer part-->
+          <div #a_struct_ref class="qa-entity-cell-structure a-entity-cell-pos" (click)="select_field_for_editing(a_i_r,'a',ind)" (click)="field_entity_click('a',ind,a_i_r)">
+            <div class="qa-entity-cell-type">A</div>
+            <input readonly #a_i_r class="qa-entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="pop_token_from_field_entity()"/>
+          </div>
+          <!--end of answer part-->
+          <div class="delete-field-entity" (click)="delete_field_entity('q',ind)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+          </div>
+        </div>
+        <!-- ****** end of displaying question and answer ******* -->
+        <!--****** displaying header *******-->
+        <div class="display-field-entity" *ngFor="let i of header_entity_strings;let ind=index">
+          <div #h_struct_ref class="ho-entity-cell-structure h-entity-cell-pos" (click)="select_field_for_editing(h_i_r,'h',ind)" (click)="field_entity_click('h',ind,h_i_r)">
+            <div class="ho-entity-cell-type">H</div>
+            <input #h_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
+          </div>
     
-    <div class="question_option_set" *ngFor="let i of checkbox_question_string; let in=index;" (scroll)="entity_line_adjuster()">
+          <div class="delete-field-entity" (click)="delete_field_entity('h',ind)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+          </div>
+        </div>
+        <!--****** end of displaying header *******-->    
+        <!--****** displaying other *******-->
+        <div class="display-field-entity" *ngFor="let i of other_entity_strings;let ind=index">
+          <div #o_struct_ref class="ho-entity-cell-structure o-entity-cell-pos" (click)="select_field_for_editing(o_i_r,'o',ind)" (click)="field_entity_click('o',ind,o_i_r)">
+            <div class="ho-entity-cell-type">O</div>
+            <input  #o_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
+          </div>
+  
+          <div class="delete-field-entity" (click)="delete_field_entity('o',ind)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+          </div>
+        </div>
+        <!--****** end of displaying other *******-->
+    </div>
+    <!-- ''''''''''''''''''''''''''''''''''''''''''End of page right section field'''''''''''''''''''''''''''''-->
 
-      <input class="question" value={{i}} readonly placeholder="Select Checkbox Question" (click)="select_input_for_editing(checkbox_question_input_ref,'checkbox_question',in)" (click)="checkbox_option_click('question_checkbox', in, 0, checkbox_question_input_ref)" (keydown.backspace)="pop_option_from_entity()" #checkbox_question_input_ref>
+    <!-- ''''''''''''''''''''''''''''''''''''''Page right section top checkbox''''''''''''''''''''''''''''''''''''''''''''''' -->
 
-      <div class="checkbox_option" *ngFor="let j of options_strings[in]; let ind=index;" >
+      <div class="page-right-section-top-checkbox" *ngIf="header_checkbox">
+        <div class="add-checkbox-button" (click)="create_new_checkbox_container()" #add_button>+Add</div>
+      </div>
+
+
+    <!-- ''''''''''''''''''''''''''''''''''''''Page right section mid checkbox''''''''''''''''''''''''''''''''''''''''''''''' -->
+
+    <div class="page-right-section-mid-checkbox" *ngIf="header_checkbox" (scroll)="entity_line_adjuster()">
+      
+      <div class="checkbox-container" *ngFor="let i of checkbox_question_string; let in=index;" (scroll)="entity_line_adjuster()">
+        <input class="checkbox-question" value={{i}} readonly placeholder="Select Checkbox Question" (click)="select_checkbox_for_editing(checkbox_question_input,'checkbox_question',in, -1)" (click)="checkbox_entity_click('checkbox_question', in, 0, checkbox_question_input)" (keydown.backspace)="pop_from_checkbox_entity()" #checkbox_question_input>
+
+        <div class="checkbox-option-container" *ngFor="let j of options_string[in]; let ind=index;">
+            
+          <input class="checkbox-option-string" readonly value={{j}} placeholder="Select Checkbox String" (click)="select_checkbox_for_editing(checkbox_option_string,'checkbox_option_string',in, ind)" (click)="checkbox_entity_click('checkbox_option_string', in, ind, checkbox_option_string)" (keydown.backspace)="pop_from_checkbox_entity()" #checkbox_option_string>
         
-        <input class="checkbox_strings" readonly value={{j}} placeholder="Select Checkbox String" (click)="select_checkbox_for_editing(checkbox_option_string,'option_checkbox_string',in, ind)" (click)="checkbox_option_click('checkbox_string', in, ind, checkbox_option_string)" (keydown.backspace)="pop_option_from_entity()" #checkbox_option_string>
-        <input class="actual_checkbox_string" readonly  value={{actual_checkbox_value[in][ind]}} placeholder="" (click)="checkbox_option_click('actual_checkbox', in, ind, option_checkbox)" #option_checkbox>
-        
-        <div class="actual_checkbox_checkbox_unchecked" #actual_checkbox_checkbox (click)="checkbox_clicked(in, ind)" *ngIf="actual_checkbox_value[in][ind]=='Unchecked'"></div>
-        <div class="actual_checkbox_checkbox_checked" (click)="checkbox_clicked(in, ind)" *ngIf="actual_checkbox_value[in][ind]=='Checked'">&#10003;</div>
+          <input class="actual-checkbox-string" readonly  value={{actual_checkbox_value[in][ind]}} placeholder="" (click)="checkbox_entity_click('actual_checkbox_string', in, ind, option_checkbox)" #option_checkbox>
+          <div class="actual-checkbox-checkbox-unchecked" #actual_checkbox_checkbox *ngIf="actual_checkbox_value[in][ind]=='Unchecked'" (click)="actual_checkbox_checkbox_clicked(in, ind)"></div>
+          <div class="actual-checkbox-checkbox-checked" *ngIf="actual_checkbox_value[in][ind]=='Checked'" (click)="actual_checkbox_checkbox_clicked(in, ind)">&#10003;</div>
 
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="delete-checkbox-option" viewBox="0 0 16 16" (click)="delete_checkbox_option(in, ind)">  <!---->
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
 
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="delete_input_option" viewBox="0 0 16 16" (click)="delete_checkbox_option(in, ind)">
+        </div>
+
+        <div class="new-checkbox-option-container">
+          <input class="custom-checkbox-option-string" readonly  placeholder="Select Checkbox String" (click)="select_checkbox_for_editing(custom_checkbox_option_input, 'custom_checkbox_option_string', in, -1)" (keydown.backspace)="pop_from_checkbox_entity()" #custom_checkbox_option_input>
+          <input class="custom-actual-checkbox-string" readonly placeholder="Select Checkbox" (click)="select_checkbox_for_editing(custom_actual_checkbox_input, 'custom_actual_checkbox_string', in, -1)" (keydown.backspace)="pop_from_checkbox_entity()" #custom_actual_checkbox_input>
+          <span class="add-new-checkbox" (click)="add_checkbox_option_container(in, custom_checkbox_option_input, custom_actual_checkbox_input, checkbox_question_input)">&#43;</span>  <!---->
+        </div>
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="delete-checkbox-question" viewBox="0 0 16 16" (click)="delete_checkbox_question(in)">  <!-- -->
           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
           <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
         </svg>
-
       </div>
-
-    
-      <div class="checkbox_option">
-        <input class="checkbox_strings" readonly  placeholder="Select Checkbox String" (click)="select_input_for_editing(checkbox_input_ref, 'checkbox_string', -1)" (keydown.backspace)="clear_custom_option_cell()" #checkbox_input_ref>
-        <input class="actual_checkbox_string" readonly placeholder="Select Checkbox" (click)="select_input_for_editing(actual_checkbox, 'actual_check', -1)" (keydown.backspace)="clear_custom_option_cell()" #actual_checkbox>
-        <span class="add_sign" (click)="add_the_value_to_div(in, checkbox_input_ref, actual_checkbox, checkbox_question_input_ref)">&#43;</span>
-      </div>
-
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="remove_question" viewBox="0 0 16 16" (click)="delete_checkbox_question(in)">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-      </svg>
 
     </div>
 
+
+     <!-- ***************************Page right section bottom***************************** -->
+      <div class="page-right-section-bottom">
+        <button class="save-and-exit" (click)="save_all_data(0)">Save and Exit</button>  
+        <button class="save-and-next" (click)="save_all_data(1)">Save and Next</button>
+        <button class="cancel-button" (click)="exit()">Cancel</button>
+      </div>
   </div>
-    
-    <div class="page-right-section-bottom">
-      <button  (click)="save_all_data(0)" class="save-and-exit">Save and Exit</button>
-      <button (click)="save_all_data(1)" class="save-and-next">Save and Next</button>
-      <button (click)="exit()" class="cancel-button">Cancel</button>
-    </div>
-  
+ <!--************************************************** End of page right section ******************************************************-->
+
 </div>
