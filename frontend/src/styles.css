@@ -10,3 +10,16 @@
     margin: 0;
     padding: 0;
 }
+
+
+input
+{
+    outline: none;
+    padding-left: 5px;
+}
+    
+input:focus 
+{
+    border-color: #23875e;
+}
+

@@ -1396,6 +1396,510 @@ field_entity_click(type: string, index: number, entity_ref: any)
 
   }
 }
+
+///////////////////////////////////////////////////Checkbox section/////////////////////////////////////////////////////////////
+
+create_new_checkbox_container()
+{
+  if(this.checkbox_question_string.length!= 0)
+  {
+    if(this.checkbox_question_string[this.checkbox_question_string.length-1]=="" && (this.options_string.length<this.checkbox_question_string.length || this.actual_checkbox_value.length<this.checkbox_question_string.length))
+    this.toast.warning({detail:"WARNING",summary:'First make the above checkbox',duration:5000});
+
+    else
+    {
+      this.checkbox_question_string.push("");
+      this.checkbox_question_id.push([]);
+    }
+  }
+
+  else
+  {
+    this.checkbox_question_string.push("");
+    this.checkbox_question_id.push([]);
+  }
+
+
+  ///////////////Remove leader line/////////////////
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+}
+
+select_checkbox_for_editing(ref: any, type: any, question_index: number, option_index: number)
+{
+  this.selected_input_ref_checkbox = ref;
+  this.selected_input_type_checkbox = type;
+  this.selected_input_index_checkbox = question_index; 
+  this.seleceted_input_option_index_checkbox = option_index; 
+  
+  if (type == 'checkbox_question' || type == 'custom_checkbox_option_string' || type == 'custom_actual_checkbox_string') 
+  {
+    //if any entity is getting pointed in image
+    this.display_entity_rect_ref.nativeElement.style.x = 0;
+    this.display_entity_rect_ref.nativeElement.style.y = 0;
+
+    this.display_entity_rect_ref.nativeElement.style.height = 0;
+    this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line=undefined;
+    }
+  }
+}
+
+
+add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkbox:any, checkbox_question_input_ref: any)
+{
+  if(this.custom_option_array1.length==0||this.custom_option_array2.length==0)
+  {
+    this.toast.warning({detail:"WARNING",summary:'Select all the tokens first to make checkbox entity',duration:5000});
+  }
+
+  else
+  {
+    if(index<this.options_string.length)
+    { 
+      let t="";
+      for(let i=0;i<this.custom_option_array1.length;i++)
+      {
+        if(t=="")
+        {
+          t+=this.token_cord_for_image[this.custom_option_array1[i]].text;
+          console.log('1:' + this.options_string_id[index].length);
+          
+          this.options_string_id[index].push([this.custom_option_array1[i]]);  
+        }
+
+        else
+        {
+          t+=" "+this.token_cord_for_image[this.custom_option_array1[i]].text;
+
+          console.log('2:' + this.options_string_id[index].length);
+          
+          this.options_string_id[index][this.options_string_id[index].length-1].push(this.custom_option_array1[i]);
+        }
+      }
+      this.options_string[index].push(t);
+      this.custom_option_array1=[];
+    }
+
+    else
+    {
+      let t="";
+
+      for(let i=0;i<this.custom_option_array1.length;i++)
+      {
+        if(t=="")
+        {
+          t+=this.token_cord_for_image[this.custom_option_array1[i]].text;
+        }
+
+        else
+        {
+          t+=" "+this.token_cord_for_image[this.custom_option_array1[i]].text;
+        }
+      }
+
+      this.options_string.push([t]);
+
+      this.options_string_id.push([this.custom_option_array1]);
+
+      this.custom_option_array1=[];
+    }
+
+    
+    if(index<this.actual_checkbox_id.length)
+    {
+      for(let i=0;i<this.custom_option_array2.length;i++)
+      this.actual_checkbox_id[index].push(this.custom_option_array2[i]);
+
+      this.actual_checkbox_value[index].push('Unchecked');
+      this.custom_option_array2=[];
+    }
+
+    else
+    { 
+      this.actual_checkbox_id.push(this.custom_option_array2);
+
+      this.actual_checkbox_value.push(['Unchecked']);
+      this.custom_option_array2=[];
+    }
+    
+    console.log(this.checkbox_question_string);
+    console.log(this.checkbox_question_id);
+    
+    console.log(this.options_string);
+    console.log(this.options_string_id);
+
+    input_ref_clicked.value = '';
+    actual_checkbox.value = '';
+  }
+  
+////////////////////////////Remove leader line/////////////////////////////////
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+}
+
+
+checkbox_entity_click(type:string, index:number, option_index:number, value_clicked:any)
+{  
+  var x = 99999,
+  y = 99999,
+  x2 = -1,
+  y2 = -1;
+
+  if (type == 'checkbox_option_string') 
+  {
+    for (let i = 0; i < this.options_string_id[index][option_index].length; i++) 
+    {
+      if(x>this.token_cord_for_image[this.options_string_id[index][option_index][i]].box[0])
+        x=this.token_cord_for_image[this.options_string_id[index][option_index][i]].box[0];
+      if(y>this.token_cord_for_image[this.options_string_id[index][option_index][i]].box[1])
+        y=this.token_cord_for_image[this.options_string_id[index][option_index][i]].box[1];
+      if(x2<this.token_cord_for_image[this.options_string_id[index][option_index][i]].box[2])
+        x2 =this.token_cord_for_image[this.options_string_id[index][option_index][i]].box[2];
+      if(y2 <this.token_cord_for_image[this.options_string_id[index][option_index][i]].box[3])
+        y2 =this.token_cord_for_image[this.options_string_id[index][option_index][i]].box[3];
+    }
+  }
+
+  else if (type == 'actual_checkbox_string') 
+  {
+    
+      if(x>this.token_cord_for_image[this.actual_checkbox_id[index][option_index]].box[0])
+        x = this.token_cord_for_image[this.actual_checkbox_id[index][option_index]].box[0];
+      if(y>this.token_cord_for_image[this.actual_checkbox_id[index][option_index]].box[1])
+        y=this.token_cord_for_image[this.actual_checkbox_id[index][option_index]].box[1];
+      if(x2<this.token_cord_for_image[this.actual_checkbox_id[index][option_index]].box[2])
+        x2 =this.token_cord_for_image[this.actual_checkbox_id[index][option_index]].box[2];
+      if(y2<this.token_cord_for_image[this.actual_checkbox_id[index][option_index]].box[3])
+        y2=this.token_cord_for_image[this.actual_checkbox_id[index][option_index]].box[3];
+    
+  }
+
+  else if (type == 'checkbox_question') 
+  {
+    for (let i = 0; i < this.checkbox_question_id[index].length; i++)
+    {
+      if (x > this.token_cord_for_image[this.checkbox_question_id[index][i]].box[0])
+        x = this.token_cord_for_image[this.checkbox_question_id[index][i]].box[0];
+      if (y > this.token_cord_for_image[this.checkbox_question_id[index][i]].box[1])
+        y = this.token_cord_for_image[this.checkbox_question_id[index][i]].box[1];
+      if (x2 < this.token_cord_for_image[this.checkbox_question_id[index][i]].box[2])
+        x2 = this.token_cord_for_image[this.checkbox_question_id[index][i]].box[2];
+      if(y2 < this.token_cord_for_image[this.checkbox_question_id[index][i]].box[3])
+        y2 =this.token_cord_for_image[this.checkbox_question_id[index][i]].box[3];
+    }
+  }
+
+  if (x != 99999) 
+  {
+    this.display_entity_rect_ref.nativeElement.style.x = x;
+    this.display_entity_rect_ref.nativeElement.style.y = y;
+
+    this.display_entity_rect_ref.nativeElement.style.height = y2 - y;
+    this.display_entity_rect_ref.nativeElement.style.width = x2 - x;
+
+    if(type == 'actual_checkbox_string')
+    {
+      if(this.actual_checkbox_value[index][option_index]=="Checked")
+      this.display_entity_rect_ref.nativeElement.style.fill = '#23875e';
+
+      else
+      this.display_entity_rect_ref.nativeElement.style.fill = 'none';
+    }
+
+    else
+    this.display_entity_rect_ref.nativeElement.style.fill = 'none';
+
+
+    //connecting-line stuff
+
+    if (this.entity_connector_line != undefined) 
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line = undefined;
+    }
+
+    this.entity_connector_line = new LeaderLine(value_clicked,this.display_entity_rect_ref.nativeElement);
+    this.entity_connector_line.size = 2.75;
+    this.entity_connector_line.dash = true;
+    this.entity_connector_line.path = 'grid';
+    this.entity_connector_line.color = '#39a87a';
+  }
+}
+
+actual_checkbox_checkbox_clicked(index: number, j:number)
+{
+  if(this.actual_checkbox_value[index][j] == "Unchecked")
+  {
+    this.actual_checkbox_value[index][j] = "Checked";
+  }
+
+  else
+  {
+    this.actual_checkbox_value[index][j] = "Unchecked";
+  }
+
+  ////////////////////////////////////Remove leader line//////////////////////////////////////////////
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+  
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+  
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+}
+
+pop_from_checkbox_entity()
+{
+
+  if(this.selected_input_type_checkbox == "checkbox_question" || this.selected_input_type_checkbox == "checkbox_option_string")
+  {
+    this.display_entity_rect_ref.nativeElement.style.x = 0;
+    this.display_entity_rect_ref.nativeElement.style.y = 0;
+    
+    this.display_entity_rect_ref.nativeElement.style.height = 0;
+    this.display_entity_rect_ref.nativeElement.style.width = 0;
+    
+    if(this.entity_connector_line!=undefined)
+    {
+      this.entity_connector_line.remove();
+      this.entity_connector_line=undefined;
+    }
+  }
+    
+  if(this.selected_input_type_checkbox == "checkbox_question")
+  {
+    if(this.checkbox_question_id[this.selected_input_index_checkbox].length == 0)
+    return;
+
+
+    let last_index = this.checkbox_question_id[this.selected_input_index_checkbox][this.checkbox_question_id[this.selected_input_index_checkbox].length-1];
+    this.checkbox_question_id[this.selected_input_index_checkbox].pop()
+
+    this.used_token_map.delete(last_index);
+
+    this.checkbox_question_string[this.selected_input_index_checkbox] = "";
+
+    console.log(this.checkbox_question_string[this.selected_input_index_checkbox])
+
+    let t = "";
+
+    for(let i = 0; i<this.checkbox_question_id[this.selected_input_index_checkbox].length; i++)
+    {
+      if(t == "")
+      t += this.token_cord_for_image[this.checkbox_question_id[this.selected_input_index_checkbox][i]].text;
+
+      else
+      t += " "+this.token_cord_for_image[this.checkbox_question_id[this.selected_input_index_checkbox][i]].text;
+    }
+     
+    this.checkbox_question_string[this.selected_input_index_checkbox] = t;
+  }
+
+  else if(this.selected_input_type_checkbox == "checkbox_option_string")
+  {
+    if(this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox].length == 0)
+    return;
+
+    let last_index = this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox][this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox].length-1];
+    this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox].pop()
+
+    this.used_token_map.delete(last_index);
+
+    this.options_string[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox] = "";
+
+      // console.log(this.checkbox_question_string[this.selected_input_index])
+
+    let t = "";
+
+    for(let i = 0; i<this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox].length; i++)
+    {
+      if(t == "")
+      t += this.token_cord_for_image[this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox][i]].text;
+
+      else
+      t += " "+this.token_cord_for_image[this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox][i]].text;
+    }
+
+    this.options_string[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox] = t;
+  }
+
+  else if(this.selected_input_type_checkbox == 'custom_checkbox_option_string')
+  {
+    if(this.custom_option_array1.length == 0)
+    return;
+
+    else
+    {
+      this.used_token_map.delete(this.custom_option_array1[this.custom_option_array1.length-1]);
+      this.custom_option_array1.pop();
+
+      let t="";
+
+      for(let i = 0; i<this.custom_option_array1.length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.custom_option_array1[i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.custom_option_array1[i]].text;
+      }
+
+      this.selected_input_ref_checkbox.value = t;
+    }
+  }
+
+  else if(this.selected_input_type_checkbox == "custom_actual_checkbox_string")
+  {
+    if(this.custom_option_array2.length == 0)
+    return;
+
+    else
+    {
+      this.used_token_map.delete(this.custom_option_array2[this.custom_option_array2.length-1]);
+      this.custom_option_array2.pop();
+
+      let t="";
+
+      for(let i = 0; i<this.custom_option_array2.length; i++)
+      {
+        if(t == "")
+        t += "Checkbox Selected";
+
+        else
+        t += " Checkbox Selected";
+      }
+
+      this.selected_input_ref_checkbox.value = t;
+    }
+  }
+
+}
+
+
+delete_checkbox_option(question_index:number, checkbox_index:number)
+{
+  this.used_token_map.delete(this.actual_checkbox_id[question_index][checkbox_index]);
+
+  for(let j = 0; j<this.options_string_id[question_index][checkbox_index].length; j++)
+  {
+    this.used_token_map.delete(this.options_string_id[question_index][checkbox_index][j]);
+  }
+
+  this.options_string[question_index].splice(checkbox_index, 1);
+  this.options_string_id[question_index].splice(checkbox_index, 1);
+  this.actual_checkbox_value[question_index].splice(checkbox_index, 1);
+  this.actual_checkbox_id[question_index].splice(checkbox_index, 1);
+
+  ////////////////////////////////////Remove leader line//////////////////////////////////////////////////////////
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+  
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+  
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+
+}
+
+
+
+delete_checkbox_question(index:number)
+{
+    
+  if(this.checkbox_question_id.length>index)
+  {
+    for(let i = 0; i<this.checkbox_question_id[index].length; i++)
+    {
+      this.used_token_map.delete(this.checkbox_question_id[index][i]);
+    }
+  }
+
+  if(this.options_string_id.length>index)
+  {
+    for(let i = 0; i<this.options_string_id[index].length; i++)
+    {
+      for(let j = 0; j<this.options_string_id[index][i].length; j++)
+      {
+        this.used_token_map.delete(this.options_string_id[index][i][j]);
+      }
+    }
+  }
+
+  if(this.actual_checkbox_id.length>index)
+  {
+    for(let i = 0; i<this.actual_checkbox_id[index].length; i++)
+    {
+      this.used_token_map.delete(this.actual_checkbox_id[index][i]);
+    }
+  }
+
+    // for(let i = 0; i<this.actual_checkbox_id[index].length; i++)
+    // this.used_token_map.delete(this.option_string_id[index][i]);
+
+  if(this.options_string_id.length>index)
+  {
+    this.options_string.splice(index, this.options_string[index].length);
+    this.options_string_id.splice(index, this.options_string_id[index].length);
+  }
+
+  if(this.actual_checkbox_id.length>index)
+  {
+    this.actual_checkbox_value.splice(index, this.actual_checkbox_value[index].length);
+    this.actual_checkbox_id.splice(index, this.actual_checkbox_id[index].length);
+  }
+
+  this.checkbox_question_string.splice(index, 1);
+  this.checkbox_question_id.splice(index, 1);  
+
+  this.display_entity_rect_ref.nativeElement.style.x = 0;
+  this.display_entity_rect_ref.nativeElement.style.y = 0;
+  
+  this.display_entity_rect_ref.nativeElement.style.height = 0;
+  this.display_entity_rect_ref.nativeElement.style.width = 0;
+  
+  if(this.entity_connector_line!=undefined)
+  {
+    this.entity_connector_line.remove();
+    this.entity_connector_line=undefined;
+  }
+}
+
+
+
+
+
+
 ///////////////////////////////////////////////Common function//////////////////////////////////////////////
 
 save_all_data(condition: number) 
