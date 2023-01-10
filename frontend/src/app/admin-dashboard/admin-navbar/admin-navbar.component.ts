@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { faArrowRightFromBracket,faChessBoard,faFolder,faUsers,faUserPlus,faHome} from '@fortawesome/free-solid-svg-icons';
-import { LoginService } from 'src/app/services/login.service';
+import { LoginService } from '@app/services/login.service';
 
 @Component({
   selector: 'app-admin-navbar',

@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { LoginService } from 'src/app/services/login.service';
+import { LoginService } from '@app/services/login.service';
 import { Router } from '@angular/router';
-import { TokenStorageService } from '../services/token-storage.service';
+import { TokenStorageService } from '@app/services/token-storage.service';
 import { NgToastService } from 'ng-angular-popup';
 
 

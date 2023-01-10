@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { UploadFileService } from '../services/upload-file.service';
+import { UploadFileService } from '@app/services/upload-file.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TokenStorageService } from '../services/token-storage.service';
+import { TokenStorageService } from '@app/services/token-storage.service';
 import { NgToastService } from 'ng-angular-popup';
 
 @Component({
@@ -57,6 +57,8 @@ export class UploadFileComponent implements OnInit {
        }
       , err => {
         this.loading = false;
+        console.log(err.message);
+        
         this.toast.error({ detail: "Error Message", summary: err.Message, duration: 3000 })
       }
 

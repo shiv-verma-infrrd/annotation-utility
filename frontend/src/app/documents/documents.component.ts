@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiDataService } from '../services/api-data.service'; 
+import { ApiDataService } from '@app/services/api-data.service'; 
 import {faCircleCheck, faCircleXmark} from '@fortawesome/free-solid-svg-icons'
 
 @Component({

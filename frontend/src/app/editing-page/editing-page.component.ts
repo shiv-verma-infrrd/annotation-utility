@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import 'leader-line';
-import { ApiDataService } from '../services/api-data.service';
+import { ApiDataService } from '@app/services/api-data.service';
 import { PlatformLocation } from '@angular/common' 
 import { NgToastService } from 'ng-angular-popup';
 

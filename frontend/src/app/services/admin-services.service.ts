@@ -34,14 +34,14 @@ export class AdminServiceService {
   }
 
   get_user(){
-    const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
-    return this.http.get(this.URL+'users', {'headers':headers})
+    // const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
+    return this.http.get(this.URL+'users')
   }
 
 
   delete_user(userId:any){
  
-    const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
+    // const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
     userId = "763f78cc-b9a8-474e-99c1-5b8645b01351";
     return this.http.delete(this.URL+'delete_user',);
   }
