@@ -3,9 +3,9 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { NgToastService } from 'ng-angular-popup';
-import { AdminServiceService } from '../../services/admin-services.service';
+import { AdminServiceService } from '@app/services/admin-services.service';
 // import { LoginService } from '../services/login.service';
-import { TokenStorageService } from '../../services/token-storage.service';
+import { TokenStorageService } from '@app/services/token-storage.service';
 
 @Component({
   selector: 'app-create-new-users',

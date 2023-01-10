@@ -41,9 +41,9 @@ export class AdminServiceService {
 
   delete_user(userId:any){
  
-    // userId = "763f78cc-b9a8-474e-99c1-5b8645b01351";
-    
-    return this.http.delete(this.URL+'delete_user/'+userId);
+    const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
+    userId = "763f78cc-b9a8-474e-99c1-5b8645b01351";
+    return this.http.delete(this.URL+'delete_user',);
   }
 
 }

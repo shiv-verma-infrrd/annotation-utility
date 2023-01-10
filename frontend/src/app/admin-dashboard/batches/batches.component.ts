@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiDataService } from 'src/app/services/api-data.service';
+import { ApiDataService } from '@app/services/api-data.service';
 
 @Component({
   selector: 'app-batches',

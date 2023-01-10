@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiDataService } from '../services/api-data.service';
-
-import { TokenStorageService } from '../services/token-storage.service';
+import { ApiDataService } from '@app/services/api-data.service';
+import { TokenStorageService } from '@app/services/token-storage.service';
 import {faDownload,faTrash} from '@fortawesome/free-solid-svg-icons'
 import { NgToastService } from 'ng-angular-popup';
 @Component({
@@ -15,8 +14,7 @@ export class DashboardComponent implements OnInit {
   batchID:any;
   apiBatchdata:any;
   userId:string = '';
-  // thumbnail="https://cdn-icons-png.flaticon.com/512/3767/3767084.png";
-  thumbnail = "../../assets/dimg.png"
+  thumbnail = "/assets/dimg.png"
   download_icon = faDownload;
   delete_icon = faTrash;
   delete_batch_Id:any

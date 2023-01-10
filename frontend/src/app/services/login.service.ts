@@ -33,7 +33,7 @@ export class LoginService {
         (data: any) => {
           // window.sessionStorage.setItem('CSRFToken', data.headers.get("X-CSRFToken"))
           // console.log('token: ', window.sessionStorage.getItem('CSRFToken'))
-          this.CSRFToken = data.headers.get("X-CSRFToken")
+          // this.CSRFToken = data.headers.get("X-CSRFToken")
           // console.log(this.CSRFToken)
         }
       )
@@ -42,7 +42,7 @@ export class LoginService {
     login(username: string, password: string): Observable<any> {
       console.log('called api')
       const httpHeaders = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json', 'X-CSRFToken': this.CSRFToken})
+        // headers: new HttpHeaders({ 'Content-Type': 'application/json', 'X-CSRFToken': this.CSRFToken})
       };
       return this.http.post(this.URL + '/login', {
         'email':username, 'password':password
