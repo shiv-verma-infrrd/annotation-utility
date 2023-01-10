@@ -196,7 +196,7 @@ def send_image_file(batchId, image):
     img_file = os.path.join(app.config['IMAGE_PATH'],f'{batchId}/{image}.jpg')
     no_img =  os.path.join(app.config['IMAGE_PATH'],f'no-preview.png')
     # print("###############",img_file)
-    send_data_file = utils.get_image(img_file,no_img)
+    send_data_file = utils.get_image(img_file,no_img,app.config['IMAGE_PATH'])
     return send_data_file
     
     
@@ -373,7 +373,8 @@ def create_user():
                     "user_name" : request.form['user_name'], 
                     "email":request.form['email'],
                     "password" : request.form['password'],
-                    "role" : request.form['role'] 
+                    "role" : request.form['role'],
+                    "team": "no team" 
                 }
         
         db.Users.insert_one(new_user)
@@ -422,7 +423,41 @@ def delete_user(id):
                 }),
             status=500,
             mimetype="application/json"
-        )           
+        ) 
+        
+@app.route("/create_team", methods=["POST"])
+def create_team():
+    try:
+        # print(request.form['name'])
+        data = request.json
+        
+        new_user = {
+                    "team_id": str(uuid.uuid4()),
+                    "team_name" : data['team_name'] ,
+                    "users": data['users']
+                  }
+        
+        db.Teams.insert_one(new_user)
+        return Response(
+                    response=json.dumps(
+                        {
+                            "message": " Team created sucessfully",
+                        }),
+                    status=200,
+                    mimetype="application/json"
+                )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {
+                    "message": "cannot create Team",
+                }),
+            status=500,
+            mimetype="application/json"
+        )   
+         
+                  
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

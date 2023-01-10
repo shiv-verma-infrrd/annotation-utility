@@ -355,7 +355,7 @@ def transform_data_for_corrected_data(data):
                             "id" : data[i]['id']
                 }
         result.append(d)
-    # print(result[0])    
+    print(result[0])    
     # form = {'form':result}
         
     return result
@@ -438,8 +438,10 @@ def extract_file(my_zip,db,batch_id,up_dir):
                 continue
           
            
-def get_image(img_file,no_img):
-    
+def get_image(img_file,no_img,file):
+    f = os.path.join(app.config['IMAGE_PATH'],f'no-preview.png')
+    if os.path.isfile(f):
+        return send_file(f)
     if os.path.isfile(img_file):
         return send_file(img_file)
     

@@ -121,6 +121,7 @@ export class EditingPageComponent implements AfterViewInit
     this.apiData.get_one_doc(this.apiData.batchData).subscribe((data)=>
     {
       this.apiData.docarray = data; 
+    
     });
     
     this.apiData.get_pages(this.apiData.batchData, this.apiData.docData).subscribe((data) => 
@@ -129,7 +130,7 @@ export class EditingPageComponent implements AfterViewInit
       this.image_src = data[0].imagePath;
       this.saving_data_result = data[0]
 
-      // console.log(data[0]);
+      console.log(data);
 
       if(data[0].type == 'checkboxes')
       {
@@ -2179,7 +2180,7 @@ save_all_data(condition: number)
     }
   }
 
-   //  console.log(final);
+    console.log("#######final",final);
    
     
   this.apiData.update_page_data(final).subscribe((data) => 
