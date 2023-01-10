@@ -313,18 +313,22 @@ def retransform_data(data):
     result = []
     for i in range(len(data['form'])):
             # print(data['form'][i])
-            d = {
-                    "text":data['form'][i]['text'],
+            d = []
+            c = {
                     "tl": {
-                        "x": data['form'][i]['box'][0],
-                        "y": data['form'][i]['box'][1]
-                    },
+                            "x": data['form'][i]['box'][0],
+                            "y": data['form'][i]['box'][1]
+                         },
                     "br": {
-                        "x": data['form'][i]['box'][2],
-                        "y": data['form'][i]['box'][3]
-                    },
-                    "id":data['form'][i]['id']
-                }
+                            "x": data['form'][i]['box'][2],
+                            "y": data['form'][i]['box'][3]
+                        }
+                     }
+                   
+            d.append(data['form'][i]['text'])         
+            d.append(c)       
+            d.append(data['form'][i]['id'])
+           
             result.append(d)
     
     # print(result)
@@ -332,12 +336,13 @@ def retransform_data(data):
     # form = { "form" : result}      
     return result 
 
-def transform_data_for_corrected_data(data):
+def transform_data_for_corrected_data(data,checkbox_data):
     
+    # print(checkbox_data['questions'][0]['token_indexes'])
     result = []
-    print(data[0])
+    print(data[168])
     # print(data[0]['tl']['x'])
-    print(data[0]['text'])
+    # print(data[0]['text'])
     # print(data[0]['br']['x'])
     # print(data[0]['id'])
     
@@ -346,7 +351,7 @@ def transform_data_for_corrected_data(data):
         d = {
                             "box" : [data[i]['tl']['x'],data[i]['tl']['y'],data[i]['br']['x'],data[i]['br']['y']],
                             "text" : data[i]['text'],
-                            "label" : "",
+                            "label":"",
                             "words" : [{ 
                                 "box" : [data[i]['tl']['x'],data[i]['tl']['y'],data[i]['br']['x'],data[i]['br']['y']],
                                 "text" : data[i]['text']
@@ -354,8 +359,18 @@ def transform_data_for_corrected_data(data):
                             "linking":[],
                             "id" : data[i]['id']
                 }
+        for l in range(len(checkbox_data['questions'])):
+               question = checkbox_data['questions'][l]['token_indexes']
+            #    print(question)
+               if i in question:
+                    d["label"] = 'checkbox_question'  
+        # print(d['id']) 
+        
         result.append(d)
-    print(result[0])    
+        
+        # for j in range(len(checkbox_data['checkboxes'])):
+            
+    print(result[168])    
     # form = {'form':result}
         
     return result

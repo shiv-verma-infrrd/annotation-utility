@@ -172,8 +172,8 @@ def get_kvp_data(batchId, docId):
         
         if data[0]['type'] == "checkboxes":    
             if str(data[0]["isCorrected"]).lower() == 'true':
-                # print(data[0]['correctedData']['ocrData']['form'])
-                form = utils.transform_data_for_corrected_data(data[0]['correctedData']['ocrData'])
+                # print(data[0]['correctedData']['checkboxData'])
+                form = utils.transform_data(data[0]['correctedData']['ocrData'],data[0]['correctedData']['checkboxData'])
                 data[0]['correctedData']['ocrData'] = form
                 
             else:
