@@ -453,7 +453,7 @@ def extract_file(my_zip,db,batch_id,up_dir):
                 continue
           
            
-def get_image(img_file,no_img):
+def get_images(img_file,no_img):
   
     if os.path.isfile(img_file):
         return send_file(img_file)
