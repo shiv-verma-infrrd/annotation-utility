@@ -21,7 +21,7 @@ from flask_principal import Principal, Permission, RoleNeed, Identity
 
 app = Flask(__name__)
 
-app.config['ENV'] = "development"
+# app.config['ENV'] = "development"
 # print(app.config["ENV"])
 
 if app.config['ENV'] == "production":
@@ -34,7 +34,7 @@ else:
 try:
     mongo = pymongo.MongoClient(
         host=app.config['HOST'],
-        port=27017,
+        port=app.config['PORT'],
         serverSelectionTimeoutMS=100
     )
 
@@ -53,7 +53,7 @@ login_manager.session_protection = "strong"
 
 cors = CORS(
     app,
-    resources={r"*": {"origins": "http://localhost:4200"}},
+    resources={r"*": {"origins":app.config['ALLOWED_URL'] }},
     supports_credentials=True,
 )
 
@@ -63,8 +63,8 @@ class User(UserMixin):
 principals = Principal()
 admin_permission = Permission(RoleNeed('admin'))
 
-SWAGGER_URL = '/api/docs'
-API_URL = '/static/swagger.yml'
+SWAGGER_URL = app.config['SWAGGER_URL']
+API_URL = app.config['API_URL']
 
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
@@ -94,24 +94,25 @@ def user_loader(id):
 
 @app.route("/login", methods=["POST"])
 def login():
-    data = request.json
-    email = data.get("email")
-    password = data.get("password")
+    try:
+        data = request.json
+        email = data.get("email")
+        password = data.get("password")
 
-    user_query = users.find_one({"email": email, "password": password})
-    if user_query:
-        user_model = User()
-        user_model.id = user_query['_id']
-        login_user(user_model)
-        return_data = jsonify(
-            userId=str(user_query['_id']),
-            username=user_query['name'],
-            email=user_query['email'],
-            role=user_query['role']
-        )
-        return return_data, 200
-
-    return jsonify({"login": False})
+        user_query = users.find_one({"email": email, "password": password})
+        if user_query:
+            user_model = User()
+            user_model.id = user_query['_id']
+            login_user(user_model)
+            return_data = jsonify(
+                userId=str(user_query['_id']),
+                username=user_query['name'],
+                email=user_query['email'],
+                role=user_query['role']
+            )
+            return return_data, 200
+    except Exception as ex:
+        return jsonify({"login": False})
 
 
 @app.route("/logout", methods=["GET"])
@@ -124,7 +125,7 @@ def logout():
 @app.route("/batches/<userId>", methods=["GET"])
 @login_required
 def get_batches(userId):
-    # print('Entered batches')
+    
     try:
         data = list(db.batches.find())
         # data = list(db.batches.find({'allocatedTo': userId}))
@@ -190,37 +191,15 @@ def get_kvp_data(batchId, docId):
 
 @app.route('/<batchId>/<image>', methods=['GET'])
 @login_required
-def myapp(batchId, image):
+def send_image_file(batchId, image):
   
     img_file = os.path.join(app.config['IMAGE_PATH'],f'{batchId}/{image}.jpg')
     no_img =  os.path.join(app.config['IMAGE_PATH'],f'no-preview.png')
     # print("###############",img_file)
-    if os.path.isfile(img_file):
-        return send_file(img_file)
+    send_data_file = utils.get_image(img_file,no_img)
+    return send_data_file
     
-    elif os.path.isfile(img_file.replace('jpg','png')):
-        return send_file(img_file.replace('jpg','png'))
     
-    elif os.path.isfile(img_file.replace('jpg','jpeg')):
-        return send_file(img_file.replace('jpg','jpeg'))
-    
-    elif os.path.isfile(img_file.replace('jpg','jfif')):
-        return send_file(img_file.replace('jpg','jfif'))
-    
-    elif os.path.isfile(img_file.replace('jpg','pjpeg')):
-        return send_file(img_file.replace('jpg','pjpeg'))
-    
-    elif os.path.isfile(img_file.replace('jpg','pjp')):
-        return send_file(img_file.replace('jpg','pjp'))
-    
-    elif os.path.isfile(img_file.replace('jpg','webp')):
-        return send_file(img_file.replace('jpg','webp'))
-    
-    else:
-        return send_file(no_img)
-
-
-
 
 @app.route("/pages", methods=["PUT"])
 @login_required
@@ -272,62 +251,16 @@ def send_zip_file():
     try:
         raw_data = request.json
         data = list(db.pages.find({"batchId": str(raw_data['batchId'])}))
-        name = ""
-        type = data[0]['type']
-        # print('type: ', type)
-        # print(data)
-        for batch in data:
-            
-            # print(batch['correctedData']['kvpData'])
-            batch['_id'] = str(batch['_id'])
-            if type == 'checkboxes':
-                name = batch['document_name'] +"_checkboxes"
-                json_object = json.dumps(batch['correctedData']['checkboxData'])
-                json_object2 = json.dumps(batch['correctedData']['ocrData'])
-                with open(""+name+".json", "w") as outfile:
-                   outfile.write(json_object)
-                with open(""+batch['document_name']+".json", "w") as outfile:
-                   outfile.write(json_object2)
-                
-            elif type == 'fields':
-                name = batch['document_name']
-                json_object = json.dumps(batch['correctedData']['kvpData'])    
-                with open(""+name+".json", "w") as outfile:
-                   outfile.write(json_object)
-
-        path = os.getcwd()
-
-        with ZipFile(""+raw_data['batch_name']+'.zip', 'w') as zip:
-            for filename in os.listdir(path):
-                if type == 'fields':
-                    if filename.endswith(".json"):
-                        print(filename)
-                        zip.write(filename, raw_data['batch_name']+"_output/"+filename, ZIP_DEFLATED)
-                elif type == 'checkboxes':
-                    if filename.endswith("_checkboxes.json"):
-                        print(filename)
-                        zip.write(filename, "checkbox_data/"+filename, ZIP_DEFLATED)
-                    elif filename.endswith(".json"):
-                        print(filename)
-                        zip.write(filename, "ocrs/"+filename, ZIP_DEFLATED)
-
-        return_file = BytesIO()
-
-        with open(path + "/" + raw_data['batch_name']+'.zip', 'rb') as fz:
-            return_file.write(fz.read())
-
-        return_file.seek(0)
-
-        rem = ('.json', '.zip')
-        for filename in os.listdir(path):
-            if filename.endswith(rem):
-                os.remove(filename)
-
+       
+        return_file = utils.download_batch(data,raw_data)
+        
         resp = make_response(
             send_file(return_file, mimetype='application/zip'))
+        
         resp.headers['content-disposition'] = 'attachment; filename=' + \
             raw_data['batch_name']+'.zip'
         resp.headers['content-type'] = 'application/zip'
+        
         return resp
     except Exception as ex:
         print(ex)
@@ -408,7 +341,6 @@ def upload_zip():
         )
 
 #### Admin APIs ####
-#### Admin APIs ####
 @app.route("/users", methods=["GET"])
 @login_required
 @admin_permission.require()
@@ -464,14 +396,14 @@ def create_user():
             mimetype="application/json"
         )   
         
-@app.route("/delete_user",methods=["DELETE"])
-def delete_user():
+@app.route("/delete_user/<id>",methods=["DELETE"])
+def delete_user(id):
     try:
       
-        data = request.json
-        print(data['user_id'])
-        u_id = data['user_id']
-        dbResponse = db.Users.delete_one({"user_id": str(u_id) })
+        # data = request.json
+        # print(data['user_id'])
+        # u_id = data['user_id']
+        dbResponse = db.Users.delete_one({"user_id": str(id) })
         print(dbResponse)
         return Response(
                     response=json.dumps(

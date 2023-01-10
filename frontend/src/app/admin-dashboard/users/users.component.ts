@@ -22,4 +22,11 @@ export class UsersComponent {
 
   }
 
+  delete_user(user_id:any){
+    this.admin_service.delete_user(user_id).subscribe((data)=>{
+     console.log(data)
+    })
+
+  }
+
 }

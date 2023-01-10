@@ -42,20 +42,18 @@ export class ApiDataService {
   }
 
   download_batch(batchId:any,batch_name:any){
-    const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
     const data = {
       "batchId": batchId,
       "batch_name":batch_name
       
   }    
   
-    return this.http.post(this.URL+'downloads',data ,{observe:'response',responseType:"blob", headers: headers})
+    return this.http.post(this.URL+'downloads',data ,{observe:'response',responseType:"blob"})
   }
 
   delete_batch_id(batchId:any){
     console.log("batchID : "+batchId)
-    const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
-    return this.http.delete(this.URL+'batch/'+batchId, {'headers':headers})
+    return this.http.delete(this.URL+'batch/'+batchId)
   }
 
   

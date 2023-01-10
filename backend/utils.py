@@ -7,8 +7,8 @@ from flask import request
 import zipfile
 import uuid
 from io import BytesIO,StringIO
-
-
+from flask import Flask, Response, jsonify, make_response, request, send_file
+from zipfile import ZIP_DEFLATED, ZipFile
 
 
 def get_user(user_id, users):
@@ -438,13 +438,82 @@ def extract_file(my_zip,db,batch_id,up_dir):
                 continue
           
            
+def get_image(img_file,no_img):
+    
+    if os.path.isfile(img_file):
+        return send_file(img_file)
+    
+    elif os.path.isfile(img_file.replace('jpg','png')):
+        return send_file(img_file.replace('jpg','png'))
+    
+    elif os.path.isfile(img_file.replace('jpg','jpeg')):
+        return send_file(img_file.replace('jpg','jpeg'))
+    
+    elif os.path.isfile(img_file.replace('jpg','jfif')):
+        return send_file(img_file.replace('jpg','jfif'))
+    
+    elif os.path.isfile(img_file.replace('jpg','pjpeg')):
+        return send_file(img_file.replace('jpg','pjpeg'))
+    
+    elif os.path.isfile(img_file.replace('jpg','pjp')):
+        return send_file(img_file.replace('jpg','pjp'))
+    
+    elif os.path.isfile(img_file.replace('jpg','webp')):
+        return send_file(img_file.replace('jpg','webp'))
+    
+    else:
+        return send_file(no_img) 
+    
+def download_batch(data,raw_data):                            
+    
+        name = ""
+        type = data[0]['type']
+        # print('type: ', type)
+        # print(data)
+        for batch in data:
             
-            
-    # for filename in os.listdir(my_dir):
-    #     if filename.endswith('.json'):
-    #         d = os.path.join(my_dir,filename)
-    #         os.remove(d)
-    #     if filename.endswith('.jpg'):
-    #         d = os.path.join(my_dir,filename)
-    #         os.remove(d)    
-                   
+            # print(batch['correctedData']['kvpData'])
+            batch['_id'] = str(batch['_id'])
+            if type == 'checkboxes':
+                name = batch['document_name'] +"_checkboxes"
+                json_object = json.dumps(batch['correctedData']['checkboxData'])
+                json_object2 = json.dumps(batch['correctedData']['ocrData'])
+                with open(""+name+".json", "w") as outfile:
+                   outfile.write(json_object)
+                with open(""+batch['document_name']+".json", "w") as outfile:
+                   outfile.write(json_object2)
+                
+            elif type == 'fields':
+                name = batch['document_name']
+                json_object = json.dumps(batch['correctedData']['kvpData'])    
+                with open(""+name+".json", "w") as outfile:
+                   outfile.write(json_object)
+
+        path = os.getcwd()
+
+        with ZipFile(""+raw_data['batch_name']+'.zip', 'w') as zip:
+            for filename in os.listdir(path):
+                if type == 'fields':
+                    if filename.endswith(".json"):
+                        print(filename)
+                        zip.write(filename, raw_data['batch_name']+"_output/"+filename, ZIP_DEFLATED)
+                elif type == 'checkboxes':
+                    if filename.endswith("_checkboxes.json"):
+                        print(filename)
+                        zip.write(filename, "checkbox_data/"+filename, ZIP_DEFLATED)
+                    elif filename.endswith(".json"):
+                        print(filename)
+                        zip.write(filename, "ocrs/"+filename, ZIP_DEFLATED)
+
+        return_file = BytesIO()
+
+        with open(path + "/" + raw_data['batch_name']+'.zip', 'rb') as fz:
+            return_file.write(fz.read())
+
+        return_file.seek(0)
+
+        rem = ('.json', '.zip')
+        for filename in os.listdir(path):
+            if filename.endswith(rem):
+                os.remove(filename)
+        return return_file
