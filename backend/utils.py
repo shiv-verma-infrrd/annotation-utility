@@ -335,9 +335,9 @@ def retransform_data(data):
 def transform_data_for_corrected_data(data):
     
     result = []
-    print(data[0])
+    # print(data[0])
     # print(data[0]['tl']['x'])
-    print(data[0]['text'])
+    # print(data[0]['text'])
     # print(data[0]['br']['x'])
     # print(data[0]['id'])
     

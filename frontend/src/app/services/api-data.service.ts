@@ -53,8 +53,7 @@ export class ApiDataService {
 
   delete_batch_id(batchId:any){
     console.log("batchID : "+batchId)
-    const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
-    return this.http.delete(this.URL+'batch/'+batchId, {'headers':headers})
+    return this.http.delete(this.URL+'batch/'+batchId)
   }
 
   
