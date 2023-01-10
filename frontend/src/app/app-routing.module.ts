@@ -11,8 +11,9 @@ import { UsersComponent } from './admin-dashboard/users/users.component';
 import { CreateNewUsersComponent } from './admin-dashboard/create-new-users/create-new-users.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-   { path: 'batches', component: DashboardComponent, canActivate : [AuthGuard]},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  { path: 'login', component: LoginComponent },
+  { path: 'batches', component: DashboardComponent, canActivate : [AuthGuard]},
   { path: 'documents', component: DocumentsComponent, canActivate : [AuthGuard]},
   { path: 'editing-page', component: EditingPageComponent, canActivate : [AuthGuard]},
   { path: 'admin/create_user', component: CreateNewUsersComponent , canActivate : [AuthGuard]},

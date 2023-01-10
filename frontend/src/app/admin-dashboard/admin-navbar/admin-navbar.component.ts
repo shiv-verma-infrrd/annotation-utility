@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { faArrowRightFromBracket,faChessBoard,faFolder,faUsers,faUserPlus,faHome} from '@fortawesome/free-solid-svg-icons';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -14,6 +15,10 @@ export class AdminNavbarComponent {
   users_icon = faUsers
   create_new_user_icon = faUserPlus
 
+  constructor(private loginService: LoginService){}
 
+  onLogout(){
+    this.loginService.logout()
+  }
 
 }

@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   alert_message: string = '';
   isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
+  role: string = '';
   constructor(private loginService: LoginService, 
     private tokenStorage: TokenStorageService, 
     private router: Router,
@@ -30,7 +30,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if(window.sessionStorage.getItem('loggedIn')=='true'){
-      this.router.navigate(['batches'])
+      if(this.tokenStorage.getUser().role=='admin'){
+        this.router.navigate(['admin'])
+      }
+      else{
+        this.router.navigate(['batches'])
+      }
     }
   }
 
@@ -42,14 +47,19 @@ export class LoginComponent implements OnInit {
     this.loginService.login(form.value.username, form.value.password)
     .subscribe({
       next: data=>{
-        this.tokenStorage.saveUser(data, this.loginService.CSRFToken);
+        this.tokenStorage.saveUser(data);
         
         this.isLoginFailed = false;
         this.loginService.isLoggedIn = true;
         window.sessionStorage.setItem('loggedIn', 'true')
         this.toast.success({detail:"Success Message",summary:"Logged in Successfully",duration:3000});
-        this.roles = this.tokenStorage.getUser().roles;
-        this.router.navigate(['batches'])
+        this.role = this.tokenStorage.getUser().role;
+        if(this.role=='admin'){
+          this.router.navigate(['admin'])
+        }
+        else{
+          this.router.navigate(['batches'])
+        }
       },
       error: err => {
         this.errorMessage = err.error.message;

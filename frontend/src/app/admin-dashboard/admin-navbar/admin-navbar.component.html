@@ -10,10 +10,10 @@
     <div class="container-fluid justify-content-end">
         <div class="px-3 text-light"> User</div>
         <fa-icon
-        class="text-light"
-       
+        class="text-light"   
         [icon]="logout_icon"
-    
+        (click)='onLogout()'
+        routerLink="/"
       >
       </fa-icon>
     </div>

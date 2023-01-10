@@ -106,7 +106,8 @@ def login():
         return_data = jsonify(
             userId=str(user_query['_id']),
             username=user_query['name'],
-            email=user_query['email']
+            email=user_query['email'],
+            role=user_query['role']
         )
         return return_data, 200
 
