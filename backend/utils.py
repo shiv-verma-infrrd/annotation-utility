@@ -438,10 +438,8 @@ def extract_file(my_zip,db,batch_id,up_dir):
                 continue
           
            
-def get_image(img_file,no_img,file):
-    f = os.path.join(app.config['IMAGE_PATH'],f'no-preview.png')
-    if os.path.isfile(f):
-        return send_file(f)
+def get_image(img_file,no_img):
+  
     if os.path.isfile(img_file):
         return send_file(img_file)
     

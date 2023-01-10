@@ -196,7 +196,7 @@ def send_image_file(batchId, image):
     img_file = os.path.join(app.config['IMAGE_PATH'],f'{batchId}/{image}.jpg')
     no_img =  os.path.join(app.config['IMAGE_PATH'],f'no-preview.png')
     # print("###############",img_file)
-    send_data_file = utils.get_image(img_file,no_img,app.config['IMAGE_PATH'])
+    send_data_file = utils.get_image(img_file,no_img)
     return send_data_file
     
     
