@@ -102,6 +102,8 @@ export class EditingPageComponent implements AfterViewInit
   header_checkbox:number = 0;
   header_fields:number = 1;
 
+  token_id_to_checkbox_question_index = new Map();
+
   /////////////// image control container variables /////////////////
   image_control_container_open: boolean = true;
   image_control_container_closed: boolean = false;
@@ -137,8 +139,7 @@ export class EditingPageComponent implements AfterViewInit
         {
           this.api_result=JSON.parse(JSON.stringify((data[0].correctedData.ocrData)));
           this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].correctedData.ocrData))));
-          // this.ocr_label_initialization();
-          console.log("checkboxes being called");
+          this.checkbox_label_initialization();
         }
 
         else
@@ -147,8 +148,7 @@ export class EditingPageComponent implements AfterViewInit
           
           this.api_result=JSON.parse(JSON.stringify((data[0].Data.ocrData)));
           this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.ocrData))));
-          // this.ocr_label_initialization();
-          console.log("checkboxes being called");
+          this.checkbox_label_initialization();
         }
       }
 
@@ -361,6 +361,174 @@ kvp_label_initialization()
     }
   }
 }
+
+
+checkbox_label_initialization()
+{
+
+  for(let i = 0; i<this.api_result.length; i++)
+  {
+    if(this.api_result[i].label == 'checkbox_question')
+    {
+      this.checkbox_question_string.push(this.api_result[i].text);
+
+      var t:number[]=[];
+
+        for(let j=0;j<this.api_result[i].words.length;j++)
+        {
+          t.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[j].box)));
+          this.used_token_map.set(t[t.length-1],1);
+        }
+
+
+      this.checkbox_question_id.push(t);
+
+      this.token_id_to_checkbox_question_index.set(JSON.stringify(t), this.checkbox_question_id.length-1);
+      
+      // console.log(this.checkbox_question_string);
+      // console.log(this.checkbox_question_id);
+      // console.log(this.token_id_to_checkbox_question_index);
+
+    }
+  }
+
+
+  this.options_string.length = this.checkbox_question_id.length;
+  this.options_string_id.length = this.checkbox_question_id.length;
+
+  this.actual_checkbox_value.length = this.checkbox_question_id.length;
+  this.actual_checkbox_id.length = this.checkbox_question_id.length;
+  
+  for(let i = 0; i<this.api_result.length; i++)
+  {
+    if(this.api_result[i].label == "checkbox_string" && this.api_result[i].question_id != "null")
+    {
+      for(let j = 0; j<this.api_result.length; j++)
+      {
+        if(this.api_result[i].question_id == this.api_result[j].id)
+        {
+          var t:number[]=[];
+
+          for(let k=0;k<this.api_result[j].words.length;k++)
+          {
+            t.push(this.cord_id_map.get(JSON.stringify(this.api_result[j].words[k].box)));
+          }
+  
+          // console.log(this.token_id_to_checkbox_question_index.get(JSON.stringify(t)));
+          
+          let question_index = this.token_id_to_checkbox_question_index.get(JSON.stringify(t));
+          var t2:number[] = [];
+
+          
+          if(this.options_string[question_index] == undefined)
+          {
+            var str:string = "";
+
+            for(let k=0; k<this.api_result[i].words.length; k++)
+            {
+              t2.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[k].box)));
+              this.used_token_map.set(t2[t2.length-1],1);
+
+              if(str == "")
+              str+=this.api_result[i].words[k].text;
+
+              else
+              str+= " " +this.api_result[i].words[k].text;
+            }
+
+            this.options_string_id[question_index] = [t2];
+            this.options_string[question_index] = [str];
+
+            str="";
+          }
+
+          else
+          {
+            var str="";
+
+            for(let k=0; k<this.api_result[i].words.length; k++)
+            {
+              t2.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[k].box)));
+              this.used_token_map.set(t2[t2.length-1],1);
+
+              if(str == "")
+              str+=this.api_result[i].words[k].text;
+
+              else
+              str+= " " +this.api_result[i].words[k].text;
+            }
+            this.options_string[question_index].push(str);
+            this.options_string_id[question_index].push(t2);
+
+            str="";
+          }
+        }
+      }
+
+      // console.log(this.options_string);
+      // console.log(this.options_string_id);
+      
+      
+    }
+
+    if(this.api_result[i].label == "checkbox")
+    {
+      for(let j = 0; j<this.api_result.length; j++)
+      {
+        if(this.api_result[i].question_id == this.api_result[j].id)
+        {
+          var t:number[]=[];
+
+          for(let k=0;k<this.api_result[j].words.length;k++)
+          {
+            t.push(this.cord_id_map.get(JSON.stringify(this.api_result[j].words[k].box)));
+          }
+  
+          // console.log(this.token_id_to_checkbox_question_index.get(JSON.stringify(t)));
+          
+          let question_index = this.token_id_to_checkbox_question_index.get(JSON.stringify(t));
+          var t2:number[] = [];
+
+          if(this.actual_checkbox_value[question_index] == undefined)
+          {
+           
+              t2.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[0].box)));
+              this.used_token_map.set(t2[t2.length-1],1);
+
+              let l2 = t2[0];
+
+            this.actual_checkbox_id[question_index] = [l2];
+
+            if(this.api_result[i].check=='unchecked')
+            this.actual_checkbox_value[question_index] = ['Unchecked'];
+
+            else
+            this.actual_checkbox_value[question_index] = ['Checked'];
+
+          }
+
+          else
+          {
+            t2.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[0].box)));
+            this.used_token_map.set(t2[t2.length-1],1);
+      
+
+            let l2 = t2[0];
+
+            if(this.api_result[i].check=='unchecked')
+            this.actual_checkbox_value[question_index].push('Unchecked');
+
+            else
+            this.actual_checkbox_value[question_index].push('Checked');
+
+            this.actual_checkbox_id[question_index].push(l2);
+          }
+        }
+      }
+    }
+  }   
+}
+
 
 
 token_extractor_from_grouping(data:any)
