@@ -407,7 +407,8 @@ def upload_zip():
         )
 
 #### Admin APIs ####
-@app.route("/userss", methods=["GET"])
+#### Admin APIs ####
+@app.route("/users", methods=["GET"])
 @login_required
 @admin_permission.require()
 def get_users():
@@ -427,6 +428,68 @@ def get_users():
             status=500,
             mimetype="application/json"
         )
+        
+ 
+@app.route("/create_user", methods=["POST"])
+def create_user():
+    try:
+        # print(request.form['name'])
+        new_user = {
+                    "user_id": str(uuid.uuid4()),
+                    "name" : request.form['name'],
+                    "user_name" : request.form['user_name'], 
+                    "email":request.form['email'],
+                    "password" : request.form['password'],
+                    "role" : request.form['role'] 
+                }
+        
+        db.Users.insert_one(new_user)
+        return Response(
+                    response=json.dumps(
+                        {
+                            "message": " new user created sucessfully",
+                        }),
+                    status=200,
+                    mimetype="application/json"
+                )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {
+                    "message": "cannot create new user",
+                }),
+            status=500,
+            mimetype="application/json"
+        )   
+        
+@app.route("/delete_user",methods=["DELETE"])
+def delete_user():
+    try:
+      
+        data = request.json
+        print(data['user_id'])
+        u_id = data['user_id']
+        dbResponse = db.Users.delete_one({"user_id": str(u_id) })
+        print(dbResponse)
+        return Response(
+                    response=json.dumps(
+                        {
+                            "message": "User deleted sucessfully",
+                        }),
+                    status=200,
+                    mimetype="application/json"
+                )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps(
+                {
+                    "message": "cannot delete new user",
+                }),
+            status=500,
+            mimetype="application/json"
+        )           
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

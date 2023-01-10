@@ -17,6 +17,11 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgToastModule } from 'ng-angular-popup';
 import { AuthGuard } from './guards/auth.guard';
 import { UploadFileComponent } from './upload-file/upload-file.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AdminNavbarComponent } from './admin-dashboard/admin-navbar/admin-navbar.component';
+import { BatchesComponent } from './admin-dashboard/batches/batches.component';
+import { UsersComponent } from './admin-dashboard/users/users.component';
+import { CreateNewUsersComponent } from './admin-dashboard/create-new-users/create-new-users.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +32,11 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
     EditingPageComponent,
     LoginComponent,
     UploadFileComponent,
+    AdminDashboardComponent,
+    AdminNavbarComponent,
+    BatchesComponent,
+    UsersComponent,
+    CreateNewUsersComponent,
   ],
   imports: [
     BrowserModule,

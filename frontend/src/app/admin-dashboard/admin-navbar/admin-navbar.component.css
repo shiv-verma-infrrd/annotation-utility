@@ -1,0 +1,66 @@
+.navbar-custom{
+    background-color: #39a87a;
+    z-index:2;
+     position:fixed;
+}
+.side-container{
+    background-color:rgba(0,0,0,.87);
+    position:fixed;
+    left:0;
+    width:8rem;
+    height:100vh;
+    /* padding:5px; */
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+
+}
+.side-nav-content{
+    color:#fff;
+    /* padding:10px; */
+
+}
+main{
+    position:absolute;
+    width:100%;
+    top:3.5rem;
+    z-index:1;
+}
+.border-white{
+    border:1px solid #fff;
+}
+.nav-list{
+    list-style: none;
+    height:100%;
+    padding:0%;
+    margin-bottom:0%;
+    display:inline;
+
+}
+
+.nav-list-item{
+
+    width:100%;
+    display: inline-block;
+    align-items: center;
+    /* height: 6rem; */
+    border-bottom:1px solid #fff;
+    text-align: center;
+    padding:1rem;
+    cursor:pointer;
+
+
+}
+
+.nav-list-item:hover{
+
+    background-color:rgba(57, 168, 122, 0.6);
+
+} 
+
+.nav-list-item fa-icon{
+    font-size:1.5rem;
+   
+}
+.nav-list-item div{
+    font-size:0.7rem;
+    text-transform: capitalize;
+}

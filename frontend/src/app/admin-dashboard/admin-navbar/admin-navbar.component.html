@@ -1,0 +1,64 @@
+<nav class="navbar fixed-top navbar-expand navbar-dark navbar-custom">
+
+    <div class="side-nav-button p-2 text-light"></div>
+    <a class="navbar-brand " routerLink="/admin">
+        <img  src="https://uat.infrrd.cloud/assets/images/logos/infrrd-logo-monotone-white-transparent@2x.png" alt="" width="80">
+    </a>
+    
+    <div class="navbar-collapse"></div>
+
+    <div class="container-fluid justify-content-end">
+        <div class="px-3 text-light"> User</div>
+        <fa-icon
+        class="text-light"
+       
+        [icon]="logout_icon"
+    
+      >
+      </fa-icon>
+    </div>
+
+</nav>
+
+<main>
+    <div class="side-container">
+    <div class="side-nav-content">
+        <ul class="nav-list">
+
+            <li class="nav-list-item text-light" routerLink="/admin">
+                <fa-icon
+                
+                [icon]="dashboard_icon">
+                    
+                </fa-icon>
+                <div>Dashboard</div>
+            </li>
+
+        <li class="nav-list-item text-light"  routerLink="/admin/batches">
+            <fa-icon
+            
+            [icon]="batch_icon">
+                
+            </fa-icon>
+            <div>Batches</div>
+        </li>
+        <li class="nav-list-item text-light"  routerLink="/admin/users">
+            <fa-icon
+
+            [icon]="users_icon">
+                
+            </fa-icon>
+            <div> Users</div>
+        </li>
+        <li class="nav-list-item text-light "  routerLink="/admin/create_user">
+            <fa-icon
+           
+            [icon]="create_new_user_icon">
+                
+            </fa-icon>
+            <div>New user</div>
+        </li>
+        </ul>
+    </div>
+</div>
+</main>
