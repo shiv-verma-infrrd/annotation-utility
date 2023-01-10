@@ -742,8 +742,60 @@ image_zoom_out()
   if(this.used_token_map.has(token_id))
   {
     this.toast.warning({detail:"WARNING",summary:'This token has already been used',duration:5000});
-  }
 
+    var id = "";
+
+    for(let i = 0;i<this.question_entity_ids.length;i++)
+    {
+      for(let j = 0; j<this.question_entity_ids[i].length; j++)
+      {
+        if(token_id == this.question_entity_ids[i][j])
+        {
+          id = i+"q";
+          break;
+        }
+      }
+    }
+
+    for(let i = 0;i<this.answer_entity_ids.length;i++)
+    {
+      for(let j = 0; j<this.answer_entity_ids[i].length; j++)
+      {
+        if(token_id == this.answer_entity_ids[i][j])
+        {
+          id = i+"a";
+          break;
+        }
+      }
+    }
+
+    for(let i = 0;i<this.header_entity_ids.length;i++)
+    {
+      for(let j = 0; j<this.header_entity_ids[i].length; j++)
+      {
+        if(token_id == this.header_entity_ids[i][j])
+        {
+          id = i+"h";
+          break;
+        }
+      }
+    }
+
+    for(let i = 0;i<this.other_entity_ids.length;i++)
+    {
+      for(let j = 0; j<this.other_entity_ids[i].length; j++)
+      {
+        if(token_id == this.other_entity_ids[i][j])
+        {
+          id = i+"o";
+          break;
+        }
+      }
+    }
+ 
+    var el = document.getElementById(id);
+    el?.scrollIntoView();
+  }
   else
   {
     this.display_entity_rect_ref.nativeElement.style.x = 0;

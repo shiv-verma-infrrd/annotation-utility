@@ -99,13 +99,13 @@
         <!-- ****** displaying question and answer ******* -->
         <div class="display-field-entity" *ngFor="let i of question_entity_strings;let ind=index">
           <!--question part-->
-          <div #q_struct_ref class="qa-entity-cell-structure q-entity-cell-pos" (click)="select_field_for_editing(q_i_r,'q',ind)"  (click)="field_entity_click('q',ind,q_i_r)">
+          <div #q_struct_ref id="{{ind+'q'}}" class="qa-entity-cell-structure q-entity-cell-pos" (click)="select_field_for_editing(q_i_r,'q',ind)"  (click)="field_entity_click('q',ind,q_i_r)">
             <div class="qa-entity-cell-type">Q</div>
             <input readonly #q_i_r class="qa-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
           </div>
           <!--end of question part-->
           <!--answer part-->
-          <div #a_struct_ref class="qa-entity-cell-structure a-entity-cell-pos" (click)="select_field_for_editing(a_i_r,'a',ind)" (click)="field_entity_click('a',ind,a_i_r)">
+          <div #a_struct_ref id="{{ind+'a'}}" class="qa-entity-cell-structure a-entity-cell-pos" (click)="select_field_for_editing(a_i_r,'a',ind)" (click)="field_entity_click('a',ind,a_i_r)">
             <div class="qa-entity-cell-type">A</div>
             <input readonly #a_i_r class="qa-entity-cell-data" value={{answer_entity_strings[ind]}} (keydown.backspace)="pop_token_from_field_entity()"/>
           </div>
@@ -120,7 +120,7 @@
         <!-- ****** end of displaying question and answer ******* -->
         <!--****** displaying header *******-->
         <div class="display-field-entity" *ngFor="let i of header_entity_strings;let ind=index">
-          <div #h_struct_ref class="ho-entity-cell-structure h-entity-cell-pos" (click)="select_field_for_editing(h_i_r,'h',ind)" (click)="field_entity_click('h',ind,h_i_r)">
+          <div #h_struct_ref id="{{ind+'h'}}" class="ho-entity-cell-structure h-entity-cell-pos" (click)="select_field_for_editing(h_i_r,'h',ind)" (click)="field_entity_click('h',ind,h_i_r)">
             <div class="ho-entity-cell-type">H</div>
             <input #h_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
           </div>
@@ -135,7 +135,7 @@
         <!--****** end of displaying header *******-->    
         <!--****** displaying other *******-->
         <div class="display-field-entity" *ngFor="let i of other_entity_strings;let ind=index">
-          <div #o_struct_ref class="ho-entity-cell-structure o-entity-cell-pos" (click)="select_field_for_editing(o_i_r,'o',ind)" (click)="field_entity_click('o',ind,o_i_r)">
+          <div #o_struct_ref id="{{ind+'o'}}" class="ho-entity-cell-structure o-entity-cell-pos" (click)="select_field_for_editing(o_i_r,'o',ind)" (click)="field_entity_click('o',ind,o_i_r)">
             <div class="ho-entity-cell-type">O</div>
             <input  #o_i_r readonly class="ho-entity-cell-data" value={{i}} (keydown.backspace)="pop_token_from_field_entity()"/>
           </div>
