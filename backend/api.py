@@ -6,14 +6,9 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from bson import ObjectId
 from flask import Flask, Response, jsonify, make_response, request, send_file
 from flask_cors import CORS
-from flask_login import (
-    LoginManager,
-    UserMixin,
-    login_required,
-    login_user,
-    logout_user,
-)
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 import pymongo
+import logging
 import utils
 from flask_swagger_ui import get_swaggerui_blueprint
 import uuid
@@ -23,6 +18,7 @@ app = Flask(__name__)
 
 # app.config['ENV'] = "development"
 # print(app.config["ENV"])
+logging.basicConfig(filename='record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s : %(message)s')
 
 if app.config['ENV'] == "production":
     app.config.from_object("config.ProductionConfig")
@@ -43,9 +39,10 @@ try:
     users = db.Users
     # print('Connected')
     mongo.server_info()
+    app.logger.info('Connected to the database successfully')
 
-except:
-    print("Error - cannot connect to db")
+except Exception as ex:
+    app.logger.warning('Cannot connect to database: %s', ex)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -98,6 +95,7 @@ def login():
         data = request.json
         email = data.get("email")
         password = data.get("password")
+        app.logger.info('Input credentials: %s', data)
 
         user_query = users.find_one({"email": email, "password": password})
         if user_query:
@@ -110,8 +108,10 @@ def login():
                 email=user_query['email'],
                 role=user_query['role']
             )
+            app.logger.info('Authentication Successful: Logging in user')
             return return_data, 200
     except Exception as ex:
+        app.logger.info('Authentication Failed: %s', ex)
         return jsonify({"login": False})
 
 
@@ -119,6 +119,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    app.logger.info('Logging out user')
     return jsonify({"logout": True})
 
 
@@ -129,12 +130,13 @@ def get_batches(userId):
     try:
         data = list(db.batches.find())
         # data = list(db.batches.find({'allocatedTo': userId}))
+        app.logger.info('Returning batch data')
         return Response(response=json.dumps(data, default=str),
                         status=200,
                         mimetype="application/json")
 
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Failed to read batches : %s', ex)
         return Response(
             response=json.dumps(
                 {
@@ -145,12 +147,13 @@ def get_batches(userId):
         )
 
 
-@app.route("/pages/<id>", methods=["GET"])
-def get_kvp_data_one(id):
+@app.route("/pages/<batchId>", methods=["GET"])
+@login_required
+def get_batch_documents_list(batchId):
 
     try:
-        data = list(db.pages.find({"batchId": str(id)}, {'Data':0, 'correctedData':0}))
-
+        data = list(db.pages.find({"batchId": str(batchId)}, {'Data':0, 'correctedData':0}))
+        app.logger.info('Returning document list in batch: batch %s', batchId)
         return Response(
             response=json.dumps(data,default=str),
             status=200,
@@ -162,7 +165,7 @@ def get_kvp_data_one(id):
 
 @app.route("/pages/<batchId>/<docId>", methods=["GET"])
 @login_required
-def get_kvp_data(batchId, docId):
+def get_document_data(batchId, docId):
 
     try:
         
@@ -180,13 +183,22 @@ def get_kvp_data(batchId, docId):
                 form = utils.transform_data(data[0]['Data']['ocrData'],data[0]['Data']['checkboxData'])
                 data[0]['Data']['ocrData'] = form
 
+        app.logger.info('Returning document data: document %s', docId)
         return Response(
             response=json.dumps(data,default=str),
             status=200,
             mimetype="application/json"
         )
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Failed to read document data : %s', ex)
+        return Response(
+            response=json.dumps(
+                {
+                    "message": "cannot read documents",
+                }),
+            status=500,
+            mimetype="application/json"
+        )
 
 
 @app.route('/<batchId>/<image>', methods=['GET'])
@@ -199,11 +211,16 @@ def send_image_file(batchId, image):
     send_data_file = utils.get_image(img_file,no_img)
     return send_data_file
     
-    
+@app.route('/image/<imageName>', methods=['GET'])
+@login_required
+def get_image(imageName):
+    img_file = os.path.join(app.config['IMAGE_PATH'],f'{imageName}')
+    if os.path.isfile(img_file):
+        return send_file(img_file)
 
 @app.route("/pages", methods=["PUT"])
 @login_required
-def put_ocr_data():
+def put_document_data():
 
     try:
         raw_data = request.json
@@ -233,7 +250,7 @@ def put_ocr_data():
         )
 
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Failed to update document data : %s', ex)
         return Response(
             response=json.dumps({"Message": "record not updated"}),
             status=500,
@@ -261,9 +278,10 @@ def send_zip_file():
             raw_data['batch_name']+'.zip'
         resp.headers['content-type'] = 'application/zip'
         
+        app.logger.info('Batch downloaded')
         return resp
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Batch download failed : %s', ex)
         return Response(
             response=json.dumps({"Message": "File cannot be downloaded"}),
             status=500,
@@ -276,22 +294,23 @@ def send_zip_file():
 ################ Delete Btaches #################################
 
 
-@app.route("/batch/<id>", methods=["DELETE"])
+@app.route("/batch/<batchId>", methods=["DELETE"])
 @login_required
-def delete_batches(id):
+def delete_batches(batchId):
     try:
-        dbResponse = db.batches.delete_one({"batchId": str(id)})
-        dbResponse2 = db.pages.delete_many({"batchId": str(id)})
+        dbResponse = db.batches.delete_one({"batchId": str(batchId)})
+        dbResponse2 = db.pages.delete_many({"batchId": str(batchId)})
         
-        path = os.path.join(app.config['IMAGE_PATH'] ,f'{str(id)}')
+        path = os.path.join(app.config['IMAGE_PATH'] ,f'{str(batchId)}')
         shutil.rmtree(path)
+        app.logger.info('Batch Deleted : batch %s', )
         return Response(
-            response=json.dumps({"Message": "Batch deleted", "id": f"{id}"}),
+            response=json.dumps({"Message": "Batch deleted", "id": f"{batchId}"}),
             status=200,
             mimetype="application/json"
         )
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Failed to delete batch : %s', ex)
         return Response(
             response=json.dumps({"Message": "File cannot be deleted"}),
             status=500,
@@ -326,6 +345,7 @@ def upload_zip():
             utils.push_json_data_in_db(batch_id, db,app.config['IMAGE_PATH'] )
             utils.remove_filesystem_folder(batch_id,app.config['IMAGE_PATH'])
             
+        app.logger.info('Batch Uploaded')
         return Response(
             response=json.dumps({"Message": "File Uploaded Successfully"}),
             status=200,
@@ -333,7 +353,7 @@ def upload_zip():
         )
 
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Batch upload failed : %s', ex)
         return Response(
             response=json.dumps({"Message": "File cannot be Uploaded "}),
             status=500,
@@ -352,7 +372,7 @@ def get_users():
                         mimetype="application/json")
 
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Failed to return users list : %s', ex)
         return Response(
             response=json.dumps(
                 {
@@ -387,7 +407,7 @@ def create_user():
                     mimetype="application/json"
                 )
     except Exception as ex:
-        print(ex)
+        app.logger.exception('New user creation failed : %s', ex)
         return Response(
             response=json.dumps(
                 {
@@ -415,7 +435,7 @@ def delete_user(id):
                     mimetype="application/json"
                 )
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Failed to delete user : %s', ex)
         return Response(
             response=json.dumps(
                 {
@@ -447,7 +467,7 @@ def create_team():
                     mimetype="application/json"
                 )
     except Exception as ex:
-        print(ex)
+        app.logger.exception('Failed to create team : %s', ex)
         return Response(
             response=json.dumps(
                 {

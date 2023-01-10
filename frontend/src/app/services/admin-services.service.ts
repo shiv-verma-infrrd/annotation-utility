@@ -3,14 +3,14 @@ import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { ApiDataService } from './api-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminServiceService {
   
-  URL = "http://127.0.0.1:5000/";
-  constructor(private http:HttpClient, private tokenStorageService: TokenStorageService) { }
+  constructor(private http:HttpClient, private tokenStorageService: TokenStorageService, private apiDataService: ApiDataService) { }
 
   create_user(name:any,username:any,email:any,password:any,role:any): Observable<any> {
   
@@ -30,20 +30,18 @@ export class AdminServiceService {
     console.log(formData);
     
 
-    return this.http.post(this.URL + '/create_user', formData)
+    return this.http.post(this.apiDataService.URL + '/create_user', formData)
   }
 
   get_user(){
    
-    return this.http.get(this.URL+'users')
+    return this.http.get(this.apiDataService.URL+'users')
   }
 
 
   delete_user(userId:any){
- 
-    const headers = new HttpHeaders({'X-CSRFToken': this.tokenStorageService.getUser().CSRFToken})
     userId = "763f78cc-b9a8-474e-99c1-5b8645b01351";
-    return this.http.delete(this.URL+'delete_user',);
+    return this.http.delete(this.apiDataService.URL+'delete_user',);
   }
 
 }

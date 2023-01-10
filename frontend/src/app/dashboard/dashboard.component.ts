@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   batchID:any;
   apiBatchdata:any;
   userId:string = '';
-  thumbnail = "/assets/dimg.png"
+  thumbnail = this.apiData.URL + "image/dimg.png"
   download_icon = faDownload;
   delete_icon = faTrash;
   delete_batch_Id:any
