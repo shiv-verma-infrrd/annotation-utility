@@ -73,10 +73,11 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 @app.route("/")
-def hello_world():
+def root():
     return render_template('index.html')
 
 @app.route("/static/batches")
+@login_required
 def batches():
     return render_template('index.html')
 
@@ -85,27 +86,37 @@ def login_route():
     return render_template('index.html')
 
 @app.route("/static/documents")
+@login_required
 def documents():
     return render_template('index.html')
 
 @app.route("/static/editing-page")
+@login_required
 def editing_page():
     return render_template('index.html')
 
 @app.route("/static/admin")
+@login_required
+@admin_permission.require()
 def admin():
     return render_template('index.html')
 
 @app.route("/static/admin/batches")
+@login_required
+@admin_permission.require()
 def admin_batches():
     return render_template('index.html')
 
 
 @app.route("/static/admin/users")
+@login_required
+@admin_permission.require()
 def admin_users():
     return render_template('index.html')
 
 @app.route("/static/admin/create_user")
+@login_required
+@admin_permission.require()
 def admin_create_user():
     return render_template('index.html')
 
@@ -427,6 +438,8 @@ def get_users():
         
  
 @app.route("/create_user", methods=["POST"])
+@login_required
+@admin_permission.require()
 def create_user():
     try:
         # print(request.form['name'])
@@ -461,13 +474,15 @@ def create_user():
         )   
         
 @app.route("/delete_user/<id>",methods=["DELETE"])
+@login_required
+@admin_permission.require()
 def delete_user(id):
     try:
       
         # data = request.json
         # print(data['user_id'])
         # u_id = data['user_id']
-        dbResponse = db.Users.delete_one({"user_id": str(id) })
+        dbResponse = db.Users.delete_one({"_id": ObjectId(id) })
         print(dbResponse)
         return Response(
                     response=json.dumps(
@@ -489,6 +504,8 @@ def delete_user(id):
         ) 
         
 @app.route("/create_team", methods=["POST"])
+@login_required
+@admin_permission.require()
 def create_team():
     try:
         # print(request.form['name'])

@@ -42,8 +42,7 @@ export class AdminServiceService extends RootService{
 
 
   delete_user(userId:any){
-    userId = "763f78cc-b9a8-474e-99c1-5b8645b01351";
-    return this.http.delete(this.URL+'delete_user',);
+    return this.http.delete(this.URL+'delete_user/'+userId);
   }
 
 }

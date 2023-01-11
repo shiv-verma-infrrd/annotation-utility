@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AdminServiceService } from '@app/services/admin-services.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-users',
@@ -7,8 +9,7 @@ import { AdminServiceService } from '@app/services/admin-services.service';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent {
-
-  constructor(private admin_service:AdminServiceService ){}
+  constructor(private admin_service:AdminServiceService, private router: Router, private route: ActivatedRoute, private toast: NgToastService){}
 
   users:any = []
   
@@ -24,7 +25,14 @@ export class UsersComponent {
 
   delete_user(user_id:any){
     this.admin_service.delete_user(user_id).subscribe((data)=>{
-     console.log(data)
+     setTimeout(() => {
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation='reload';
+    this.router.navigate(['./'],{
+      relativeTo:this.route
+    })
+    this.toast.success({ detail: "Success Message", summary: "User Deleted Successfully", duration: 3000 })
+    }, 1000);
     })
 
   }

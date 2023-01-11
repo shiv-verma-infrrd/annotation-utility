@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgToastService } from 'ng-angular-popup';
 import { AdminServiceService } from '@app/services/admin-services.service';
@@ -17,6 +17,7 @@ export class CreateNewUsersComponent {
     private admin_service:AdminServiceService,
     private tokenStorage: TokenStorageService, 
     private router: Router,
+    private route: ActivatedRoute,
     private toast:NgToastService) { }
   
   image = "https://uat.infrrd.cloud/assets/images/logos/Infrrd-Logo-Transparent3.png"
@@ -28,15 +29,23 @@ export class CreateNewUsersComponent {
     
     let password = form.value.password
     // let name = form.value.name
-    let role = "User"
+    let role = "user"
     if(form.value.user == true)
-         role = "User"
+         role = "user"
     
     if(form.value.admin == true)
-          role = "Admin"
+          role = "admin"
 
-    this.admin_service.create_user(name,username,email,password,role).subscribe(data=>console.log(data))      
-    
+    this.admin_service.create_user(name,username,email,password,role).subscribe(data=>{
+      setTimeout(() => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation='reload';
+      this.router.navigate(['./'],{
+        relativeTo:this.route
+      })
+      this.toast.success({ detail: "Success Message", summary: "User Deleted Successfully", duration: 3000 })
+      }, 1000);
+    })
   }
 
 
