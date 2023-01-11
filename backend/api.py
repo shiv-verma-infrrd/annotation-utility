@@ -214,7 +214,8 @@ def send_image_file(batchId, image):
 @app.route('/image/<imageName>', methods=['GET'])
 @login_required
 def get_image(imageName):
-    img_file = os.path.join(app.config['IMAGE_PATH'],f'{imageName}')
+    root_path = os.getcwd()
+    img_file = root_path+f'/static/images/{imageName}'
     if os.path.isfile(img_file):
         return send_file(img_file)
 
@@ -480,4 +481,4 @@ def create_team():
                   
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=8008)

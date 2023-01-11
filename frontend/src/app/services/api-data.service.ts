@@ -2,22 +2,24 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
+import { RootService } from './root.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 
-export class ApiDataService {
+export class ApiDataService extends RootService{
   batchData:any;
   docData:any;
   doc_name:any;
   docarray:any;
   forms:any[]=[];
   checkboxesCoordinate:any[]=[]
-  URL = "http://127.0.0.1:5000/";
 
-  constructor(private http:HttpClient, private tokenStorageService: TokenStorageService) {}
+  constructor(private http:HttpClient, private tokenStorageService: TokenStorageService) {
+    super()
+  }
 
   batches(userId: string){
     return this.http.get(this.URL+'/batches/'+userId)

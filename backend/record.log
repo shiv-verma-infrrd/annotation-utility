@@ -685,3 +685,124 @@ FileNotFoundError: [WinError 3] The system cannot find the path specified: 'E:\\
 2023-01-10 20:04:29,699 INFO werkzeug : 127.0.0.1 - - [10/Jan/2023 20:04:29] "GET /pages/99be7b7f-1b0b-4e3a-8214-dd6581d5d210 HTTP/1.1" 200 -
 2023-01-10 20:04:29,889 INFO api : Returning document data: document a8686533-7b30-4288-a112-9736c30d8de1
 2023-01-10 20:04:29,889 INFO werkzeug : 127.0.0.1 - - [10/Jan/2023 20:04:29] "GET /pages/99be7b7f-1b0b-4e3a-8214-dd6581d5d210/a8686533-7b30-4288-a112-9736c30d8de1 HTTP/1.1" 200 -
+2023-01-11 10:52:25,976 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be479120e7edd8c54708ea, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.0457602919996134>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.04469683599927521>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 10:52:26,036 WARNING werkzeug :  * Debugger is active!
+2023-01-11 10:52:26,036 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:03:30,857 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4a2af9d7192b4f0a03d3, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.040153787998860935>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:03:30,965 INFO werkzeug : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2023-01-11 11:03:30,965 INFO werkzeug : [33mPress CTRL+C to quit[0m
+2023-01-11 11:03:30,966 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:03:31,814 INFO api : Connected to the database successfully
+2023-01-11 11:03:31,831 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:03:31,859 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:04:00,976 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:04:01,622 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:04:02,063 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4a49c05c3f89e009d598, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.0431922849984403>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:04:02,076 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:04:02,076 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:04:07,329 INFO api : Connected to the database successfully
+2023-01-11 11:04:07,342 INFO werkzeug : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8008
+2023-01-11 11:04:07,342 INFO werkzeug : [33mPress CTRL+C to quit[0m
+2023-01-11 11:04:07,343 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:04:07,782 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4a4f98894d2b25cbb597, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.04812022099940805>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:04:07,799 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:04:07,799 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:04:24,367 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:04:24] "OPTIONS /login HTTP/1.1" 200 -
+2023-01-11 11:04:24,370 INFO api : Input credentials: {'email': 'user1@gmail.com', 'password': 'password@1'}
+2023-01-11 11:04:24,800 INFO api : Authentication Successful: Logging in user
+2023-01-11 11:04:24,801 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:04:24] "POST /login HTTP/1.1" 200 -
+2023-01-11 11:04:24,954 INFO api : Returning batch data
+2023-01-11 11:04:24,955 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:04:24] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:04:25,102 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:04:25] "[35m[1mGET /image/dimg.png HTTP/1.1[0m" 500 -
+2023-01-11 11:05:58,213 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:05:58,802 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:05:59,976 INFO api : Connected to the database successfully
+2023-01-11 11:05:59,989 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:05:59,989 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:06:06,476 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4ac67a625ba9daeaf5a3, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.05734693799968227>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:06:06,493 INFO werkzeug : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8008
+2023-01-11 11:06:06,493 INFO werkzeug : [33mPress CTRL+C to quit[0m
+2023-01-11 11:06:06,494 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:06:07,221 WARNING api : Cannot connect to database: No replica set members found yet, Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4ac690257edc9ba5c13b, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:06:07,235 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:06:07,235 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:06:31,331 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:06:31,874 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:06:32,583 WARNING api : Cannot connect to database: No replica set members found yet, Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4ae0b47c6042d4835c00, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:06:32,596 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:06:32,596 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:06:42,647 INFO api : Returning batch data
+2023-01-11 11:06:42,648 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:06:42] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:06:42,742 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:06:42] "[35m[1mGET /image/dimg.png HTTP/1.1[0m" 500 -
+2023-01-11 11:07:00,705 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:07:01,240 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:07:02,091 INFO api : Connected to the database successfully
+2023-01-11 11:07:02,110 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:07:02,111 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:07:13,408 INFO api : Returning batch data
+2023-01-11 11:07:13,409 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:07:13] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:07:13,643 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:07:13] "[35m[1mGET /image/dimg.png HTTP/1.1[0m" 500 -
+2023-01-11 11:07:44,277 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:07:44,636 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:07:45,024 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4b28adf25515d3964721, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.040944214999399264>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:07:45,037 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:07:45,038 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:07:59,102 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:07:59,665 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:08:00,151 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4b37897c720eeba1dd1f, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.04366900399872975>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:08:00,169 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:08:00,169 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:08:03,329 INFO api : Returning batch data
+2023-01-11 11:08:03,330 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:08:03] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:08:03,422 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:08:03] "[35m[1mGET /image/dimg.png HTTP/1.1[0m" 500 -
+2023-01-11 11:08:52,381 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:08:52,936 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:08:54,715 INFO api : Connected to the database successfully
+2023-01-11 11:08:54,730 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:08:54,730 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:08:57,011 INFO api : Returning batch data
+2023-01-11 11:08:57,012 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:08:57] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:08:57,155 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:08:57] "[35m[1mGET /image/dimg.png HTTP/1.1[0m" 500 -
+2023-01-11 11:10:11,008 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:10:11,530 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:10:12,573 INFO api : Connected to the database successfully
+2023-01-11 11:10:12,586 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:10:12,587 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:10:16,758 INFO api : Returning batch data
+2023-01-11 11:10:16,760 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:10:16] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:10:16,851 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:10:16] "[35m[1mGET /image/dimg.png HTTP/1.1[0m" 500 -
+2023-01-11 11:10:31,662 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:10:32,205 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:10:33,103 INFO api : Connected to the database successfully
+2023-01-11 11:10:33,128 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:10:33,129 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:10:36,080 INFO api : Returning batch data
+2023-01-11 11:10:36,081 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:10:36] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:10:36,161 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:10:36] "[35m[1mGET /image/dimg.png HTTP/1.1[0m" 500 -
+2023-01-11 11:11:58,460 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:11:58,896 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:11:59,710 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4c2713549128fcde29d6, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.05127986299885379>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:11:59,728 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:11:59,728 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:12:04,113 INFO api : Returning batch data
+2023-01-11 11:12:04,115 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:12:04] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:12:04,201 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:12:04] "[35m[1mGET /image/dimg.png HTTP/1.1[0m" 500 -
+2023-01-11 11:12:54,942 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:12:55,476 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:12:55,935 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4c5f57479a7039c03c9d, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.04161509400000796>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:12:55,948 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:12:55,949 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:12:57,617 INFO api : Returning batch data
+2023-01-11 11:12:57,618 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:12:57] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:12:58,377 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:12:58] "GET /image/dimg.png HTTP/1.1" 200 -
+2023-01-11 11:13:43,134 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 11:13:43,722 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:13:44,469 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be4c90888d30c565356284, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.06935618900024565>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:13:44,483 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:13:44,484 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:13:46,275 INFO api : Returning batch data
+2023-01-11 11:13:46,276 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:13:46] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:13:46,358 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:13:46] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
