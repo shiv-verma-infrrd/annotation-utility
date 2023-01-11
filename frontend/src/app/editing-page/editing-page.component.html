@@ -162,7 +162,7 @@
 
     <div class="page-right-section-mid-checkbox" *ngIf="header_checkbox" (scroll)="entity_line_adjuster()">
       
-      <div class="checkbox-container" *ngFor="let i of checkbox_question_string; let in=index;" (scroll)="entity_line_adjuster()">
+      <div class="checkbox-container" id="{{in+'ch'}}" *ngFor="let i of checkbox_question_string; let in=index;" (scroll)="entity_line_adjuster()">
         <input class="checkbox-question" value={{i}} readonly placeholder="Select Checkbox Question" (click)="select_checkbox_for_editing(checkbox_question_input,'checkbox_question',in, -1)" (click)="checkbox_entity_click('checkbox_question', in, 0, checkbox_question_input)" (keydown.backspace)="pop_from_checkbox_entity()" #checkbox_question_input>
 
         <div class="checkbox-option-container" *ngFor="let j of options_string[in]; let ind=index;">
