@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
     
     })
 
-    this.toast.success({ detail: "Success Message", summary: " file Downloaded Successfully", duration: 3000 })
+    this.toast.success({ detail: "Success Message", summary: "Downloading", duration: 5000 })
   }
 
   displayStyle = "none";
@@ -94,9 +94,14 @@ export class DashboardComponent implements OnInit {
     })
   
     this.closePopup()
-    this.onFetchClicked()
+    setTimeout(() => {
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation='reload';
+    this.router.navigate(['./'],{
+      relativeTo:this.route
+    })
     this.toast.success({ detail: "Success Message", summary: this.delete_batch_name+" Deleted Successfully", duration: 3000 })
-
+    }, 2000);
 
   }
 }

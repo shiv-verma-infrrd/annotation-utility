@@ -806,3 +806,138 @@ FileNotFoundError: [WinError 3] The system cannot find the path specified: 'E:\\
 2023-01-11 11:13:46,275 INFO api : Returning batch data
 2023-01-11 11:13:46,276 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:13:46] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
 2023-01-11 11:13:46,358 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:13:46] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:42:17,098 INFO api : Connected to the database successfully
+2023-01-11 11:42:17,174 INFO werkzeug : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8008
+2023-01-11 11:42:17,174 INFO werkzeug : [33mPress CTRL+C to quit[0m
+2023-01-11 11:42:17,175 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:42:17,692 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be5341cce09b9fb309c87b, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.050716285999442334>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:42:17,711 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:42:17,711 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:42:25,597 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:25] "OPTIONS /login HTTP/1.1" 200 -
+2023-01-11 11:42:25,601 INFO api : Input credentials: {'email': 'user1@gmail.com', 'password': 'password@1'}
+2023-01-11 11:42:25,991 INFO api : Authentication Successful: Logging in user
+2023-01-11 11:42:25,992 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:25] "POST /login HTTP/1.1" 200 -
+2023-01-11 11:42:26,095 INFO api : Returning batch data
+2023-01-11 11:42:26,096 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:26] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:42:26,217 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:26] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:42:28,468 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:28] "OPTIONS /batch/99be7b7f-1b0b-4e3a-8214-dd6581d5d210 HTTP/1.1" 200 -
+2023-01-11 11:42:28,645 INFO api : Batch Deleted : batch %s
+2023-01-11 11:42:28,645 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:28] "DELETE /batch/99be7b7f-1b0b-4e3a-8214-dd6581d5d210 HTTP/1.1" 200 -
+2023-01-11 11:42:28,961 INFO api : Returning batch data
+2023-01-11 11:42:28,962 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:28] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:42:31,092 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:31] "OPTIONS /batch/81d373e0-a944-42ef-943e-91eb0ca82e00 HTTP/1.1" 200 -
+2023-01-11 11:42:31,181 INFO api : Returning batch data
+2023-01-11 11:42:31,182 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:31] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:42:32,294 INFO api : Batch Deleted : batch %s
+2023-01-11 11:42:32,295 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:32] "DELETE /batch/81d373e0-a944-42ef-943e-91eb0ca82e00 HTTP/1.1" 200 -
+2023-01-11 11:42:37,423 INFO api : Returning batch data
+2023-01-11 11:42:37,425 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:37] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:42:37,497 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:37] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:42:39,502 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:39] "OPTIONS /batch/9769f928-fd2a-4a66-b194-f00b97a866d5 HTTP/1.1" 200 -
+2023-01-11 11:42:39,590 INFO api : Returning batch data
+2023-01-11 11:42:39,591 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:39] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:42:39,690 ERROR api : Failed to delete batch : [Errno 2] No such file or directory: '/home/vulcan/Documents/GitHub/annotation-utility/assets/9769f928-fd2a-4a66-b194-f00b97a866d5'
+Traceback (most recent call last):
+  File "/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py", line 306, in delete_batches
+    shutil.rmtree(path)
+  File "/usr/lib/python3.10/shutil.py", line 714, in rmtree
+    onerror(os.lstat, path, sys.exc_info())
+  File "/usr/lib/python3.10/shutil.py", line 712, in rmtree
+    orig_st = os.lstat(path)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/vulcan/Documents/GitHub/annotation-utility/assets/9769f928-fd2a-4a66-b194-f00b97a866d5'
+2023-01-11 11:42:39,691 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:39] "[35m[1mDELETE /batch/9769f928-fd2a-4a66-b194-f00b97a866d5 HTTP/1.1[0m" 500 -
+2023-01-11 11:42:47,564 INFO api : Returning batch data
+2023-01-11 11:42:47,564 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:47] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:42:47,637 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:47] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:42:52,582 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:52] "OPTIONS /batch/c5b93d8e-f38d-4e21-b3bf-a76c7f36e3a8 HTTP/1.1" 200 -
+2023-01-11 11:42:52,692 INFO api : Returning batch data
+2023-01-11 11:42:52,692 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:52] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:42:52,794 ERROR api : Failed to delete batch : [Errno 2] No such file or directory: '/home/vulcan/Documents/GitHub/annotation-utility/assets/c5b93d8e-f38d-4e21-b3bf-a76c7f36e3a8'
+Traceback (most recent call last):
+  File "/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py", line 306, in delete_batches
+    shutil.rmtree(path)
+  File "/usr/lib/python3.10/shutil.py", line 714, in rmtree
+    onerror(os.lstat, path, sys.exc_info())
+  File "/usr/lib/python3.10/shutil.py", line 712, in rmtree
+    orig_st = os.lstat(path)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/vulcan/Documents/GitHub/annotation-utility/assets/c5b93d8e-f38d-4e21-b3bf-a76c7f36e3a8'
+2023-01-11 11:42:52,794 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:52] "[35m[1mDELETE /batch/c5b93d8e-f38d-4e21-b3bf-a76c7f36e3a8 HTTP/1.1[0m" 500 -
+2023-01-11 11:42:58,045 INFO api : Returning batch data
+2023-01-11 11:42:58,046 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:42:58] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:44:06,382 INFO api : Returning batch data
+2023-01-11 11:44:06,382 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:44:06] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:44:40,456 INFO api : Batch Uploaded
+2023-01-11 11:44:40,458 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:44:40] "POST /uploads HTTP/1.1" 200 -
+2023-01-11 11:44:40,587 INFO api : Returning batch data
+2023-01-11 11:44:40,587 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:44:40] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:44:40,655 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:44:40] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:44:43,200 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:44:43] "OPTIONS /batch/bbdbd199-0e91-40a9-800f-cd464d5476eb HTTP/1.1" 200 -
+2023-01-11 11:44:43,290 INFO api : Returning batch data
+2023-01-11 11:44:43,291 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:44:43] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:44:43,406 INFO api : Batch Deleted : batch %s
+2023-01-11 11:44:43,406 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:44:43] "DELETE /batch/bbdbd199-0e91-40a9-800f-cd464d5476eb HTTP/1.1" 200 -
+2023-01-11 11:44:46,306 INFO api : Returning batch data
+2023-01-11 11:44:46,307 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:44:46] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:46:03,129 INFO api : Returning batch data
+2023-01-11 11:46:03,130 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:03] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:46:21,792 INFO api : Batch Uploaded
+2023-01-11 11:46:21,794 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:21] "POST /uploads HTTP/1.1" 200 -
+2023-01-11 11:46:21,918 INFO api : Returning batch data
+2023-01-11 11:46:21,918 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:21] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:46:21,989 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:21] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:46:27,210 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:27] "OPTIONS /batch/bb80ef30-a68d-4276-9ec5-d623003b814e HTTP/1.1" 200 -
+2023-01-11 11:46:27,401 INFO api : Batch Deleted : batch %s
+2023-01-11 11:46:27,402 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:27] "DELETE /batch/bb80ef30-a68d-4276-9ec5-d623003b814e HTTP/1.1" 200 -
+2023-01-11 11:46:28,385 INFO api : Returning batch data
+2023-01-11 11:46:28,386 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:28] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:46:33,247 INFO api : Returning batch data
+2023-01-11 11:46:33,247 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:33] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:46:52,266 INFO api : Returning batch data
+2023-01-11 11:46:52,268 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:46:52] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:47:04,579 INFO api : Batch Uploaded
+2023-01-11 11:47:04,580 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:47:04] "POST /uploads HTTP/1.1" 200 -
+2023-01-11 11:47:04,716 INFO api : Returning batch data
+2023-01-11 11:47:04,716 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:47:04] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:47:04,782 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:47:04] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:47:07,202 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:47:07] "OPTIONS /batch/2674b870-1d71-4f0f-bac2-29f3780cfa5f HTTP/1.1" 200 -
+2023-01-11 11:47:07,398 INFO api : Batch Deleted : batch %s
+2023-01-11 11:47:07,398 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:47:07] "DELETE /batch/2674b870-1d71-4f0f-bac2-29f3780cfa5f HTTP/1.1" 200 -
+2023-01-11 11:47:09,332 INFO api : Returning batch data
+2023-01-11 11:47:09,333 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:47:09] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:48:00,928 INFO api : Returning batch data
+2023-01-11 11:48:00,929 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:48:00] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:48:16,036 INFO api : Batch Uploaded
+2023-01-11 11:48:16,039 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:48:16] "POST /uploads HTTP/1.1" 200 -
+2023-01-11 11:48:16,186 INFO api : Returning batch data
+2023-01-11 11:48:16,187 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:48:16] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:48:16,252 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:48:16] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:48:20,235 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:48:20] "OPTIONS /batch/d2df0c42-9e68-4ab7-a6d4-1c58bbec4db5 HTTP/1.1" 200 -
+2023-01-11 11:48:20,423 INFO api : Batch Deleted : batch %s
+2023-01-11 11:48:20,423 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:48:20] "DELETE /batch/d2df0c42-9e68-4ab7-a6d4-1c58bbec4db5 HTTP/1.1" 200 -
+2023-01-11 11:48:22,376 INFO api : Returning batch data
+2023-01-11 11:48:22,377 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:48:22] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:48:39,432 INFO api : Returning batch data
+2023-01-11 11:48:39,433 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:48:39] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:49:14,940 INFO api : Batch Uploaded
+2023-01-11 11:49:14,941 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:49:14] "POST /uploads HTTP/1.1" 200 -
+2023-01-11 11:49:15,065 INFO api : Returning batch data
+2023-01-11 11:49:15,065 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:49:15] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:49:15,133 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:49:15] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:49:16,315 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:49:16] "OPTIONS /downloads HTTP/1.1" 200 -
+2023-01-11 11:49:17,580 INFO api : Batch downloaded
+2023-01-11 11:49:17,583 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:49:17] "POST /downloads HTTP/1.1" 200 -
+2023-01-11 11:49:29,940 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:49:29] "OPTIONS /downloads HTTP/1.1" 200 -
+2023-01-11 11:49:30,785 INFO api : Batch downloaded
+2023-01-11 11:49:30,788 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:49:30] "POST /downloads HTTP/1.1" 200 -
+2023-01-11 11:50:12,712 INFO api : Returning batch data
+2023-01-11 11:50:12,712 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:12] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:50:12,788 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:12] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:50:16,997 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:16] "OPTIONS /downloads HTTP/1.1" 200 -
+2023-01-11 11:50:18,058 INFO api : Batch downloaded
+2023-01-11 11:50:18,060 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:18] "POST /downloads HTTP/1.1" 200 -
+2023-01-11 11:50:25,275 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:25] "OPTIONS /batch/09a05d95-8378-41c7-8616-2d0f129936a1 HTTP/1.1" 200 -
+2023-01-11 11:50:25,496 INFO api : Batch Deleted : batch %s
+2023-01-11 11:50:25,496 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:25] "DELETE /batch/09a05d95-8378-41c7-8616-2d0f129936a1 HTTP/1.1" 200 -
+2023-01-11 11:50:27,408 INFO api : Returning batch data
+2023-01-11 11:50:27,408 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:27] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
