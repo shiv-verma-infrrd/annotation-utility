@@ -186,6 +186,20 @@ def transform_data(file_data,checkbox_data):
             
             for l in range(len(checkbox_data['questions'])):
                question = checkbox_data['questions'][l]['token_indexes']
+               if len(question) == 0:
+                   d = {
+                        "box" : [],
+                        "text" : "",
+                        "label" : "checkbox_question",
+                        "words" : [{ 
+                            "box" : [],
+                            "text" : ""
+                                    }],
+                        "linking":[],
+                        "id" : ""
+                       }
+                   form.append(d) 
+                   
                if i in question:
                     data["label"] = 'checkbox_question'      
                     # print(data)
