@@ -793,6 +793,18 @@ image_zoom_out()
         }
       }
     }
+
+    for(let i = 0; i<this.checkbox_question_id.length;i++)
+    {
+      for(let j=0; j<this.checkbox_question_id[i].length; j++)
+      {
+        if(token_id == this.checkbox_question_id[i][j])
+        {
+          id = i+"ch";
+          break;
+        }
+      }
+    }
  
     var el = document.getElementById(id);
     el?.scrollIntoView();
@@ -2307,11 +2319,22 @@ save_all_data(condition: number)
       let token_index = [];
       
       let token_label = this.actual_checkbox_value[z][z2];
-      // let 
-
+     
       for(let z3 = 0; z3 < this.options_string_id[z][z2].length; z3++)
       {
         token_index.push(this.options_string_id[z][z2][z3]);
+      }
+      
+      if(this.checkbox_question_string[z] == "")
+      {
+        this.token_cord_for_cal.push({
+          "box":[0, 0, 0, 0],
+          "text":' ',
+          "id":this.token_cord_for_cal.length
+        });
+
+        this.checkbox_question_string[z] = " ";
+        this.checkbox_question_id[z].push(this.token_cord_for_cal.length-1);
       }
 
       let obj = {
@@ -2340,6 +2363,7 @@ save_all_data(condition: number)
     
     questions.push(ques);
   }
+
 
   // console.log({"checkboxes": checkboxes, "questions": questions});
     
