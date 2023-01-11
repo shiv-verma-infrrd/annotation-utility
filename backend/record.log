@@ -941,3 +941,341 @@ FileNotFoundError: [Errno 2] No such file or directory: '/home/vulcan/Documents/
 2023-01-11 11:50:25,496 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:25] "DELETE /batch/09a05d95-8378-41c7-8616-2d0f129936a1 HTTP/1.1" 200 -
 2023-01-11 11:50:27,408 INFO api : Returning batch data
 2023-01-11 11:50:27,408 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:50:27] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:54:47,494 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/utils.py', reloading
+2023-01-11 11:54:48,002 INFO werkzeug :  * Restarting with stat
+2023-01-11 11:54:49,219 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be5630878aa0dbe618977f, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.040481639000063296>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 11:54:49,238 WARNING werkzeug :  * Debugger is active!
+2023-01-11 11:54:49,240 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 11:55:10,143 INFO api : Batch Uploaded
+2023-01-11 11:55:10,145 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:10] "POST /uploads HTTP/1.1" 200 -
+2023-01-11 11:55:10,277 INFO api : Returning batch data
+2023-01-11 11:55:10,278 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:10] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:55:10,346 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:10] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:55:13,678 INFO api : Returning batch data
+2023-01-11 11:55:13,678 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:13] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:55:13,743 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:13] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:55:15,563 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:55:15,563 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:15] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:55:15,649 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:15] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/512989563 HTTP/1.1" 200 -
+2023-01-11 11:55:15,708 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:15] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065117402 HTTP/1.1" 200 -
+2023-01-11 11:55:15,796 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:15] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2075005024 HTTP/1.1" 200 -
+2023-01-11 11:55:15,872 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:15] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065162410_2411 HTTP/1.1" 200 -
+2023-01-11 11:55:15,931 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:15] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0060062160 HTTP/1.1" 200 -
+2023-01-11 11:55:16,024 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0012198579 HTTP/1.1" 200 -
+2023-01-11 11:55:16,062 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0013241396 HTTP/1.1" 200 -
+2023-01-11 11:55:16,086 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/514790001 HTTP/1.1" 200 -
+2023-01-11 11:55:16,091 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074585 HTTP/1.1" 200 -
+2023-01-11 11:55:16,128 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00839682 HTTP/1.1" 200 -
+2023-01-11 11:55:16,144 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86230183_0186 HTTP/1.1" 200 -
+2023-01-11 11:55:16,162 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00860012_00860014 HTTP/1.1" 200 -
+2023-01-11 11:55:16,196 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2063195254 HTTP/1.1" 200 -
+2023-01-11 11:55:16,205 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0001092182 HTTP/1.1" 200 -
+2023-01-11 11:55:16,222 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2020050552_2020050553 HTTP/1.1" 200 -
+2023-01-11 11:55:16,253 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/1000805631 HTTP/1.1" 200 -
+2023-01-11 11:55:16,272 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00866042 HTTP/1.1" 200 -
+2023-01-11 11:55:16,280 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01073747 HTTP/1.1" 200 -
+2023-01-11 11:55:16,313 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01077920 HTTP/1.1" 200 -
+2023-01-11 11:55:16,330 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2074405457 HTTP/1.1" 200 -
+2023-01-11 11:55:16,339 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86483006 HTTP/1.1" 200 -
+2023-01-11 11:55:16,375 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074407 HTTP/1.1" 200 -
+2023-01-11 11:55:16,376 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00864736 HTTP/1.1" 200 -
+2023-01-11 11:55:16,460 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0071038188 HTTP/1.1" 200 -
+2023-01-11 11:55:16,682 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:16] "GET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2064500982 HTTP/1.1" 200 -
+2023-01-11 11:55:29,950 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:29] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:55:30,039 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:55:30,039 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:30] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:55:30,117 INFO api : Returning document data: document 789031b5-095d-4894-8d21-6ad1937cf69b
+2023-01-11 11:55:30,118 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:30] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/789031b5-095d-4894-8d21-6ad1937cf69b HTTP/1.1" 200 -
+2023-01-11 11:55:55,534 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:55] "OPTIONS /pages HTTP/1.1" 200 -
+2023-01-11 11:55:55,625 INFO api : Returning batch data
+2023-01-11 11:55:55,625 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:55] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:55:55,675 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:55] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:55:55,726 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:55] "PUT /pages HTTP/1.1" 200 -
+2023-01-11 11:55:57,298 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:55:57,298 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:55:57,384 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0013241396 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,384 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074585 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,390 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2075005024 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,402 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/512989563 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,403 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065162410_2411 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,404 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0012198579 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,451 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/514790001 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,467 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00864736 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,517 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00860012_00860014 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,518 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0071038188 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,530 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2063195254 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,532 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00839682 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,537 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86230183_0186 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,575 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2020050552_2020050553 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,597 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01073747 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,619 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01077920 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,658 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2074405457 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,689 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0060062160 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,730 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0001092182 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,735 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00866042 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,738 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/1000805631 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,748 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86483006 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,799 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2064500982 HTTP/1.1[0m" 304 -
+2023-01-11 11:55:57,799 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:55:57] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074407 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:00,834 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:00] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:56:00,950 INFO api : Returning document data: document 5daa98b1-33b0-45e6-8dfc-01703e107db0
+2023-01-11 11:56:00,951 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:00] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/5daa98b1-33b0-45e6-8dfc-01703e107db0 HTTP/1.1" 200 -
+2023-01-11 11:56:00,953 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:56:00,954 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:00] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:56:06,159 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:06] "OPTIONS /pages HTTP/1.1" 200 -
+2023-01-11 11:56:06,310 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:06] "PUT /pages HTTP/1.1" 200 -
+2023-01-11 11:56:06,384 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:06] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:56:06,514 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:56:06,515 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:06] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:56:06,570 INFO api : Returning document data: document 137f6985-6177-4ed4-92aa-ee29a4dd3b99
+2023-01-11 11:56:06,571 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:06] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/137f6985-6177-4ed4-92aa-ee29a4dd3b99 HTTP/1.1" 200 -
+2023-01-11 11:56:06,639 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:06] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0012198579 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:25,959 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:25] "OPTIONS /pages HTTP/1.1" 200 -
+2023-01-11 11:56:26,151 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:26] "PUT /pages HTTP/1.1" 200 -
+2023-01-11 11:56:26,189 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:26] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:56:26,301 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:56:26,302 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:26] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:56:26,505 INFO api : Returning document data: document 1946f5cc-4067-4211-9245-d5ea1b80c4e7
+2023-01-11 11:56:26,507 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:26] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/1946f5cc-4067-4211-9245-d5ea1b80c4e7 HTTP/1.1" 200 -
+2023-01-11 11:56:26,598 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:26] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0071038188 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:28,294 INFO api : Returning batch data
+2023-01-11 11:56:28,295 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:28] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:56:28,368 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:28] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,481 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:56:29,481 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:56:29,549 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065117402 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,551 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0012198579 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,552 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0013241396 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,566 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2075005024 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,567 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074585 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,568 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/512989563 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,598 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065162410_2411 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,599 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/514790001 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,610 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0060062160 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,627 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00864736 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,630 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86230183_0186 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,632 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00839682 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,647 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2063195254 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,648 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00860012_00860014 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,668 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0001092182 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,696 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01073747 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,699 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01077920 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,701 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2020050552_2020050553 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,702 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00866042 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,703 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/1000805631 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,734 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2074405457 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,769 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86483006 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,770 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2064500982 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:29,771 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:29] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074407 HTTP/1.1[0m" 304 -
+2023-01-11 11:56:38,798 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:38] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:56:38,914 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:56:38,915 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:38] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:56:38,970 INFO api : Returning document data: document 137f6985-6177-4ed4-92aa-ee29a4dd3b99
+2023-01-11 11:56:38,972 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:56:38] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/137f6985-6177-4ed4-92aa-ee29a4dd3b99 HTTP/1.1" 200 -
+2023-01-11 11:57:18,113 INFO api : Returning batch data
+2023-01-11 11:57:18,114 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:18] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:57:18,187 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:18] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,234 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:57:19,235 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:57:19,307 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2075005024 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,308 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/512989563 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,320 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065162410_2411 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,320 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0013241396 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,324 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065117402 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,325 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074585 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,356 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/514790001 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,357 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0060062160 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,390 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00864736 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,394 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86230183_0186 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,401 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00839682 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,402 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00860012_00860014 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,413 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0001092182 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,420 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2063195254 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,457 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00866042 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,457 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2020050552_2020050553 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,477 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/1000805631 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,480 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01073747 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,482 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2074405457 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,484 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01077920 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,519 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86483006 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,520 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074407 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:19,542 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:19] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2064500982 HTTP/1.1[0m" 304 -
+2023-01-11 11:57:22,162 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:22] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:57:22,292 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:57:22,293 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:22] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:57:22,297 INFO api : Returning document data: document 5daa98b1-33b0-45e6-8dfc-01703e107db0
+2023-01-11 11:57:22,299 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:22] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/5daa98b1-33b0-45e6-8dfc-01703e107db0 HTTP/1.1" 200 -
+2023-01-11 11:57:28,865 INFO api : Returning batch data
+2023-01-11 11:57:28,866 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:28] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:57:30,072 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:57:30,073 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:30] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:57:33,485 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:33] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:57:33,581 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:57:33,582 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:33] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:57:33,674 INFO api : Returning document data: document 137f6985-6177-4ed4-92aa-ee29a4dd3b99
+2023-01-11 11:57:33,675 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:57:33] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/137f6985-6177-4ed4-92aa-ee29a4dd3b99 HTTP/1.1" 200 -
+2023-01-11 11:58:40,174 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:40] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:58:40,286 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:58:40,286 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:40] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:58:40,304 INFO api : Returning document data: document 137f6985-6177-4ed4-92aa-ee29a4dd3b99
+2023-01-11 11:58:40,305 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:40] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/137f6985-6177-4ed4-92aa-ee29a4dd3b99 HTTP/1.1" 200 -
+2023-01-11 11:58:40,360 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:40] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0012198579 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:53,343 INFO api : Returning batch data
+2023-01-11 11:58:53,344 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:53] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:58:53,395 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:53] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,517 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:58:54,518 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:58:54,588 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0060062160 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,595 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0071038188 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,605 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/512989563 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,630 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0013241396 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,632 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074585 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,634 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2075005024 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,640 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065162410_2411 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,674 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2065117402 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,682 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/514790001 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,705 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00864736 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,717 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00839682 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,724 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86230183_0186 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,750 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00860012_00860014 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,755 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2063195254 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,793 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/0001092182 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,794 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2020050552_2020050553 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,803 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/00866042 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,803 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/1000805631 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,831 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01073747 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,846 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01077920 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,852 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2074405457 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,882 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/2064500982 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,895 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/86483006 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:54,900 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:54] "[36mGET /7e53d5d6-e022-4cd0-9f25-420e7f9baace/01074407 HTTP/1.1[0m" 304 -
+2023-01-11 11:58:57,963 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:57] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:58:58,075 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:58:58,075 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:58] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:58:58,138 INFO api : Returning document data: document 5daa98b1-33b0-45e6-8dfc-01703e107db0
+2023-01-11 11:58:58,140 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:58:58] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/5daa98b1-33b0-45e6-8dfc-01703e107db0 HTTP/1.1" 200 -
+2023-01-11 11:59:01,114 INFO api : Returning batch data
+2023-01-11 11:59:01,115 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:01] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:59:01,181 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:01] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:59:02,377 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:59:02,377 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:02] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:59:03,622 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:03] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:59:03,755 INFO api : Returning document list in batch: batch 7e53d5d6-e022-4cd0-9f25-420e7f9baace
+2023-01-11 11:59:03,756 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:03] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:59:03,837 INFO api : Returning document data: document 137f6985-6177-4ed4-92aa-ee29a4dd3b99
+2023-01-11 11:59:03,838 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:03] "GET /pages/7e53d5d6-e022-4cd0-9f25-420e7f9baace/137f6985-6177-4ed4-92aa-ee29a4dd3b99 HTTP/1.1" 200 -
+2023-01-11 11:59:24,325 INFO api : Returning batch data
+2023-01-11 11:59:24,325 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:24] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:59:24,420 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:24] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:59:26,541 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:26] "OPTIONS /batch/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:59:26,747 INFO api : Batch Deleted : batch %s
+2023-01-11 11:59:26,748 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:26] "DELETE /batch/7e53d5d6-e022-4cd0-9f25-420e7f9baace HTTP/1.1" 200 -
+2023-01-11 11:59:28,667 INFO api : Returning batch data
+2023-01-11 11:59:28,668 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:28] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:59:30,801 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:30] "OPTIONS /batch/b79895c1-da0a-4da4-8016-6b784cdd2979 HTTP/1.1" 200 -
+2023-01-11 11:59:31,005 ERROR api : Failed to delete batch : [Errno 2] No such file or directory: '/home/vulcan/Documents/GitHub/annotation-utility/assets/b79895c1-da0a-4da4-8016-6b784cdd2979'
+Traceback (most recent call last):
+  File "/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py", line 306, in delete_batches
+    shutil.rmtree(path)
+  File "/usr/lib/python3.10/shutil.py", line 714, in rmtree
+    onerror(os.lstat, path, sys.exc_info())
+  File "/usr/lib/python3.10/shutil.py", line 712, in rmtree
+    orig_st = os.lstat(path)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/vulcan/Documents/GitHub/annotation-utility/assets/b79895c1-da0a-4da4-8016-6b784cdd2979'
+2023-01-11 11:59:31,134 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:31] "[35m[1mDELETE /batch/b79895c1-da0a-4da4-8016-6b784cdd2979 HTTP/1.1[0m" 500 -
+2023-01-11 11:59:32,930 INFO api : Returning batch data
+2023-01-11 11:59:32,930 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:32] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:59:49,084 INFO api : Batch Uploaded
+2023-01-11 11:59:49,085 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:49] "POST /uploads HTTP/1.1" 200 -
+2023-01-11 11:59:49,233 INFO api : Returning batch data
+2023-01-11 11:59:49,233 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:49] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 11:59:49,314 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:49] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 11:59:50,639 INFO api : Returning document list in batch: batch 2f353f39-41e2-405e-a896-9bd890564531
+2023-01-11 11:59:50,640 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /pages/2f353f39-41e2-405e-a896-9bd890564531 HTTP/1.1" 200 -
+2023-01-11 11:59:50,732 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/01074585 HTTP/1.1" 200 -
+2023-01-11 11:59:50,733 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/0013241396 HTTP/1.1" 200 -
+2023-01-11 11:59:50,748 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/2075005024 HTTP/1.1" 200 -
+2023-01-11 11:59:50,758 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/2065117402 HTTP/1.1" 200 -
+2023-01-11 11:59:50,758 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/512989563 HTTP/1.1" 200 -
+2023-01-11 11:59:50,761 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/2065162410_2411 HTTP/1.1" 200 -
+2023-01-11 11:59:50,785 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/0012198579 HTTP/1.1" 200 -
+2023-01-11 11:59:50,806 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/0060062160 HTTP/1.1" 200 -
+2023-01-11 11:59:50,811 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/0071038188 HTTP/1.1" 200 -
+2023-01-11 11:59:50,835 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/514790001 HTTP/1.1" 200 -
+2023-01-11 11:59:50,835 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/00864736 HTTP/1.1" 200 -
+2023-01-11 11:59:50,837 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/00839682 HTTP/1.1" 200 -
+2023-01-11 11:59:50,851 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/86230183_0186 HTTP/1.1" 200 -
+2023-01-11 11:59:50,872 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/2063195254 HTTP/1.1" 200 -
+2023-01-11 11:59:50,882 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/00860012_00860014 HTTP/1.1" 200 -
+2023-01-11 11:59:50,888 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/0001092182 HTTP/1.1" 200 -
+2023-01-11 11:59:50,927 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/2020050552_2020050553 HTTP/1.1" 200 -
+2023-01-11 11:59:50,928 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/1000805631 HTTP/1.1" 200 -
+2023-01-11 11:59:50,939 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/00866042 HTTP/1.1" 200 -
+2023-01-11 11:59:50,946 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/2074405457 HTTP/1.1" 200 -
+2023-01-11 11:59:50,947 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/01077920 HTTP/1.1" 200 -
+2023-01-11 11:59:50,950 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/01073747 HTTP/1.1" 200 -
+2023-01-11 11:59:50,995 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/86483006 HTTP/1.1" 200 -
+2023-01-11 11:59:50,996 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/01074407 HTTP/1.1" 200 -
+2023-01-11 11:59:50,999 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:50] "GET /2f353f39-41e2-405e-a896-9bd890564531/2064500982 HTTP/1.1" 200 -
+2023-01-11 11:59:52,307 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:52] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 11:59:52,428 INFO api : Returning document list in batch: batch 2f353f39-41e2-405e-a896-9bd890564531
+2023-01-11 11:59:52,430 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:52] "GET /pages/2f353f39-41e2-405e-a896-9bd890564531 HTTP/1.1" 200 -
+2023-01-11 11:59:52,478 INFO api : Returning document data: document 64c1f542-aaab-48b6-a434-fdab86c8ff9f
+2023-01-11 11:59:52,479 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 11:59:52] "GET /pages/2f353f39-41e2-405e-a896-9bd890564531/64c1f542-aaab-48b6-a434-fdab86c8ff9f HTTP/1.1" 200 -
+2023-01-11 12:00:42,781 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:42] "OPTIONS /pages HTTP/1.1" 200 -
+2023-01-11 12:00:42,971 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:42] "PUT /pages HTTP/1.1" 200 -
+2023-01-11 12:00:43,362 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:43] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 12:00:43,466 INFO api : Returning document list in batch: batch 2f353f39-41e2-405e-a896-9bd890564531
+2023-01-11 12:00:43,466 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:43] "GET /pages/2f353f39-41e2-405e-a896-9bd890564531 HTTP/1.1" 200 -
+2023-01-11 12:00:43,545 INFO api : Returning document data: document dec402d8-bdf9-45b9-ac46-6a82b9c4efc9
+2023-01-11 12:00:43,547 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:43] "GET /pages/2f353f39-41e2-405e-a896-9bd890564531/dec402d8-bdf9-45b9-ac46-6a82b9c4efc9 HTTP/1.1" 200 -
+2023-01-11 12:00:43,642 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:43] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/0071038188 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:56,213 INFO api : Returning batch data
+2023-01-11 12:00:56,213 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:56] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 12:00:56,283 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:56] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,724 INFO api : Returning document list in batch: batch 2f353f39-41e2-405e-a896-9bd890564531
+2023-01-11 12:00:57,725 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "GET /pages/2f353f39-41e2-405e-a896-9bd890564531 HTTP/1.1" 200 -
+2023-01-11 12:00:57,802 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/0012198579 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,814 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/2065117402 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,815 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/01074585 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,824 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/0013241396 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,826 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/2075005024 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,832 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/512989563 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,865 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/0060062160 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,867 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/514790001 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,869 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/2065162410_2411 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,892 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/00839682 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,894 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/00864736 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,896 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/86230183_0186 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,925 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/0001092182 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,927 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/2063195254 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,933 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/00860012_00860014 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,978 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/01077920 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,985 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/2020050552_2020050553 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,987 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/1000805631 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,988 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/00866042 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,989 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/2074405457 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:57,998 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:57] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/01073747 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:58,025 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:58] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/86483006 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:58,033 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:58] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/01074407 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:58,052 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:58] "[36mGET /2f353f39-41e2-405e-a896-9bd890564531/2064500982 HTTP/1.1[0m" 304 -
+2023-01-11 12:00:58,833 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:58] "[33mGET /undefined HTTP/1.1[0m" 404 -
+2023-01-11 12:00:58,948 INFO api : Returning document list in batch: batch 2f353f39-41e2-405e-a896-9bd890564531
+2023-01-11 12:00:58,949 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:58] "GET /pages/2f353f39-41e2-405e-a896-9bd890564531 HTTP/1.1" 200 -
+2023-01-11 12:00:58,976 INFO api : Returning document data: document 64c1f542-aaab-48b6-a434-fdab86c8ff9f
+2023-01-11 12:00:58,977 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:00:58] "GET /pages/2f353f39-41e2-405e-a896-9bd890564531/64c1f542-aaab-48b6-a434-fdab86c8ff9f HTTP/1.1" 200 -
+2023-01-11 12:01:05,657 INFO api : Returning batch data
+2023-01-11 12:01:05,658 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:01:05] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 12:01:05,705 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:01:05] "[36mGET /image/dimg.png HTTP/1.1[0m" 304 -
+2023-01-11 12:01:13,310 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:01:13] "OPTIONS /batch/2f353f39-41e2-405e-a896-9bd890564531 HTTP/1.1" 200 -
+2023-01-11 12:01:13,452 INFO api : Batch Deleted : batch %s
+2023-01-11 12:01:13,452 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:01:13] "DELETE /batch/2f353f39-41e2-405e-a896-9bd890564531 HTTP/1.1" 200 -
+2023-01-11 12:01:15,420 INFO api : Returning batch data
+2023-01-11 12:01:15,421 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:01:15] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -
+2023-01-11 12:03:47,339 INFO werkzeug :  * Detected change in '/home/vulcan/Documents/GitHub/annotation-utility/backend/api.py', reloading
+2023-01-11 12:03:47,844 INFO werkzeug :  * Restarting with stat
+2023-01-11 12:03:51,617 WARNING api : Cannot connect to database: No replica set members match selector "Primary()", Timeout: 0.1s, Topology Description: <TopologyDescription id: 63be584f3662d305db7ecfdb, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-emjtlvl-shard-00-00.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-emjtlvl-shard-00-01.p6bfznx.mongodb.net', 27017) server_type: RSSecondary, rtt: 0.04265977400064003>, <ServerDescription ('ac-emjtlvl-shard-00-02.p6bfznx.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2023-01-11 12:03:51,654 WARNING werkzeug :  * Debugger is active!
+2023-01-11 12:03:51,655 INFO werkzeug :  * Debugger PIN: 600-122-327
+2023-01-11 12:04:06,739 INFO api : Returning batch data
+2023-01-11 12:04:06,740 INFO werkzeug : 127.0.0.1 - - [11/Jan/2023 12:04:06] "GET /batches/63a18ee38ac58456ecea5b03 HTTP/1.1" 200 -

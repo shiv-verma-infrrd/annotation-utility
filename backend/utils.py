@@ -510,14 +510,14 @@ def download_batch(data,raw_data):
             for filename in os.listdir(path):
                 if type == 'fields':
                     if filename.endswith(".json"):
-                        print(filename)
+                        # print(filename)
                         zip.write(filename, raw_data['batch_name']+"_output/"+filename, ZIP_DEFLATED)
                 elif type == 'checkboxes':
                     if filename.endswith("_checkboxes.json"):
-                        print(filename)
+                        # print(filename)
                         zip.write(filename, "checkbox_data/"+filename, ZIP_DEFLATED)
                     elif filename.endswith(".json"):
-                        print(filename)
+                        # print(filename)
                         zip.write(filename, "ocrs/"+filename, ZIP_DEFLATED)
 
         return_file = BytesIO()
