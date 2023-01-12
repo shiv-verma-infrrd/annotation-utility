@@ -820,6 +820,17 @@ image_zoom_out()
  
     var el = document.getElementById(id);
     el?.scrollIntoView();
+
+    if(el != undefined)
+    {
+      el.style.borderColor = "#ffc107";
+
+      setTimeout(()=>
+      {
+      if(el != undefined)
+      el.style.borderColor = "#39a87a";
+      }, 3000)
+    }
   }
   else
   {
