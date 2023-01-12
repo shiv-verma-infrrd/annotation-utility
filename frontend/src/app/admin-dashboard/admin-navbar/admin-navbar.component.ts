@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { faArrowRightFromBracket,faChessBoard,faFolder,faUsers,faUserPlus,faHome} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket,faFolder,faUsers,faUserPlus,faHome,faFolderOpen} from '@fortawesome/free-solid-svg-icons';
+import { faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import { LoginService } from '@app/services/login.service';
 
 @Component({
@@ -14,6 +15,8 @@ export class AdminNavbarComponent {
   batch_icon = faFolder
   users_icon = faUsers
   create_new_user_icon = faUserPlus
+  assign_icon = faFolderOpen
+  assign_team = faPeopleGroup
 
   constructor(private loginService: LoginService){}
 

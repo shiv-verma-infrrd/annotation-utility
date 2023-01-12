@@ -1,7 +1,7 @@
 .navbar-custom{
     background-color: #39a87a;
     z-index:2;
-     position:fixed;
+    position:fixed;
 }
 .side-container{
     background-color:rgba(0,0,0,.87);
@@ -9,7 +9,6 @@
     left:0;
     width:8rem;
     height:100vh;
-    /* padding:5px; */
     box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
 
 }

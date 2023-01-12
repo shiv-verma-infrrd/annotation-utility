@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
-import { faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import { RootService } from './root.service';
 
 @Injectable({

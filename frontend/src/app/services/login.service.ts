@@ -14,7 +14,6 @@ const httpOptions = {
 
 export class LoginService extends RootService{
     isLoggedIn = false;
-    CSRFToken = ''
     
     constructor(private http:HttpClient, private router: Router) {
       super()
@@ -23,7 +22,6 @@ export class LoginService extends RootService{
     login(username: string, password: string): Observable<any> {
       console.log('called api')
       const httpHeaders = {
-        // headers: new HttpHeaders({ 'Content-Type': 'application/json', 'X-CSRFToken': this.CSRFToken})
       };
       return this.http.post(this.URL + '/login', {
         'email':username, 'password':password

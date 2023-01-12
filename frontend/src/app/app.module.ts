@@ -22,6 +22,8 @@ import { AdminNavbarComponent } from './admin-dashboard/admin-navbar/admin-navba
 import { BatchesComponent } from './admin-dashboard/batches/batches.component';
 import { UsersComponent } from './admin-dashboard/users/users.component';
 import { CreateNewUsersComponent } from './admin-dashboard/create-new-users/create-new-users.component';
+import { AssignBatchComponent } from './admin-dashboard/assign-batch/assign-batch.component';
+import { AssignTeamComponent } from './admin-dashboard/assign-team/assign-team.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { CreateNewUsersComponent } from './admin-dashboard/create-new-users/crea
     BatchesComponent,
     UsersComponent,
     CreateNewUsersComponent,
+    AssignBatchComponent,
+    AssignTeamComponent,
   ],
   imports: [
     BrowserModule,
