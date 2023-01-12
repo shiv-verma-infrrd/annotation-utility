@@ -367,10 +367,17 @@ kvp_label_initialization()
 checkbox_label_initialization()
 {
 
+var dummy_token_id = -1;
+
+console.log(this.cord_id_map);
+console.log(this.token_id_to_checkbox_question_index);
+
   for(let i = 0; i<this.api_result.length; i++)
   {
     if(this.api_result[i].label == 'checkbox_question')
     {
+      if(this.api_result[i].id > 0)
+      {
       this.checkbox_question_string.push(this.api_result[i].text);
 
       var t:number[]=[];
@@ -385,15 +392,23 @@ checkbox_label_initialization()
       this.checkbox_question_id.push(t);
 
       this.token_id_to_checkbox_question_index.set(JSON.stringify(t), this.checkbox_question_id.length-1);
-      
-      // console.log(this.checkbox_question_string);
-      // console.log(this.checkbox_question_id);
-      // console.log(this.token_id_to_checkbox_question_index);
+      }
 
+      else
+      {
+        this.api_result[i].words[0].box = [dummy_token_id];
+        this.cord_id_map.set(JSON.stringify([dummy_token_id]), dummy_token_id);
+
+        this.checkbox_question_string.push("");
+        var t:number[]=[dummy_token_id];
+        dummy_token_id--;
+
+        this.checkbox_question_id.push(t);
+        this.token_id_to_checkbox_question_index.set(JSON.stringify(t), this.checkbox_question_id.length-1);
+      }
     }
   }
-
-
+  
   this.options_string.length = this.checkbox_question_id.length;
   this.options_string_id.length = this.checkbox_question_id.length;
 
@@ -419,7 +434,6 @@ checkbox_label_initialization()
           
           let question_index = this.token_id_to_checkbox_question_index.get(JSON.stringify(t));
           var t2:number[] = [];
-
           
           if(this.options_string[question_index] == undefined)
           {
@@ -465,14 +479,10 @@ checkbox_label_initialization()
           }
         }
       }
-
-      // console.log(this.options_string);
-      // console.log(this.options_string_id);
-      
       
     }
 
-    if(this.api_result[i].label == "checkbox")
+    if(this.api_result[i].label == "checkbox" && this.api_result[i].question_id != "null")
     {
       for(let j = 0; j<this.api_result.length; j++)
       {
@@ -484,8 +494,6 @@ checkbox_label_initialization()
           {
             t.push(this.cord_id_map.get(JSON.stringify(this.api_result[j].words[k].box)));
           }
-  
-          // console.log(this.token_id_to_checkbox_question_index.get(JSON.stringify(t)));
           
           let question_index = this.token_id_to_checkbox_question_index.get(JSON.stringify(t));
           var t2:number[] = [];
@@ -500,7 +508,7 @@ checkbox_label_initialization()
 
             this.actual_checkbox_id[question_index] = [l2];
 
-            if(this.api_result[i].check=='unchecked')
+            if(this.api_result[i].check=='unchecked' || this.api_result[i].check=='Unchecked')
             this.actual_checkbox_value[question_index] = ['Unchecked'];
 
             else
@@ -516,7 +524,7 @@ checkbox_label_initialization()
 
             let l2 = t2[0];
 
-            if(this.api_result[i].check=='unchecked')
+            if(this.api_result[i].check=='unchecked' || this.api_result[i].check=='Unchecked')
             this.actual_checkbox_value[question_index].push('Unchecked');
 
             else
@@ -534,31 +542,36 @@ checkbox_label_initialization()
 
 token_extractor_from_grouping(data:any)
 {
+
   let count=0;
   for(let i=0;i<data.length;i++)
   {
-    for(let j=0;j<data[i].words.length;j++)
-    {     
-      this.token_cord_for_image.push(
-        JSON.parse(JSON.stringify(
-        {
-          "box":data[i].words[j].box,
-          "text":data[i].words[j].text,
-          "id":count
-        }))  
-        );
+    if(data[i].id>=0)
+    {
+      for(let j=0;j<data[i].words.length;j++)
+      {     
 
-      this.token_cord_for_cal.push(
-        JSON.parse(JSON.stringify(
-        {
-          "box":data[i].words[j].box,
-          "text":data[i].words[j].text,
-          "id":count
-        }))
-        );
-        
-        this.cord_id_map.set(JSON.stringify(data[i].words[j].box),count);
-        count++;
+        this.token_cord_for_image.push(
+          JSON.parse(JSON.stringify(
+          {
+            "box":data[i].words[j].box,
+            "text":data[i].words[j].text,
+            "id":count
+          }))  
+          );
+
+        this.token_cord_for_cal.push(
+          JSON.parse(JSON.stringify(
+          {
+            "box":data[i].words[j].box,
+            "text":data[i].words[j].text,
+            "id":count
+          }))
+          );
+          
+          this.cord_id_map.set(JSON.stringify(data[i].words[j].box),count);
+          count++;
+      }
     }
   }
 }
@@ -794,8 +807,7 @@ image_zoom_out()
       }
     }
 
-    for(let i = 0; i<this.checkbox_question_id.length;i++)
-    {
+    for(let i = 0; i<this.checkbox_question_id.length;i++)   {
       for(let j=0; j<this.checkbox_question_id[i].length; j++)
       {
         if(token_id == this.checkbox_question_id[i][j])
@@ -1709,22 +1721,29 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
         if(t=="")
         {
           t+=this.token_cord_for_image[this.custom_option_array1[i]].text;
-          console.log('1:' + this.options_string_id[index].length);
+          // console.log('1:' + this.options_string_id[index].length);
           
+          if(this.options_string_id[index]==undefined)
+          this.options_string_id[index] = [[this.custom_option_array1[i]]];  
+
+          else
           this.options_string_id[index].push([this.custom_option_array1[i]]);  
         }
 
         else
         {
           t+=" "+this.token_cord_for_image[this.custom_option_array1[i]].text;
-
-          console.log('2:' + this.options_string_id[index].length);
-          
+          // console.log('2:' + this.options_string_id[index].length);
           this.options_string_id[index][this.options_string_id[index].length-1].push(this.custom_option_array1[i]);
         }
       }
-      this.options_string[index].push(t);
-      this.custom_option_array1=[];
+      
+        if(this.options_string[index] == undefined)
+        this.options_string[index] = [t];
+
+        else
+        this.options_string[index].push(t);
+        this.custom_option_array1=[];
     }
 
     else
@@ -1755,9 +1774,20 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
     if(index<this.actual_checkbox_id.length)
     {
       for(let i=0;i<this.custom_option_array2.length;i++)
-      this.actual_checkbox_id[index].push(this.custom_option_array2[i]);
+      {
+        if(this.actual_checkbox_id[index] == undefined)
+        this.actual_checkbox_id[index] = [this.custom_option_array2[i]];
 
+        else
+        this.actual_checkbox_id[index].push(this.custom_option_array2[i]);
+      }
+
+      if(this.actual_checkbox_value[index] == undefined)
+      this.actual_checkbox_value[index] = ['Unchecked'];
+
+      else
       this.actual_checkbox_value[index].push('Unchecked');
+
       this.custom_option_array2=[];
     }
 
@@ -2078,8 +2108,12 @@ delete_checkbox_question(index:number)
     }
   }
 
-  if(this.options_string_id.length>index)
+  if(this.options_string_id[index] != undefined)
   {
+    console.log(this.options_string[0]);
+    console.log(this.options_string_id[0]);
+    
+    
     for(let i = 0; i<this.options_string_id[index].length; i++)
     {
       for(let j = 0; j<this.options_string_id[index][i].length; j++)
@@ -2089,7 +2123,7 @@ delete_checkbox_question(index:number)
     }
   }
 
-  if(this.actual_checkbox_id.length>index)
+  if(this.actual_checkbox_id[index] != undefined)
   {
     for(let i = 0; i<this.actual_checkbox_id[index].length; i++)
     {
@@ -2102,14 +2136,14 @@ delete_checkbox_question(index:number)
 
   if(this.options_string_id.length>index)
   {
-    this.options_string.splice(index, this.options_string[index].length);
-    this.options_string_id.splice(index, this.options_string_id[index].length);
+    this.options_string.splice(index, 1);
+    this.options_string_id.splice(index, 1);
   }
 
   if(this.actual_checkbox_id.length>index)
   {
-    this.actual_checkbox_value.splice(index, this.actual_checkbox_value[index].length);
-    this.actual_checkbox_id.splice(index, this.actual_checkbox_id[index].length);
+    this.actual_checkbox_value.splice(index, 1);
+    this.actual_checkbox_id.splice(index, 1);
   }
 
   this.checkbox_question_string.splice(index, 1);
@@ -2126,6 +2160,7 @@ delete_checkbox_question(index:number)
     this.entity_connector_line.remove();
     this.entity_connector_line=undefined;
   }
+
 }
 
 
@@ -2314,37 +2349,42 @@ save_all_data(condition: number)
 
   for(let z = 0; z<this.checkbox_question_id.length; z++)
   {
-    for(let z2=0; z2 < this.options_string_id[z].length; z2++)
+    for(let z2 = 0; z2 < this.options_string_id[z].length; z2++)
     {
       let token_index = [];
       
       let token_label = this.actual_checkbox_value[z][z2];
+
+      let obj;
      
       for(let z3 = 0; z3 < this.options_string_id[z][z2].length; z3++)
       {
         token_index.push(this.options_string_id[z][z2][z3]);
       }
       
-      if(this.checkbox_question_string[z] == "")
-      {
-        this.token_cord_for_cal.push({
-          "box":[0, 0, 0, 0],
-          "text":' ',
-          "id":this.token_cord_for_cal.length
-        });
+      // if(this.checkbox_question_string[z] == "")
+      // {
+      //   obj = {
+      //     'tl': { 'x': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[0], 'y': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[1]},
+      //     'br': { 'x': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[2], 'y': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[3]},
+      //     'label': token_label,
+      //     'confidence': 1.0,
+      //     'token_indexes': token_index,
+      //     'question_id': null
+      //   }
+      // }
 
-        this.checkbox_question_string[z] = " ";
-        this.checkbox_question_id[z].push(this.token_cord_for_cal.length-1);
-      }
-
-      let obj = {
-        'tl': { 'x': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[0], 'y': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[1]},
-        'br': { 'x': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[2], 'y': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[3]},
-        'label': token_label,
-        'confidence': 1.0,
-        'token_indexes': token_index,
-        'question_id': z
-      }
+      // else
+      // {
+        obj = {
+          'tl': { 'x': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[0], 'y': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[1]},
+          'br': { 'x': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[2], 'y': this.token_cord_for_cal[this.actual_checkbox_id[z][z2]].box[3]},
+          'label': token_label,
+          'confidence': 1.0,
+          'token_indexes': token_index,
+          'question_id': z
+        }
+      // }
       
       checkboxes.push(obj);
     }
@@ -2471,4 +2511,5 @@ exit()
 
   this.router.navigateByUrl('/batches');
 }
+
 }
