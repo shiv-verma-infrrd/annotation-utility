@@ -1,0 +1,21 @@
+@font-face {
+    font-family: GTWalsheim;
+    src: url("GT-Walsheim-Regular.otf") format("truetype");
+}
+
+@font-face {
+    font-family: GTWalsheim;
+    src: url("GT-Walsheim-Bold.otf") format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: GTWalsheim;
+    src: url("GT-Walsheim-Regular-Oblique.otf") format("truetype");
+    font-style: oblique;
+}
+@font-face {
+    font-family: GTWalsheim-Light;
+    src: url("GT-Walsheim-Light.otf") format("truetype");
+    font-weight: thin;
+}

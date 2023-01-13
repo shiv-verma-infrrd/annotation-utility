@@ -15,7 +15,7 @@ def get_user(user_id, users):
     for user in users.find():
         if user_id == str(user['_id']):
             return user
-    return 'None'
+    return None
 
 
 def generate_batch_id(db):
