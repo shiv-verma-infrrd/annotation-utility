@@ -6,8 +6,7 @@ class Config(object):
     PORT = 27017
     ALLOWED_URL = "http://localhost:8008"
     SWAGGER_URL = '/api/docs'
-    API_URL = '/static/swagger.yml'
-    BACKEND_IMAGE_PATH = "/src/static/images"
+    API_URL = '/src/static/swagger.yml'
     
     
     ENV = "development"
