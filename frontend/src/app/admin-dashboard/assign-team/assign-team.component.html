@@ -5,9 +5,11 @@
   <div class="row">
     <div class="col">
       <div class="dash-container" *ngFor="let user of users">
-        <input type="checkbox"><br>
+        <input type="checkbox"
+        (change)="func($event,user._id,user.name)"
+         [value]="user._id"
+         ><br>
         <div class="dash-thumbnail">
-          <!-- <img [src]="thumbnail" alt="dash" /> -->
           <fa-icon [icon]="userimg" style="font-size:50px;">
 
           </fa-icon>
@@ -26,12 +28,10 @@
     Action
   </button>
   <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">team 1</a></li>
-    <li><a class="dropdown-item" href="#">Team 2</a></li>
-    <li><a class="dropdown-item" href="#">Team 3</a></li>
-    <!-- <li><hr class="dropdown-divider"></li> -->
     
+    <li><input type="text" placeholder="input team name"></li>
+    <li onchange="printname()">Team 2</li>  
   </ul>
-  <button type="button" class="btn btn-outline-primary m-3">save</button>
+  <button type="button" class="btn btn-outline-primary m-3" (click)="addToTeam()">save</button>
 
 </div>

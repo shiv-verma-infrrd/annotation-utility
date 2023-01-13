@@ -44,4 +44,13 @@ export class AdminServiceService extends RootService{
     return this.http.delete(this.URL+'delete_user/'+userId);
   }
 
+  create_team(team:string , users:any){
+    let data =
+    {
+      "team_name":team,
+      "users":users
+  }
+    return this.http.post(this.URL+'create_team',data)
+  }
+
 }

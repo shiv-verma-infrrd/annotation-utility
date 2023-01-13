@@ -10,24 +10,75 @@ import { NgToastService } from 'ng-angular-popup';
   styleUrls: ['./assign-team.component.css']
 })
 export class AssignTeamComponent {
-  constructor(private admin_service:AdminServiceService,
+  constructor(private admin_service: AdminServiceService,
     private toast: NgToastService,
-    private apiData:ApiDataService)
-    {}
+    private apiData: ApiDataService) { }
 
-  users:any = [];
+  users: any = [];
   thumbnail = this.apiData.URL + "image/dimg.png"
   userimg = faUserSecret
-  
+  teamName:any = "sdfsf"
+
+  selectedUsers: any = [];
+
   ngOnInit(): void {
-    this.admin_service.get_user().subscribe((data)=>{
-      this.users = data;
-      console.warn("users",data);
+    this.admin_service.get_user().subscribe((data:any) => {
+      for(let i=0 ; i < data.length ; i++){
+        if(data[i].role != 'admin'){
+          this.users.push(data[i]);
+        }
+        
+      }
+      console.warn("users", data);
+    })
+
+    console.log(this.teamName);
+    
+
+  }
+
+  removeDocument(doc: any) {
+    for (let i = 0; i < this.selectedUsers.length; i++) {
+      if (doc.userid == this.selectedUsers[i].userid) {
+        this.selectedUsers.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  func(e: any, userid: string, username: string) {
+    const id = e.target.value;
+    const ischecked = e.target.checked;
+
+    const vari = { userid, username };
+
+    if (ischecked == true) {
+      this.selectedUsers.push(vari)
+      console.log(this.selectedUsers);
+    }
+
+    if (ischecked == false) {
+
+      this.removeDocument(vari);
+      console.log(this.selectedUsers);
+
+    }
+  }
+
+  addToTeam() {
+    const team_name = this.teamName
+    console.log(team_name);
+    this.admin_service.create_team(team_name,this.selectedUsers).subscribe((data) => {
+      console.log(data);
     })
 
   }
 
-  func(){
-
+  printname(){
+    console.log(this.teamName);
+    
+    
   }
+
+
 }
