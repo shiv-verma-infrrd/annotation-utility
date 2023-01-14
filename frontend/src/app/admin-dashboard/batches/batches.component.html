@@ -44,17 +44,17 @@
                           <th scope="col">Delete Batch</th>
                         </tr>
                       </thead>
-                      <tbody *ngFor="let batch of Batches ;let i =  index">
-                        <tr>
-                          <th scope="row"><a href="#">#{{i + 1}}</a></th>
-                          <td>{{batch.batchName}}</td>
-                          <td>{{batch.type}}</td>
-                          <td>{{batch.documentCount}}</td>
-                          <td><span class="badge bg-primary">{{batch.isCorrected}}</span></td>
-                          <td>{{batch.allocatedTo}}</td>
-                          <td>{{batch.allocatedon}}</td>
-                          <td>{{batch.createdOn}}</td>
-                          <td>{{batch.createdBy}}</td>
+                      <tbody *ngFor="let batch of Batches ;let i =  index" >
+                        <tr  >
+                          <th (click)="routeToallocated(batch.batchId)" style="cursor:pointer;" routerLink="/admin/batches/allocated" scope="row">#{{i + 1}}</th>
+                          <td style="cursor:pointer;" routerLink="/admin/batches/allocated">{{batch.batchName}}</td>
+                          <td style="cursor:pointer;" routerLink="/admin/batches/allocated">{{batch.type}}</td>
+                          <td style="cursor:pointer;" routerLink="/admin/batches/allocated">{{batch.documentCount}}</td>
+                          <td style="cursor:pointer;" routerLink="/admin/batches/allocated"><span class="badge bg-primary">{{batch.isCorrected}}</span></td>
+                          <td style="cursor:pointer;" routerLink="/admin/batches/allocated">{{batch.allocatedTo}}</td>
+                          <td style="cursor:pointer;" routerLink="/admin/batches/allocated">{{batch.allocatedon}}</td>
+                          <td style="cursor:pointer;" routerLink="/admin/batches/allocated">{{batch.createdOn}}</td>
+                          <td style="cursor:pointer;" routerLink="/admin/batches/allocated">{{batch.createdBy}}</td>
     
                           <td><span class="badge bg-danger">x</span></td>
                         </tr>

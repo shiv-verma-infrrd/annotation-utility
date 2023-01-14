@@ -1,0 +1,76 @@
+<div class="contain">
+  <app-admin-navbar></app-admin-navbar>
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Teams</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">Teams</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section dashboard">
+      <div class="row">
+        <!-- Left side columns -->
+        <div class="col-lg-10">
+          <div class="row">
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                  <h5 class="card-title">All user details</h5>
+
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Team Name</th>
+                        <th scope="col">Users</th>
+                        <th scope="col">Delete Team</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let team of teams; let i = index">
+                      <tr >
+                       
+                        <th scope="row" >
+                          <a (click)=" routeToUsers(team.team_id)" routerLink="/admin/teams/users">#{{ i + 1 }}</a>
+                        </th>
+                        <td (click)=" routeToUsers(team.team_id)" style="cursor:pointer;" routerLink="/admin/teams/users">{{ team.team_name }}</td>
+                        <td >
+                            <section class="container">
+                                <div class="dropdown">
+                                  <select name="one" class="dropdown-select">
+                                    <option value="1" *ngFor="let user of team.users">{{user.user_name}}</option>
+                                  </select>
+                                </div>
+                                <!-- <div class="dropdown dropdown-dark">
+                                  <select name="two" class="dropdown-select">
+                                    <option value="">Select…</option>
+                                    <option value="1">Option #1</option>
+                                    <option value="2">Option #2</option>
+                                    <option value="3">Option #3</option>
+                                  </select>
+                                </div> -->
+                              </section>
+                            <!-- <ul *ngFor="let user of team.users">
+                                <li>{{user.user_name}}</li>
+                            </ul> -->
+                        </td>
+                      
+                        <td (click)="delete_team(team._id)" style="cursor:pointer;"><span class="badge bg-danger">x</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- End Recent Sales -->
+          </div>
+        </div>
+        <!-- End Left side columns -->
+      </div>
+    </section>
+  </main>
+</div>

@@ -150,7 +150,8 @@ def push_json_data_in_db(batch_id, db, up_dir ):
         "documentCount": doc_cnt,
         "isCorrected": "False",
         "allocatedBy": "admin",
-        "allocatedTo": request.form['user_id'],
+        "allocatedToUsers": [],
+        "allocatedToTeams":[],
         "allocatedOn": "8/12/2022",
         "createdOn": "8/12/2022",
         "createdBy": "admin"

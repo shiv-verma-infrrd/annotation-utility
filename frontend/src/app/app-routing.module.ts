@@ -11,6 +11,9 @@ import { UsersComponent } from './admin-dashboard/users/users.component';
 import { CreateNewUsersComponent } from './admin-dashboard/create-new-users/create-new-users.component';
 import { AssignBatchComponent } from './admin-dashboard/assign-batch/assign-batch.component';
 import { AssignTeamComponent } from './admin-dashboard/assign-team/assign-team.component';
+import { TeamsComponent } from './admin-dashboard/teams/teams.component';
+import { TeamUsersComponent } from './admin-dashboard/team-users/team-users.component';
+import { AllocatedBatchesComponent } from './admin-dashboard/allocated-batches/allocated-batches.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -21,8 +24,11 @@ const routes: Routes = [
   { path: 'admin/create_user', component: CreateNewUsersComponent , canActivate : [AuthGuard]},
   { path: 'admin/assign_batch', component: AssignBatchComponent , canActivate : [AuthGuard]},
   { path: 'admin/assign_team', component: AssignTeamComponent , canActivate : [AuthGuard]},
+  { path: 'admin/batches/allocated', component: AllocatedBatchesComponent , canActivate : [AuthGuard]},
   { path: 'admin/batches', component: BatchesComponent , canActivate : [AuthGuard]},
   { path: 'admin/users', component: UsersComponent , canActivate : [AuthGuard]},
+  { path: 'admin/teams', component: TeamsComponent , canActivate : [AuthGuard]},
+  { path: 'admin/teams/users', component: TeamUsersComponent , canActivate : [AuthGuard]},
   { path: 'admin', component: AdminDashboardComponent , canActivate : [AuthGuard]}
 ];
 

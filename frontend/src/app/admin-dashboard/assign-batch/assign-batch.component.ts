@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ApiDataService } from '@app/services/api-data.service';
 import { TokenStorageService } from '@app/services/token-storage.service';
 import { faLaptopHouse } from '@fortawesome/free-solid-svg-icons';
+import { AdminServiceService } from '@app/services/admin-services.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-assign-batch',
@@ -14,10 +16,16 @@ export class AssignBatchComponent {
   apiBatchdata: any;
   userId: string = '';
   thumbnail = this.apiData.URL + "image/dimg.png"
+  new_team= false;
+  teamData:any
+  selectedUsers: any = [];
+  teams:any
 
+  users: any = [];
 
   constructor(private apiData: ApiDataService,
-    private tokenStorage: TokenStorageService) { }
+    private tokenStorage: TokenStorageService,private admin_service: AdminServiceService,
+    private toast: NgToastService) { }
 
 
   ngOnInit(): void {
@@ -27,6 +35,25 @@ export class AssignBatchComponent {
       this.apiBatchdata = data;
       // console.warn("apiBatchdata",data);
     })
+
+    this.admin_service.get_team().subscribe((data:any) => {
+      for(let i=0 ; i < data.length ; i++){
+        this.teams = data
+      }
+      console.warn("teams***", data);
+    })
+
+    this.admin_service.get_user().subscribe((data:any) => {
+      for(let i=0 ; i < data.length ; i++){
+        if(data[i].role != 'admin'){
+          this.users.push(data[i]);
+        }
+        
+      }
+      console.warn("users", data);
+    })
+
+    
 
   }
 
@@ -46,20 +73,10 @@ export class AssignBatchComponent {
         this.selectedBatches.splice(i, 1);
         break;
       }
-      // console.log(btches[i].batchname);
+      
     }
 
-    // this.selectedBatches.forEach((item: any, index: any) => {
-    //   console.log(item," gggggg ", index);
-      
-
-    //   // console.log(doc.batchname === item.batchname, "ek me true aana ");
-    //   // if (item.batchname == doc.batchname)
-    //   //   console.log(item.batchID, "removed id");
-    //   //   this.selectedBatches.splice(index, 1);
-    // });
-    // // console.log(this.selectedBatches);
-
+ 
   }
 
   func(e: any, batchID: string, batchname: string) {
@@ -82,4 +99,42 @@ export class AssignBatchComponent {
 
     }
   }
+  printname(name:any){
+    this.teamData = name.value.split(',');
+    // const team_id = name.innerHTML
+    // console.log(this.new_team_name.nativeElement.value)
+    
+  }
+  
+  togglenewteam(){
+    this.new_team = !this.new_team;
+  }
+
+  addToTeam() {
+    const team_name = this.teamData[1]
+    const team_id = this.teamData[0]
+    console.log(this.teamData)
+    // console.log(team_name,this.selectedUsers);
+    this.admin_service.assign_batch_to_team(team_id,team_name,this.selectedBatches).subscribe((data) => {
+      console.log(data);
+    })
+   
+
+  }
+
+  @ViewChild('te') new_team_name: any;
+
+  addTonewTeam(){
+
+    // const team_name = this.new_team_name.nativeElement.value
+    // console.log(team_name,this.selectedUsers);
+    const user_name = this.teamData[1]
+    const user_id = this.teamData[0]
+    console.log(this.teamData)
+    this.admin_service.assign_batch_to_user(user_id,user_name,this.selectedBatches).subscribe((data) => {
+      console.log(data);
+    })
+
+  }
+
 }

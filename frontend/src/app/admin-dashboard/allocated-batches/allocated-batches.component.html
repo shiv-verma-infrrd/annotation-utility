@@ -1,0 +1,120 @@
+<div class="contain" >
+    <app-admin-navbar></app-admin-navbar>
+    <main id="main" class="main">
+      <div class="pagetitle" >
+        <h1>Allocated members & teams</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">batches</li>
+            <li class="breadcrumb-item active">allocated members & teams</li>
+          </ol>
+        </nav>
+      </div>
+
+
+
+      <section class="section dashboard">
+        <div class="row">
+          <!-- Left side columns -->
+          <div class="col-lg-10">
+            <div class="row">
+              <!-- Recent Sales -->
+              <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                  <div class="card-body">
+                    <h5 class="card-title">members</h5>
+  
+                    <table class="table table-borderless datatable">
+                      
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">User</th>
+                          <th scope="col">De-allocate batch</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngFor="let user of users; let i = index">
+                        <tr >
+                         
+                          <th scope="row" >
+                            <a >#{{ i + 1 }}</a>
+                          </th>
+                          <td >{{ user.user_name }}</td>
+
+                          <td (click)="delete_user(user.user_id)" style="cursor:pointer;"><span class="badge bg-danger">x</span></td>
+                        </tr>
+                        
+                      </tbody>
+                      
+                      
+                      
+                    </table>
+
+                    
+                    <div class="justify-content-end " style="text-align: end;">
+                      <button type="button" class="btn btn-success justify-content-end" (click)="save_data_user()">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Recent Sales -->
+            </div>
+          </div>
+          <!-- End Left side columns -->
+        </div>
+      </section>
+
+      <section class="section dashboard">
+        <div class="row">
+          <!-- Left side columns -->
+          <div class="col-lg-10">
+            <div class="row">
+              <!-- Recent Sales -->
+              <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                  <div class="card-body">
+                    <h5 class="card-title">Teams</h5>
+  
+                    <table class="table table-borderless datatable">
+                      
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Team</th>
+                          <th scope="col">De-allocate batch</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngFor="let t of team; let i = index">
+                        <tr >
+                         
+                          <th scope="row" >
+                            <a >#{{ i + 1 }}</a>
+                          </th>
+                          <td >{{ t.team_name }}</td>
+
+                          <td (click)="delete_team(t.team_id)" style="cursor:pointer;"><span class="badge bg-danger">x</span></td>
+                        </tr>
+                        
+                      </tbody>
+                      
+                      
+                      
+                    </table>
+                    
+                    <div class="justify-content-end " style="text-align: end;">
+                      <button type="button" class="btn btn-success justify-content-end" (click)="save_data_team()">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Recent Sales -->
+            </div>
+          </div>
+          <!-- End Left side columns -->
+        </div>
+      </section>
+    </main>
+</div>  
+
+<script src="main.js"></script>

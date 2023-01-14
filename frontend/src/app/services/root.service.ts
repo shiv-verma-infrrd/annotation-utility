@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 
 export class RootService {
   URL = "http://127.0.0.1:8008/";
+  TEAM_ID:any;
 
   constructor() {}
 }

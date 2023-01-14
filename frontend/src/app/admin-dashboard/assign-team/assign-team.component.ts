@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AdminServiceService } from '@app/services/admin-services.service';
 import { ApiDataService } from '@app/services/api-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { NgToastService } from 'ng-angular-popup';
+import { ThisReceiver } from '@angular/compiler';
 @Component({
   selector: 'app-assign-team',
   templateUrl: './assign-team.component.html',
@@ -17,7 +18,10 @@ export class AssignTeamComponent {
   users: any = [];
   thumbnail = this.apiData.URL + "image/dimg.png"
   userimg = faUserSecret
-  teamName:any = "sdfsf"
+  teamName:any = ""
+  teams:any;
+  teamData:any
+  new_team= false;
 
   selectedUsers: any = [];
 
@@ -31,6 +35,17 @@ export class AssignTeamComponent {
       }
       console.warn("users", data);
     })
+
+    this.admin_service.get_team().subscribe((data:any) => {
+      for(let i=0 ; i < data.length ; i++){
+        this.teams = data
+      }
+      console.warn("teams***", data);
+    })
+
+    
+
+    
 
     console.log(this.teamName);
     
@@ -46,11 +61,11 @@ export class AssignTeamComponent {
     }
   }
 
-  func(e: any, userid: string, username: string) {
+  func(e: any, user_id: string, user_name: string) {
     const id = e.target.value;
     const ischecked = e.target.checked;
 
-    const vari = { userid, username };
+    const vari = { user_id, user_name };
 
     if (ischecked == true) {
       this.selectedUsers.push(vari)
@@ -65,20 +80,43 @@ export class AssignTeamComponent {
     }
   }
 
+  
+
+  @ViewChild('te') new_team_name: any;
+
+
+  printname(name:any){
+    this.teamData = name.value.split(',');
+    // const team_id = name.innerHTML
+    // console.log(this.new_team_name.nativeElement.value)
+    
+  }
+  
+
+  togglenewteam(){
+    this.new_team = !this.new_team;
+  }
+
   addToTeam() {
-    const team_name = this.teamName
-    console.log(team_name);
+    const team_name = this.teamData[1]
+    const team_id = this.teamData[0]
+    
+    console.log(team_name,this.selectedUsers);
+    this.admin_service.add_to_team(team_id,team_name,this.selectedUsers).subscribe((data) => {
+      console.log(data);
+    })
+   
+
+  }
+
+  addTonewTeam(){
+
+    const team_name = this.new_team_name.nativeElement.value
+    console.log(team_name,this.selectedUsers);
     this.admin_service.create_team(team_name,this.selectedUsers).subscribe((data) => {
       console.log(data);
     })
 
   }
-
-  printname(){
-    console.log(this.teamName);
-    
-    
-  }
-
 
 }

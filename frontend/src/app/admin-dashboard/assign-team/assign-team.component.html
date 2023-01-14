@@ -6,8 +6,8 @@
     <div class="col">
       <div class="dash-container" *ngFor="let user of users">
         <input type="checkbox"
-        (change)="func($event,user._id,user.name)"
-         [value]="user._id"
+        (change)="func($event,user.user_id,user.name)"
+         [value]="user.user_id"
          ><br>
         <div class="dash-thumbnail">
           <fa-icon [icon]="userimg" style="font-size:50px;">
@@ -24,14 +24,39 @@
 <!-- </div> -->
 
 <div class="btn-group z col-md-3">
-  <button type="button" class=" btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    Action
-  </button>
-  <ul class="dropdown-menu">
-    
-    <li><input type="text" placeholder="input team name"></li>
-    <li onchange="printname()">Team 2</li>  
-  </ul>
-  <button type="button" class="btn btn-outline-primary m-3" (click)="addToTeam()">save</button>
+  
+<nav>
+  <section  >
+    <div class="input-group input-group-sm mb-3" *ngIf="new_team;else other_content">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm">new team</span>
+      </div>
+      <input #te type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+      <p style="cursor: pointer; font-size: 15px;" (click)="togglenewteam()">click to add to existing team</p>
+      <button type="button" class="btn btn-outline-primary m-3" (click)="addTonewTeam()">save</button>
+    </div>
+
+    <ng-template #other_content><div class="dropdown" >
+      <select name="one" class="dropdown-select" (click)="printname(t)" #t>
+        <option >Teamlist</option>
+        <option *ngFor="let i of teams"  value="{{i.team_id}},{{i.team_name}}">{{i.team_name}}</option>
+      </select>
+    </div>
+    <p class="" style="cursor: pointer;" (click)="togglenewteam()">click here to create new team</p>
+    <button type="button" class="btn btn-outline-primary m-3" (click)="addToTeam()">save</button>
+  </ng-template>
+  
+    <!-- <div class="dropdown dropdown-dark">
+      <select name="two" class="dropdown-select">
+        <option value="">Select…</option>
+        <option value="1">Option #1</option>
+        <option value="2">Option #2</option>
+        <option value="3">Option #3</option>
+      </select>
+    </div> -->
+  </section>
+
+</nav> 
+  
 
 </div>
