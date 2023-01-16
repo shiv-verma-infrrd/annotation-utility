@@ -9,7 +9,9 @@
     z-index: 2;
 }
 .row{
-    height:80vh;
+    position:relative;
+    /* top:4rem; */
+    height:calc(100vh - 13rem);
     width: 100vw;
     /* background-color: aqua; */
     /* margin-top: 2px; */
@@ -102,10 +104,12 @@
   } */
 
   .temp{
+    position:absolute;
+    bottom:0;
     /* padding:0 0 0 0; */
     /* border: 1px solid rgba(0,0,0,0.2); */
-    width:calc(100%);
-    height: 7rem;
+    width:calc(100vw - 8.02rem);
+    height: 6rem;
     position: fixed;
     z-index: 2;
     background-color: #fff
@@ -144,7 +148,7 @@
   .contain{
     position:absolute;
     left:8.02rem;
-    top:3.5rem;
+    top:7rem;
     /* background-color:yellow; */
     max-width: calc(100vw - 8.02rem);
     overflow: auto;
@@ -152,4 +156,14 @@
   }
   ::-webkit-scrollbar {
     width: 0px;
+  }
+  app-upload-file{
+
+    position: absolute;
+    left:8.02rem;
+    top:3.5rem;
+    min-width: calc(100vw - 8.02rem);
+    background-color: #fff;
+    /* height:5rem; */
+    z-index:1;
   }
