@@ -1,6 +1,7 @@
+<app-admin-navbar></app-admin-navbar>
+<div class="contain">
+ 
 <main id="main" class="main">
-
-  <app-admin-navbar></app-admin-navbar>
   <div class="row">
     <div class="col">
       <div class="dash-container" *ngFor="let batch of apiBatchdata">
@@ -21,31 +22,58 @@
   </div>
   <!-- Dropdown for assigning teams -->
 
-  <footer class="bg-light text-center text-lg-start">
+  <!-- <div class="foo bg-dark d-flex justify-content-center "> -->
+               <hr>
 
-    <div class="btn-group dropup text-center ft">
-      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropup
-      </button>
-      <div class="dropdown-menu">
-        <!-- Dropdown menu links -->
-        <a href="#">sfgdfgd</a>
-        <a href="#">sfgdfgd</a>
-        <a href="#">sfgdfgd</a>
-        
-      </div>
-    </div>
+                <nav>
+                  <section>
+                    <div *ngIf="new_team;else other_content"  class="temp d-flex justify-content-center">
+                      
+                      <div class=" temp-box-1" >
+                      <div class="dropdown dd" >
+                        <select name="one" class="" (click)="printname(t)" #t>
+                          <option *ngFor="let i of teams" value="{{i.team_id}},{{i.team_name}}">{{i.team_name}}</option>
+                        </select>
+                      </div>
+
+                      <p class="temp-box-link" style="cursor: pointer;" (click)="togglenewteam()">click here to assign to user</p>
+                    </div>
+                    <div class="temp-box-2 "> 
+                      <button type="button" class="btn btn-success " (click)="addToTeam()">save</button>
+                    </div>
+                    </div>
+
+
+                    <ng-template #other_content>
+
+                      <div class="temp d-flex justify-content-center">
+                      <div class=" temp-box-1">
+                      <div class="dropdown">
+                        <select name="one" class="" (click)="printname(t)" #t>
+                          <option *ngFor="let i of users" value="{{i.user_id}},{{i.user_name}}">{{i.user_name}}</option>
+                        </select>
+                      </div>
+                      <p class="temp-box-link" style="cursor: pointer; margin-top: 5px;" (click)="togglenewteam()">click here to assign to team</p>
+                    </div>
+                      <div class="temp-box-2 ">
+                      <button type="button" class="btn btn-success" (click)="addTonewTeam()">save</button>
+
+                    </div>
+
+                  </div>
+                    </ng-template>
+                  </section>
+              
+                </nav>
+             
+  
+    
     <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-      © 2020 Copyright:
-      <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
+<!-- </div> -->
 
 </main>
 
-
+</div>
 
 
 
