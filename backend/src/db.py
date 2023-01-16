@@ -1,15 +1,14 @@
 import logging
 import pymongo
-from .config import Config
-
+from config import ProductionConfig, DevelopmentConfig, TestingConfig
 try:
     mongo = pymongo.MongoClient(
-        host=Config.HOST,
-        port=Config.PORT,
+        host=DevelopmentConfig.HOST,
+        port=DevelopmentConfig.PORT,
         serverSelectionTimeoutMS=100
     )
 
-    db = mongo[Config.DB_NAME]
+    db = mongo[DevelopmentConfig.DB_NAME]
     users = db.Users
     mongo.server_info()
     # logging.info('Connected to the database successfully')
