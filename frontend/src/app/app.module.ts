@@ -27,6 +27,7 @@ import { AssignTeamComponent } from './admin-dashboard/assign-team/assign-team.c
 import { TeamsComponent } from './admin-dashboard/teams/teams.component';
 import { TeamUsersComponent } from './admin-dashboard/team-users/team-users.component';
 import { AllocatedBatchesComponent } from './admin-dashboard/allocated-batches/allocated-batches.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { AllocatedBatchesComponent } from './admin-dashboard/allocated-batches/a
     Ng2SearchPipeModule,
     HttpClientModule,
     FontAwesomeModule,
-    NgToastModule
+    NgToastModule,
+    NgbModule
   ],
   providers: [authInterceptorProviders, AuthGuard],
   bootstrap: [AppComponent]

@@ -4,6 +4,7 @@ import { TokenStorageService } from '@app/services/token-storage.service';
 import { faLaptopHouse } from '@fortawesome/free-solid-svg-icons';
 import { AdminServiceService } from '@app/services/admin-services.service';
 import { NgToastService } from 'ng-angular-popup';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-assign-batch',

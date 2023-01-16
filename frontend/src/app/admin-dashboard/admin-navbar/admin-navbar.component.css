@@ -5,16 +5,22 @@
 }
 .side-container{
     background-color:rgba(0,0,0,.87);
-    position:fixed;
+    position:absolute;
+    overflow: scroll;
     left:0;
     width:8rem;
     height:100vh;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
 
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+  }
+
 .side-nav-content{
     color:#fff;
-    /* padding:10px; */
+    padding:10px;
 
 }
 main{
@@ -40,7 +46,7 @@ main{
     width:100%;
     display: inline-block;
     align-items: center;
-    /* height: 6rem; */
+    height: 6rem;
     border-bottom:1px solid #fff;
     text-align: center;
     padding:1rem;

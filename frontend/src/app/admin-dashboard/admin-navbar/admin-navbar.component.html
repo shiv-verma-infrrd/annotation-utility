@@ -2,18 +2,16 @@
 
     <div class="side-nav-button p-2 text-light"></div>
     <a class="navbar-brand " routerLink="/admin">
-        <img  src="https://uat.infrrd.cloud/assets/images/logos/infrrd-logo-monotone-white-transparent@2x.png" alt="" width="80">
+        <img src="https://uat.infrrd.cloud/assets/images/logos/infrrd-logo-monotone-white-transparent@2x.png" alt=""
+            width="80">
     </a>
-    
+
     <div class="navbar-collapse"></div>
 
     <div class="container-fluid justify-content-end">
         <div class="px-3 text-light" (click)='onLogout()' routerLink="/">
             <span>User </span>
-            <fa-icon
-                class="text-light"   
-                [icon]="logout_icon"
-            >
+            <fa-icon class="text-light" [icon]="logout_icon">
             </fa-icon>
         </div>
     </div>
@@ -22,68 +20,47 @@
 
 <main>
     <div class="side-container">
-    <div class="side-nav-content">
-        <ul class="nav-list">
+        <div class="side-nav-content">
+            <ul class="nav-list">
 
-            <li class="nav-list-item text-light" routerLink="/admin">
-                <fa-icon
-                
-                [icon]="dashboard_icon">
-                    
-                </fa-icon>
-                <div>Dashboard</div>
-            </li>
+                <li class="nav-list-item text-light" routerLink="/admin">
+                    <fa-icon [icon]="dashboard_icon">
 
-        <li class="nav-list-item text-light"  routerLink="/admin/batches">
-            <fa-icon
-            
-            [icon]="batch_icon">
-                
-            </fa-icon>
-            <div>Batches</div>
-        </li>
-        <li class="nav-list-item text-light"  routerLink="/admin/users">
-            <fa-icon
+                    </fa-icon>
+                    <div>Dashboard</div>
+                </li>
 
-            [icon]="users_icon">
-                
-            </fa-icon>
-            <div> Users</div>
-        </li>
-        <li class="nav-list-item text-light "  routerLink="/admin/create_user">
-            <fa-icon
-           
-            [icon]="create_new_user_icon">
-                
-            </fa-icon>
-            <div>New user</div>
-        </li>
-        <li class="nav-list-item text-light "  routerLink="/admin/assign_batch">
-            <fa-icon
-           
-            [icon]="assign_icon">
-                
-            </fa-icon>
-            <div>Assign Batches</div>
-        </li>
-        <li class="nav-list-item text-light "  routerLink="/admin/assign_team">
-            <fa-icon
-           
-            [icon]="assign_team">
-                
-            </fa-icon>
-            <div>Assign Teams</div>
-        </li>
+                <li class="nav-list-item text-light" routerLink="/admin/batches">
+                    <fa-icon [icon]="batch_icon">
 
-        <li class="nav-list-item text-light "  routerLink="/admin/teams">
-            <fa-icon
-           
-            [icon]="assign_team">
-                
-            </fa-icon>
-            <div>Teams</div>
-        </li>
-        </ul>
+                    </fa-icon>
+                    <div>Batches</div>
+                </li>
+                <li class="nav-list-item text-light" routerLink="/admin/users">
+                    <fa-icon [icon]="users_icon">
+
+                    </fa-icon>
+                    <div> Users</div>
+                </li>
+                <li class="nav-list-item text-light " routerLink="/admin/create_user">
+                    <fa-icon [icon]="create_new_user_icon">
+
+                    </fa-icon>
+                    <div>New user</div>
+                </li>
+                <li class="nav-list-item text-light " routerLink="/admin/assign_batch">
+                    <fa-icon [icon]="assign_icon">
+
+                    </fa-icon>
+                    <div>Assign Batches</div>
+                </li>
+                <li class="nav-list-item text-light " routerLink="/admin/assign_team">
+                    <fa-icon [icon]="assign_team">
+
+                    </fa-icon>
+                    <div>Assign Teams</div>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
 </main>

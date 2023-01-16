@@ -1,3 +1,8 @@
+.ft{
+    position: absolute;
+    left:50vw;
+}
+
 .z{
     display: flex;
     margin: 0 auto;
