@@ -23,7 +23,6 @@
   <!-- Dropdown for assigning teams -->
 
   <!-- <div class="foo bg-dark d-flex justify-content-center "> -->
-               <hr>
 
                 <nav>
                   <section>
@@ -49,7 +48,7 @@
                       <div class="temp d-flex justify-content-center">
                       <div class=" temp-box-1">
                       <div class="dropdown">
-                        <select name="one" class="" (click)="printname(t)" #t>
+                        <select name="one"  (click)="printname(t)" #t>
                           <option *ngFor="let i of users" value="{{i.user_id}},{{i.user_name}}">{{i.user_name}}</option>
                         </select>
                       </div>

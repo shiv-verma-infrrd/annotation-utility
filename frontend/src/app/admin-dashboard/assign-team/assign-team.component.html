@@ -1,7 +1,7 @@
-<!-- <div class="container"> -->
+
 <app-admin-navbar></app-admin-navbar>
 
-
+<div class="contain">
 <div class="row">
 
   <div class="col">
@@ -21,28 +21,36 @@
   </div>
 </div>
 
-<div class="btn-group z col-md-2">
 
   <nav>
     <section >
-      <div class="input-group input-group-sm mb-3" *ngIf="new_team;else other_content">
-        <div class="input-group-prepend">
-          <div class="input-group-text" id="inputGroup-sizing-sm">new team</div>
-        </div>
-        <input #te type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-        <p style="cursor: pointer; font-size: 15px; " (click)="togglenewteam()">click to add to existing team</p>
-        <button type="button" class="btn btn-outline-primary m-3 dflex" (click)="addTonewTeam()">save</button>
+      <div *ngIf="new_team;else other_content" class="temp d-flex justify-content-center">
+        <div class=" temp-box-1" >
+        <input #te type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Make new team">
+        <p class="temp-box-link" style="cursor: pointer;" (click)="togglenewteam()">click to add to existing team</p>
       </div>
-
+      <div class="temp-box-2 "> 
+        <button type="button" class="btn btn-outline-primary m-3 dflex" (click)="addTonewTeam()">save</button>
+      </div>  
+    </div>
+   
       <ng-template #other_content>
+        <div class="temp d-flex justify-content-center">
+        <div class=" temp-box-1">
         <div class="dropdown">
-          <select name="one" class="dropdown-select" (click)="printname(t)" #t>
+          <select name="one" (click)="printname(t)" #t>
             <option>Teamlist</option>
             <option *ngFor="let i of teams" value="{{i.team_id}},{{i.team_name}}">{{i.team_name}}</option>
           </select>
+        
         </div>
-        <p class="" style="cursor: pointer;" (click)="togglenewteam()">click here to create new team</p>
+        <p class="temp-box-link" style="cursor: pointer;" (click)="togglenewteam()">click here to create new team</p>
+      </div>
+      <div class="temp-box-2 ">
+       
         <button type="button" class="btn btn-outline-primary m-3" (click)="addToTeam()">save</button>
+      </div>
+    </div>
       </ng-template>
     </section>
   </nav>
