@@ -16,6 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgToastModule } from 'ng-angular-popup';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminNavbarComponent } from './admin-dashboard/admin-navbar/admin-navbar.component';
@@ -59,7 +60,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgToastModule,
     NgbModule
   ],
-  providers: [authInterceptorProviders, AuthGuard],
+  providers: [authInterceptorProviders, AuthGuard, AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
