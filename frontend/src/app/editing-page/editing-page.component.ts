@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import 'leader-line';
 import { ApiDataService } from '@app/services/api-data.service';
-import { PlatformLocation } from '@angular/common' 
+import { getLocaleFirstDayOfWeek, PlatformLocation } from '@angular/common' 
 import { NgToastService } from 'ng-angular-popup';
 
 declare let LeaderLine: any;
@@ -132,7 +132,6 @@ export class EditingPageComponent implements AfterViewInit
       this.image_src = data[0].imagePath;
       this.saving_data_result = data[0]
 
-      console.log(data);
 
       if(data[0].type == 'checkboxes')
       {
@@ -145,7 +144,6 @@ export class EditingPageComponent implements AfterViewInit
 
         else
         {
-          console.log(data[0].Data);
           
           this.api_result=JSON.parse(JSON.stringify((data[0].Data.ocrData)));
           this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.ocrData))));
@@ -181,7 +179,6 @@ export class EditingPageComponent implements AfterViewInit
       }
     });
 
-    console.log(this.api_result);
     
   }
 
@@ -368,9 +365,6 @@ checkbox_label_initialization()
 {
 
 var dummy_token_id = -1;
-
-console.log(this.cord_id_map);
-console.log(this.token_id_to_checkbox_question_index);
 
   for(let i = 0; i<this.api_result.length; i++)
   {
@@ -1079,11 +1073,41 @@ make_custom_field_entity()
         this.used_token_map.set(this.custom_input_array1[i], 1);
       }
 
-      // this.header_entity_indexs.push(this.custom_input_array1);
-      // this.header_entity_strings.push(this.custom_header_input_ref.nativeElement.value);
+      let ind=-1;
+      let check=0;
+      let v1:number=-1;
       
-      this.header_entity_ids.unshift(this.custom_input_array1);
-      this.header_entity_strings.unshift(this.custom_header_input_ref.nativeElement.value);
+      for(let i=0;i<this.custom_input_array1.length;i++)
+      {
+        if(v1<this.custom_input_array1[i])
+        v1=this.custom_input_array1[i];
+      }
+
+      let p=-1;
+      let temp=-1;
+
+      for(let i=0;i<this.header_entity_ids.length;i++)
+      {
+         for(let j=0;j<this.header_entity_ids[i].length;j++)
+         {
+          if(temp<this.header_entity_ids[i][j])
+          temp=this.header_entity_ids[i][j];
+         }
+         if(v1<temp&&v1>p)
+         {
+            check=1;
+            ind=i;     
+            break;
+         }
+         p=temp;
+      }
+      if(check==0)
+      {
+        ind=this.header_entity_ids.length;
+      }
+      
+      this.header_entity_ids.splice(ind, 0, this.custom_input_array1);
+      this.header_entity_strings.splice(ind, 0, this.custom_header_input_ref.nativeElement.value);
 
       this.custom_input_array1 = [];
       this.custom_header_input_ref.nativeElement.value = '';
@@ -1106,12 +1130,41 @@ make_custom_field_entity()
       {
         this.used_token_map.set(this.custom_input_array1[i], 1);
       }
-
-      // this.other_entity_indexs.push(this.custom_input_array1);
-      // this.other_entity_strings.push(this.custom_other_input_ref.nativeElement.value);
       
-      this.other_entity_ids.unshift(this.custom_input_array1);
-      this.other_entity_strings.unshift(this.custom_other_input_ref.nativeElement.value);
+      let ind=-1;
+      let check=0;
+      let v1:number=-1;
+      
+      for(let i=0;i<this.custom_input_array1.length;i++)
+      {
+        if(v1<this.custom_input_array1[i])
+        v1=this.custom_input_array1[i];
+      }
+
+      let p=-1;
+      let temp=-1;
+
+      for(let i=0;i<this.other_entity_ids.length;i++)
+      {
+         for(let j=0;j<this.other_entity_ids[i].length;j++)
+         {
+          if(temp<this.other_entity_ids[i][j])
+          temp=this.other_entity_ids[i][j];
+         }
+         if(v1<temp&&v1>p)
+         {
+            check=1;
+            ind=i;     
+            break;
+         }
+         p=temp;
+      }
+      if(check==0)
+      {
+        ind=this.other_entity_ids.length;
+      }
+      this.other_entity_ids.splice(ind, 0, this.custom_input_array1);
+      this.other_entity_strings.splice(ind, 0, this.custom_other_input_ref.nativeElement.value);
 
       this.custom_input_array1 = [];
       this.custom_other_input_ref.nativeElement.value = '';
@@ -1139,18 +1192,44 @@ make_custom_field_entity()
         this.used_token_map.set(this.custom_input_array2[i], 1);
       }
 
-      // this.question_entity_indexs.push(this.custom_input_array1);
-      // this.question_entity_strings.push(this.custom_question_input_ref.nativeElement.value);
+      let ind=-1;
+      let check=0;
+      let v1:number=-1;
       
-      this.question_entity_ids.unshift(this.custom_input_array1);
-      this.question_entity_strings.unshift(this.custom_question_input_ref.nativeElement.value);
+      for(let i=0;i<this.custom_input_array1.length;i++)
+      {
+        if(v1<this.custom_input_array1[i])
+        v1=this.custom_input_array1[i];
+      }
 
-      // this.answer_entity_indexs.push(this.custom_input_array2);
-      // this.answer_entity_strings.push(this.custom_answer_input_ref.nativeElement.value);
+      let p=-1;
+      let temp=-1;
 
-      this.answer_entity_ids.unshift(this.custom_input_array2);
-      this.answer_entity_strings.unshift(this.custom_answer_input_ref.nativeElement.value);
+      for(let i=0;i<this.question_entity_ids.length;i++)
+      {
+         for(let j=0;j<this.question_entity_ids[i].length;j++)
+         {
+          if(temp<this.question_entity_ids[i][j])
+          temp=this.question_entity_ids[i][j];
+         }
+         if(v1<temp&&v1>p)
+         {
+            check=1;
+            ind=i;     
+            break;
+         }
+         p=temp;
+      }
+      if(check==0)
+      {
+        ind=this.question_entity_ids.length;
+      }
       
+      this.question_entity_ids.splice(ind, 0, this.custom_input_array1);
+      this.question_entity_strings.splice(ind, 0, this.custom_question_input_ref.nativeElement.value);
+      
+      this.answer_entity_ids.splice(ind, 0, this.custom_input_array2);
+      this.answer_entity_strings.splice(ind, 0, this.custom_answer_input_ref.nativeElement.value);
 
       this.custom_input_array1 = [];
       this.custom_input_array2 = [];
@@ -1810,11 +1889,6 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
       this.custom_option_array2=[];
     }
     
-    console.log(this.checkbox_question_string);
-    console.log(this.checkbox_question_id);
-    
-    console.log(this.options_string);
-    console.log(this.options_string_id);
 
     input_ref_clicked.value = '';
     actual_checkbox.value = '';
@@ -1980,7 +2054,6 @@ pop_from_checkbox_entity()
 
     this.checkbox_question_string[this.selected_input_index_checkbox] = "";
 
-    console.log(this.checkbox_question_string[this.selected_input_index_checkbox])
 
     let t = "";
 
@@ -2121,8 +2194,6 @@ delete_checkbox_question(index:number)
 
   if(this.options_string_id[index] != undefined)
   {
-    console.log(this.options_string[0]);
-    console.log(this.options_string_id[0]);
     
     
     for(let i = 0; i<this.options_string_id[index].length; i++)
@@ -2475,7 +2546,6 @@ save_all_data(condition: number)
     }
   }
 
-    console.log("#######final",final);
    
     
   this.apiData.update_page_data(final).subscribe((data) => 
