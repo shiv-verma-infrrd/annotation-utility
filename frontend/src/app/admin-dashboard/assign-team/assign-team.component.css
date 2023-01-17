@@ -91,17 +91,6 @@
     background-color: #3e8e41;
   }
 
-  /* .foo{
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: red;
-    color: white;
-    text-align: center;
-    height:100px;
-  } */
-
   .temp{
     /* padding:0 0 0 0; */
     /* border: 1px solid rgba(0,0,0,0.5); */
@@ -117,16 +106,18 @@
     display: block;
     /* background-color: red; */
   }
-  .temp-box-2{
-    /* padding:5%; */
-    /* padding:1rem; */
-    /* background-color: #3e8e41; */
-  }
+  /* .temp-box-2{
+    padding:5%;
+    padding:1rem;
+    background-color: #3e8e41;
+  } */
   .temp-box-link{
     
     margin:8px 0 0 8px;
     font-size: small;
     color:#4CAF50
+
+
   }
   .dd{
     outline: none;
@@ -149,7 +140,7 @@
   .contain{
     position:absolute;
     left:8.02rem;
-    top:3.5rem;
+    top:2.4rem;
     /* background-color:yellow; */
     max-width: calc(100vw - 8.02rem);
     overflow: auto;

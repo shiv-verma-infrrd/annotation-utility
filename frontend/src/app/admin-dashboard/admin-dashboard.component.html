@@ -1,1 +1,255 @@
 <app-admin-navbar></app-admin-navbar>
+
+<!-- <div class="contain"> -->
+    <main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">dashboard</li>
+          </ol>
+        </nav>
+      </div>
+
+
+
+
+      <section class="section dashboard">
+        <div class="row">
+  
+          <!-- Left side columns -->
+          <div class="col-lg-8">
+            <div class="row">
+  
+              <!-- Sales Card -->
+              <div class="col-xxl-4 col-md-6">
+                <div class="card info-card sales-card">
+  
+                  
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Batches <span>| Total</span></h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="docs"></fa-icon>
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{total_batches}}</h6>
+                        <!-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+  
+                      </div>
+                    </div>
+                  </div>
+  
+                </div>
+              </div><!-- End Sales Card -->
+  
+              <!-- Revenue Card -->
+              <div class="col-xxl-4 col-md-6">
+                <div class="card info-card revenue-card">
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Documents <span>| Total</span></h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="batch"></fa-icon>
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{total_document}}</h6>
+                        <!-- <span class="text-success small pt-1 fw-bold">{{}}%</span> <span class="text-muted small pt-2 ps-1">of Total docs</span> -->
+                      </div>
+                    </div>
+                  </div>
+  
+                </div>
+              </div><!-- End Revenue Card -->
+  
+              <!-- corrected Card -->
+              <div class="col-xxl-4 col-xl-12">
+  
+                <div class="card info-card revenue-card">
+
+                  <div class="card-body">
+                    <h5 class="card-title">Corrected Docs <span>| Total</span></h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="folder"></fa-icon>
+                      </div>
+                      <div class="ps-3">
+                        <h6 class="text-success">{{total_corrected_batches}}</h6>
+                        <!-- <span class="text-success small pt-1 fw-bold">{{percentC}}%</span> <span class="text-muted small pt-2 ps-1">of Total docs</span> -->
+  
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+  
+              </div><!-- End Customers Card -->
+
+              <!-- not corrected -->
+              <div class="col-xxl-4 col-xl-12">
+  
+                <div class="card info-card customers-card">
+  
+                  
+                  <div class="card-body">
+                    <h5 class="card-title">Not Corrected Docs <span>| Total</span></h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <fa-icon [icon]="notcorrect"></fa-icon>
+                      </div>
+                      <div class="ps-3">
+                        <h6 class="text-danger">{{total_not_corrected_batches}}</h6>
+                        <!-- <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span> -->
+  
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+  
+              </div><!-- End Customers Card -->
+            </div>
+        </div>
+    </div>
+        </section>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <div class="d-flex"> -->
+
+        <!-- No. of batches card -->
+        <!-- <div class="card mt-5 mx-5 " style="width: 15rem; height: 15rem;">
+
+            <div class="card-body d-flex  align-items-center">
+                <h5 class="card-title ">No. Of <span> Batches</span></h5>
+                <div>
+                    <div class="ps-3">
+                        <span class="text-success pt-2 fw-bold">{{total_batches}}</span> 
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        
+        <!-- No. of teams card -->
+        <!-- <div 
+        class="card mt-5 mx-5 " style="width: 15rem; height: 15rem;">
+        
+        <div class="card-body d-flex  align-items-center">
+            <h5 class="card-title ">No. Of <span> Teams</span></h5>
+            
+            <div>
+                <div class="ps-3">
+                    <h6>{{total_batches}}</h6>
+                    <span class="text-success pt-2 fw-bold">{{total_no_of_teams}}</span> 
+                    <span class="text-muted small pt-2 ps-1"></span>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    
+    <!-- No. of documents card -->
+    <!-- <div 
+    class="card mt-5 mx-5 " style="width: 15rem; height: 15rem;">
+    
+    <div class="card-body d-flex  align-items-center">
+        <h5 class="card-title ">No. Of <span> documents</span></h5>
+        
+        <div>
+            <div class="ps-3">
+                <h6>{{total_batches}}</h6>
+                <span class="text-success pt-2 fw-bold">{{total_document}}</span> 
+                <span class="text-muted small pt-2 ps-1"></span>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- No. of users card -->
+    <!-- <div 
+    class="card mt-5 mx-5 " style="width: 15rem; height: 15rem;">
+    
+    <div class="card-body d-flex  align-items-center">
+        <h5 class="card-title ">No. Of <span> users</span></h5>
+        
+        <div>
+            <div class="ps-3">
+                <h6>{{total_batches}}</h6>
+                <span class="text-success pt-2 fw-bold">{{total_users}}</span> 
+                <span class="text-muted small pt-2 ps-1"></span>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- No. of corrected docs card -->
+<!-- <div 
+class="card mt-5 mx-5 " style="width: 15rem; height: 15rem;">
+
+<div class="card-body d-flex  align-items-center">
+    <h5 class="card-title ">No. Of <span> corrected docs</span></h5>
+    
+    <div>
+        <div class="ps-3">
+            <h6>{{total_batches}}</h6>
+            <span class="text-success pt-2 fw-bold">{{total_corrected_batches}}</span> 
+            <span class="text-muted small pt-2 ps-1"></span>
+        </div>
+    </div>
+</div>
+</div> -->
+
+<!-- No. of not corrected docs card -->
+<!-- <div 
+class="card mt-5 mx-5 " style="width: 15rem; height: 15rem;">
+
+<div class="card-body d-flex  align-items-center">
+    <h5 class="card-title ">No. Of <span>not corrected docs</span></h5>
+    
+    <div>
+        <div class="ps-3">
+            <h6>{{total_batches}}</h6>
+            <span class="text-success pt-2 fw-bold">{{total_not_corrected_batches}}</span> 
+            <span class="text-muted small pt-2 ps-1"></span>
+        </div>
+    </div>
+</div>
+</div> -->
+<!-- </div> -->
+</main>
+<!-- </div> -->
