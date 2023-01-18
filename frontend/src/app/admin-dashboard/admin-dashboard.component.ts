@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AdminServiceService } from '../services/admin-services.service';
 import { ApiDataService } from '@app/services/api-data.service';
-import { faFolder,faFolderOpen,faFileArchive,faAngry} from '@fortawesome/free-regular-svg-icons';
+import { NgToastService } from 'ng-angular-popup';
+import { faFolder,faFolderOpen,faFileArchive} from '@fortawesome/free-regular-svg-icons';
 
 
 @Component({
@@ -28,12 +29,13 @@ export class AdminDashboardComponent {
   folder = faFolder;
   docs = faFolderOpen;
   batch = faFileArchive;
-  notcorrect = faAngry;
+  notcorrect = faFolder;
 
 
 
   constructor(private admin_service:AdminServiceService,
-    private api_data_service:ApiDataService){}
+    private api_data_service:ApiDataService,
+    private toast: NgToastService){}
 
    ngOnInit():any{
 
