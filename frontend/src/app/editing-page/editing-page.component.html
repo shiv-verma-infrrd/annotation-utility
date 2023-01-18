@@ -47,6 +47,29 @@
                   <rect class="mark-other-on-image"  *ngFor="let oj of o" [attr.x]="token_cord_for_image[oj].box[0]" [attr.y]="token_cord_for_image[oj].box[1]" [attr.height]="token_cord_for_image[oj].box[3]-token_cord_for_image[oj].box[1]" [attr.width]="token_cord_for_image[oj].box[2]-token_cord_for_image[oj].box[0]"/> 
                 </ng-container>
               </ng-container>
+
+              <ng-container *ngIf="display_all_entity_token==1"> 
+                <ng-container *ngFor="let i of other_entity_ids; let in = index;">
+                  <ng-container> {{field_entity_click('o', in, null)}}</ng-container>
+                    <rect  class="mark-all-field-entity-on-image" [attr.x]="cord_for_rect_of_all_entity_display_button[0]" [attr.y]="cord_for_rect_of_all_entity_display_button[1]" [attr.height]="cord_for_rect_of_all_entity_display_button[3]" [attr.width]="cord_for_rect_of_all_entity_display_button[2]"/> 
+                </ng-container>
+
+                <ng-container *ngFor="let i of question_entity_ids; let in = index;">
+                  <ng-container> {{field_entity_click('q', in, null)}}</ng-container>
+                    <rect  class="mark-all-field-entity-on-image" [attr.x]="cord_for_rect_of_all_entity_display_button[0]" [attr.y]="cord_for_rect_of_all_entity_display_button[1]" [attr.height]="cord_for_rect_of_all_entity_display_button[3]" [attr.width]="cord_for_rect_of_all_entity_display_button[2]"/> 
+                </ng-container>
+
+                <ng-container *ngFor="let i of answer_entity_ids; let in = index;">
+                  <ng-container> {{field_entity_click('a', in, null)}}</ng-container>
+                    <rect  class="mark-all-field-entity-on-image" [attr.x]="cord_for_rect_of_all_entity_display_button[0]" [attr.y]="cord_for_rect_of_all_entity_display_button[1]" [attr.height]="cord_for_rect_of_all_entity_display_button[3]" [attr.width]="cord_for_rect_of_all_entity_display_button[2]"/> 
+                </ng-container>
+
+                <ng-container *ngFor="let i of header_entity_ids; let in = index;">
+                  <ng-container> {{field_entity_click('h', in, null)}}</ng-container>
+                    <rect  class="mark-all-field-entity-on-image" [attr.x]="cord_for_rect_of_all_entity_display_button[0]" [attr.y]="cord_for_rect_of_all_entity_display_button[1]" [attr.height]="cord_for_rect_of_all_entity_display_button[3]" [attr.width]="cord_for_rect_of_all_entity_display_button[2]"/> 
+                </ng-container>
+              </ng-container>
+
           </svg>
       </div>
 
@@ -66,6 +89,7 @@
             <div class="display-all-answer-on-click" (click)="display_category_label('a')">A</div>
             <div class="display-all-header-on-click" (click)="display_category_label('h')">H</div>
             <div class="display-all-other-on-click" (click)="display_category_label('o')">O</div>
+            <div class="display-all-field-entity-on-click" (click)="display_category_label('e')">E</div>
           </div>
         </div>
 
