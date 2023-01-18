@@ -76,8 +76,8 @@ export class AdminDashboardComponent {
   
     });
 
-    let ass:number = ((this.total_corrected_batches / this.total_document)*100)
-    this.percentC = ass.toFixed(2)
+    // let ass:number = ((this.total_corrected_batches / this.total_document)*100)
+    // this.percentC = ass.toFixed(2)
     
    }
 

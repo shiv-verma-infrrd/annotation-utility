@@ -4,6 +4,7 @@ import { TokenStorageService } from '@app/services/token-storage.service';
 import { faLaptopHouse } from '@fortawesome/free-solid-svg-icons';
 import { AdminServiceService } from '@app/services/admin-services.service';
 import { NgToastService } from 'ng-angular-popup';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -25,7 +26,10 @@ export class AssignBatchComponent {
   users: any = [];
 
   constructor(private apiData: ApiDataService,
-    private tokenStorage: TokenStorageService,private admin_service: AdminServiceService,
+    private tokenStorage: TokenStorageService,
+    private admin_service: AdminServiceService,
+    private router: Router,
+    private route: ActivatedRoute,
     private toast: NgToastService) { }
 
 
@@ -118,6 +122,14 @@ export class AssignBatchComponent {
     // console.log(team_name,this.selectedUsers);
     this.admin_service.assign_batch_to_team(team_id,team_name,this.selectedBatches).subscribe((data) => {
       console.log(data);
+      // this.toast.success({ detail: "Success Message", summary: "Added to team", duration: 5000 });
+      // this.selectedBatches = [];
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['./'], {
+        relativeTo: this.route
+      })
+      this.toast.success({ detail: "Success Message", summary: "Added to team", duration: 2000 });
     })
    
 
@@ -125,8 +137,8 @@ export class AssignBatchComponent {
 
   @ViewChild('te') new_team_name: any;
 
-  addTonewTeam(){
 
+  addTonewTeam(){
     // const team_name = this.new_team_name.nativeElement.value
     // console.log(team_name,this.selectedUsers);
     const user_name = this.teamData[1]
@@ -134,6 +146,14 @@ export class AssignBatchComponent {
     console.log(this.teamData)
     this.admin_service.assign_batch_to_user(user_id,user_name,this.selectedBatches).subscribe((data) => {
       console.log(data);
+      // this.toast.success({ detail: "Success Message", summary: "assigned to user", duration: 5000 });
+      // this.selectedBatches = [];
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['./'], {
+        relativeTo: this.route
+      })
+      this.toast.success({ detail: "Success Message", summary: "Added to team", duration: 2000 });
     })
 
   }
