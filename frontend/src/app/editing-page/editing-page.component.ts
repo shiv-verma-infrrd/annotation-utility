@@ -19,6 +19,8 @@ export class EditingPageComponent implements AfterViewInit
   @ViewChild('custom_answer_input_ref') custom_answer_input_ref: any;
   @ViewChild('custom_other_input_ref') custom_other_input_ref: any;
   @ViewChild('display_entity_rect_ref') display_entity_rect_ref: any;
+  @ViewChild('field') field: any;
+  @ViewChild('checkbox') checkbox:any;
 
 
   imageUrl:any;
@@ -71,11 +73,13 @@ export class EditingPageComponent implements AfterViewInit
   custom_input_array2: number[] = [];
 
   entity_connector_line: any = undefined;
-  some_changes_done:number=0;
-  display_question_token:number=0;
-  display_answer_token:number=0;
-  display_header_token:number=0;
-  display_other_token:number=0;
+  some_changes_done:number = 0;
+
+  display_question_token:number = 0;
+  display_answer_token:number = 0;
+  display_header_token:number = 0;
+  display_other_token:number = 0;
+  display_all_entity_token:number = 0;
 
   custom_token_x:number=0;
   custom_token_y:number=0;
@@ -85,6 +89,9 @@ export class EditingPageComponent implements AfterViewInit
   custom_token_making=0;
 
   saving_data_result:any;
+
+  cord_for_rect_of_all_entity_display_button:number[] = [];
+
 
   ///////////////////////checkbox ka variable hai ye////////////////////////
   checkbox_question_string:string[] = [];
@@ -934,31 +941,40 @@ display_category_label(type:string)
 {
   if(type=='q')
   {
-    if(this.display_question_token==0) 
-      this.display_question_token=1;
+    if(this.display_question_token == 0) 
+    this.display_question_token = 1;
     else
-    this.display_question_token=0; 
+    this.display_question_token = 0; 
   }
   else if(type=='a')
   {
-    if(this.display_answer_token==0) 
-      this.display_answer_token=1;
+    if(this.display_answer_token == 0) 
+    this.display_answer_token = 1;
     else
-    this.display_answer_token=0;
+    this.display_answer_token = 0;
   }
   else if(type=='h')
   {
-    if(this.display_header_token==0) 
-      this.display_header_token=1;
+    if(this.display_header_token == 0) 
+    this.display_header_token = 1;
     else
-    this.display_header_token=0;
+    this.display_header_token = 0;
   }
+  else if(type=='o')
+  {
+    if(this.display_other_token == 0) 
+    this.display_other_token = 1;
+    else
+    this.display_other_token = 0;
+  }
+
   else
   {
-    if(this.display_other_token==0) 
-      this.display_other_token=1;
+    if(this.display_all_entity_token == 0)
+    this.display_all_entity_token = 1;
+
     else
-    this.display_other_token=0;
+    this.display_all_entity_token = 0;
   }
 }
 
@@ -1709,6 +1725,8 @@ field_entity_click(type: string, index: number, entity_ref: any)
 
   if (x != 99999) 
   {
+    if(entity_ref!=null)
+    {
     this.display_entity_rect_ref.nativeElement.style.x = x;
     this.display_entity_rect_ref.nativeElement.style.y = y;
 
@@ -1716,20 +1734,27 @@ field_entity_click(type: string, index: number, entity_ref: any)
     this.display_entity_rect_ref.nativeElement.style.width = x2 - x;
 
     //connecting-line stuff
+      if (this.entity_connector_line != undefined) 
+      {
+        this.entity_connector_line.remove();
+        this.entity_connector_line = undefined;
+      }
 
-    if (this.entity_connector_line != undefined) 
-    {
-      this.entity_connector_line.remove();
-      this.entity_connector_line = undefined;
+      this.entity_connector_line = new LeaderLine(entity_ref,this.display_entity_rect_ref.nativeElement);
+      this.entity_connector_line.size = 2.75;
+      this.entity_connector_line.dash = true;
+      this.entity_connector_line.path = 'grid';
+      this.entity_connector_line.color = '#39a87a';
     }
 
-    this.entity_connector_line = new LeaderLine(entity_ref,this.display_entity_rect_ref.nativeElement);
-    this.entity_connector_line.size = 2.75;
-    this.entity_connector_line.dash = true;
-    this.entity_connector_line.path = 'grid';
-    this.entity_connector_line.color = '#39a87a';
-
+    this.cord_for_rect_of_all_entity_display_button = [x, y, x2-x, y2-y];
   }
+
+  else
+  this.cord_for_rect_of_all_entity_display_button = [0, 0, 0, 0];
+
+  console.log(type+" "+index+" "+entity_ref);
+  console.log(this.cord_for_rect_of_all_entity_display_button);
 }
 
 ///////////////////////////////////////////////////Checkbox section/////////////////////////////////////////////////////////////
