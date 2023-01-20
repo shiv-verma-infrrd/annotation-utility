@@ -111,7 +111,7 @@ export class EditingPageComponent implements AfterViewInit
 
   token_id_to_checkbox_question_index = new Map();
 
-  display_checkbox_question_token:number = 1;
+  display_checkbox_question_token:number = 0;
   display_checkbox_option_token:number = 0;
   display_actual_checkbox_token:number = 0;
 
@@ -760,7 +760,7 @@ image_zoom_out()
 {
   if(this.used_token_map.has(token_id))
   {
-    this.toast.warning({detail:"WARNING",summary:'This token has already been used',duration:5000});
+    this.toast.warning({detail:"WARNING",summary:'This token has been already used.',duration:5000});
 
     var id = "";
 
@@ -972,13 +972,40 @@ display_category_label(type:string)
     this.display_other_token = 0;
   }
 
-  else
+  else if(type=='e')
   {
     if(this.display_all_entity_token == 0)
     this.display_all_entity_token = 1;
 
     else
     this.display_all_entity_token = 0;
+  }
+
+  else if(type=='cq')
+  {
+    if(this.display_checkbox_question_token == 0)
+    this.display_checkbox_question_token = 1;
+
+    else
+    this.display_checkbox_question_token = 0;
+  }
+
+  else if(type=='co')
+  {
+    if(this.display_checkbox_option_token == 0)
+    this.display_checkbox_option_token = 1;
+
+    else
+    this.display_checkbox_option_token = 0;
+  }
+
+  else if(type=='ac')
+  {
+    if(this.display_actual_checkbox_token == 0)
+    this.display_actual_checkbox_token = 1;
+
+    else
+    this.display_actual_checkbox_token = 0;
   }
 }
 
@@ -1082,7 +1109,7 @@ make_custom_field_entity()
   {
     if (this.custom_header_input_ref.nativeElement.value == '') 
     {
-      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
+      this.toast.warning({detail:"WARNING",summary:'No token selected to make an entity.',duration:5000});
     } 
     else 
     {
@@ -1138,9 +1165,7 @@ make_custom_field_entity()
   {
     if (this.custom_other_input_ref.nativeElement.value == '') 
     {
-      
-      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
-
+      this.toast.warning({detail:"WARNING",summary:'No token selected to make an entity.',duration:5000});
     }
     else
     {
@@ -1195,8 +1220,7 @@ make_custom_field_entity()
   {
     if (this.custom_question_input_ref.nativeElement.value == '' || this.custom_answer_input_ref.nativeElement.value == '') 
     {
-      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
-
+      this.toast.warning({detail:"WARNING",summary:'No token selected to make an entity.',duration:5000});
     } 
     else 
     {
@@ -1767,9 +1791,9 @@ create_new_checkbox_container()
 {
   if(this.checkbox_question_string.length!= 0)
   {
-    if(this.checkbox_question_string[this.checkbox_question_string.length-1]=="" && (this.options_string.length<this.checkbox_question_string.length || this.actual_checkbox_value.length<this.checkbox_question_string.length))
-    this.toast.warning({detail:"WARNING",summary:'First make the above checkbox',duration:5000});
-
+    if(this.options_string.length<this.checkbox_question_string.length || this.actual_checkbox_value.length<this.checkbox_question_string.length)
+    this.toast.warning({detail:"WARNING",summary:'Complete the last custom checkbox before creating a new one.',duration:5000});
+    
     else
     {
       this.checkbox_question_string.push("");
@@ -1827,7 +1851,7 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
 {
   if(this.custom_option_array1.length==0||this.custom_option_array2.length==0)
   {
-    this.toast.warning({detail:"WARNING",summary:'Select all the tokens first to make checkbox entity',duration:5000});
+    this.toast.warning({detail:"WARNING",summary:'Fill out all sections of the custom checkbox option properly.',duration:5000});
   }
 
   else
@@ -2283,6 +2307,20 @@ delete_checkbox_question(index:number)
 
 save_all_data(condition: number) 
 {
+
+  for(let i = 0; i<this.options_string.length; i++)
+  {
+    if(this.options_string[i] == undefined)
+    {
+      this.toast.error({
+        detail: 'ERROR',
+        summary: 'The data is not corrected properly.',
+        duration: 3000,
+      });
+      return;
+    }
+  }
+
   // if (this.question_entity_strings.find((element) => element == '') !=undefined || this.answer_entity_strings.find((element) => element == '') != undefined) 
   // {
   //   this.toast.error({
@@ -2575,6 +2613,7 @@ save_all_data(condition: number)
     }
   }
 
+console.log(final);
    
     
   this.apiData.update_page_data(final).subscribe((data) => 

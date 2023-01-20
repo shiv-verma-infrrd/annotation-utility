@@ -103,12 +103,18 @@
             <div (click)="image_zoom_out()" class="zoom-out-button">-</div>
           </div>
 
-          <div class="label-type">
+          <div class="label-type" *ngIf="header_fields">
             <div class="display-all-question-on-click" (click)="display_category_label('q')">Q</div>
             <div class="display-all-answer-on-click" (click)="display_category_label('a')">A</div>
             <div class="display-all-header-on-click" (click)="display_category_label('h')">H</div>
             <div class="display-all-other-on-click" (click)="display_category_label('o')">O</div>
             <div class="display-all-field-entity-on-click" (click)="display_category_label('e')">E</div>
+          </div>
+
+          <div class="checkbox-label" *ngIf="header_checkbox">
+            <div class="display-checkbox-question-on-click" (click)="display_category_label('cq')">Q</div>
+            <div class="display-checkbox-option-on-click" (click)="display_category_label('co')">O</div>
+            <div class="display-actual-checkbox-on-click" (click)="display_category_label('ac')">C</div>
           </div>
         </div>
 

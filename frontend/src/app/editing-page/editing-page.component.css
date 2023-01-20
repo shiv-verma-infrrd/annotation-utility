@@ -9,6 +9,11 @@
     position: absolute;
     top: 0;
 }
+
+::-webkit-scrollbar
+{
+    display: none;
+}
   
 .navbar-1
 {
@@ -268,13 +273,14 @@ svg
     top: 5%;
     left: 0%;
     border-top: 1px solid #23875e;
+    overflow-y: auto;
 }
 
 
 .display-all-question-on-click
 {
-    height: 10%;
-    width: 60%;
+    height: 14%;
+    width: 80%;
     font-size: .7rem;
     display: flex;
     justify-content: center;
@@ -282,16 +288,16 @@ svg
     background-color: red;
     color: white;
     position: absolute;
-    top: 65%;
-    left: 20%;
+    top: 100%;
+    left: 10%;
     cursor: pointer;
     user-select: none;
 }
 
 .display-all-answer-on-click
 {
-    height: 10%;
-    width: 60%;
+    height: 14%;
+    width: 80%;
     font-size: .7rem;
     display: flex;
     justify-content: center;
@@ -299,16 +305,16 @@ svg
     background-color: blue;
     color: white;
     position: absolute;
-    top: 45%;
-    left: 20%;
+    top: 71.5%;
+    left: 10%;
     cursor: pointer;
     user-select: none;
 }
 
 .display-all-header-on-click
 {
-    height: 10%;
-    width: 60%;
+    height: 14%;
+    width: 80%;
     font-size: .7rem;
     display: flex;
     justify-content: center;
@@ -316,16 +322,16 @@ svg
     background-color:purple;
     color: white;
     position: absolute;
-    top: 25%;
-    left: 20%;
+    top: 43%;
+    left: 10%;
     cursor: pointer;
     user-select: none;
 }
 
 .display-all-other-on-click
 {
-    height: 10%;
-    width: 60%;
+    height: 14%;
+    width: 80%;
     font-size: .7rem;
     display: flex;
     justify-content: center;
@@ -333,8 +339,8 @@ svg
     background-color:orange;
     color: white;
     position: absolute;
-    top: 5%;
-    left: 20%;
+    top: 14.5%;
+    left: 10%;
     cursor: pointer;
     user-select: none;
 }
@@ -342,8 +348,8 @@ svg
 
 .display-all-field-entity-on-click
 {
-    height: 10%;
-    width: 60%;
+    height: 14%;
+    width: 80%;
     font-size: .7rem;
     display: flex;
     justify-content: center;
@@ -351,12 +357,72 @@ svg
     background-color:#23875e;
     color: white;
     position: absolute;
-    top: 85%;
-    left: 20%;
+    top: 128.5%;
+    left: 10%;
     cursor: pointer;
     user-select: none;
 }
 
+.checkbox-label
+{
+    height: 70%;
+    width: 100%;
+    position: absolute;
+    top: 5%;
+    left: 0%;
+    border-top: 1px solid #23875e;
+}
+
+.display-checkbox-question-on-click
+{
+    height: 14%;
+    width: 80%;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:red;
+    color: white;
+    position: absolute;
+    top: 14.5%;
+    left: 10%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.display-checkbox-option-on-click
+{
+    height: 14%;
+    width: 80%;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:blue;
+    color: white;
+    position: absolute;
+    top: 43%;
+    left: 10%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.display-actual-checkbox-on-click
+{
+    height: 14%;
+    width: 80%;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:orange;
+    color: white;
+    position: absolute;
+    top: 71.5%;
+    left: 10%;
+    cursor: pointer;
+    user-select: none;
+}
 
 .image-control-container-close
 {
