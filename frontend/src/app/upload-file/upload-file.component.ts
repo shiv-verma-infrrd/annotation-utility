@@ -31,6 +31,11 @@ export class UploadFileComponent implements OnInit {
     
   }
 
+  onSelect(e:any){
+    console.log(e.target.value);
+    
+  }
+
   onChange(event: any) {
     this.file = event.target.files[0];
   }
