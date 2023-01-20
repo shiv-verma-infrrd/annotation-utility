@@ -119,7 +119,10 @@ export class EditingPageComponent implements AfterViewInit
   image_control_container_open: boolean = true;
   image_control_container_closed: boolean = false;
 
-
+  /////////////// user corrected token array ///////////////
+   display_user_corrected_token=0;
+   user_corrected_token_id:number[]=[];
+   user_corrected_token_map=new Map();
 
   constructor(private apiData: ApiDataService, private router:Router, private location:PlatformLocation, private toast:NgToastService)
   {
@@ -371,10 +374,8 @@ kvp_label_initialization()
   }
 }
 
-
 checkbox_label_initialization()
 {
-
 var dummy_token_id = -1;
 
   for(let i = 0; i<this.api_result.length; i++)
@@ -392,7 +393,6 @@ var dummy_token_id = -1;
           t.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[j].box)));
           this.used_token_map.set(t[t.length-1],1);
         }
-
 
       this.checkbox_question_id.push(t);
 
@@ -542,8 +542,6 @@ var dummy_token_id = -1;
     }
   }   
 }
-
-
 
 token_extractor_from_grouping(data:any)
 {
@@ -858,25 +856,48 @@ image_zoom_out()
         this.used_token_map.set(token_id, 1);
         this.question_entity_ids[this.selected_input_index_field].push(token_id);
         this.question_entity_strings[this.selected_input_index_field]+= ' ' + this.token_cord_for_image[token_id].text;
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
       }
-
       else if (this.selected_input_type_field == 'a') 
       {
         this.used_token_map.set(token_id, 1);
         this.answer_entity_ids[this.selected_input_index_field].push(token_id);
         this.answer_entity_strings[this.selected_input_index_field] += ' ' + this.token_cord_for_image[token_id].text;
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
       }
       else if (this.selected_input_type_field == 'h') 
       {
         this.used_token_map.set(token_id, 1);
         this.header_entity_ids[this.selected_input_index_field].push(token_id);
         this.header_entity_strings[this.selected_input_index_field] += ' ' + this.token_cord_for_image[token_id].text;
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
       }
       else if (this.selected_input_type_field == 'o')
       {
         this.used_token_map.set(token_id, 1);
         this.other_entity_ids[this.selected_input_index_field].push(token_id);
         this.other_entity_strings[this.selected_input_index_field] += ' ' + this.token_cord_for_image[token_id].text;
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
       }
     }
     else if(this.selected_input_type_field == 'cq' || this.selected_input_type_field =='ca' ||this.selected_input_type_field =='ch' ||this.selected_input_type_field == 'co')
@@ -1118,6 +1139,12 @@ make_custom_field_entity()
       for (let i = 0; i < this.custom_input_array1.length; i++) 
       {
         this.used_token_map.set(this.custom_input_array1[i], 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_input_array1[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_input_array1[i],1);
+          this.user_corrected_token_id.push(this.custom_input_array1[i]);
+        }
       }
 
       let ind=-1;
@@ -1174,6 +1201,12 @@ make_custom_field_entity()
       for (let i = 0; i < this.custom_input_array1.length; i++) 
       {
         this.used_token_map.set(this.custom_input_array1[i], 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_input_array1[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_input_array1[i],1);
+          this.user_corrected_token_id.push(this.custom_input_array1[i]);
+        }
       }
       
       let ind=-1;
@@ -1215,7 +1248,6 @@ make_custom_field_entity()
       this.custom_other_input_ref.nativeElement.value = '';
     }
   } 
-
   else 
   {
     if (this.custom_question_input_ref.nativeElement.value == '' || this.custom_answer_input_ref.nativeElement.value == '') 
@@ -1229,11 +1261,23 @@ make_custom_field_entity()
       for (let i = 0; i < this.custom_input_array1.length; i++) 
       {
         this.used_token_map.set(this.custom_input_array1[i], 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_input_array1[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_input_array1[i],1);
+          this.user_corrected_token_id.push(this.custom_input_array1[i]);
+        }
       }
 
       for (let i = 0; i < this.custom_input_array2.length; i++) 
       {
         this.used_token_map.set(this.custom_input_array2[i], 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_input_array2[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_input_array2[i],1);
+          this.user_corrected_token_id.push(this.custom_input_array2[i]);
+        }
       }
 
       let ind=-1;
@@ -1413,6 +1457,13 @@ pop_token_from_field_entity()
       let deleted_token_id=this.question_entity_ids[this.selected_input_index_field][remain_length-1];
       this.question_entity_ids[this.selected_input_index_field].pop();
 
+      /// token manipulated by user
+      if(!this.user_corrected_token_map.has(deleted_token_id))
+      {
+        this.user_corrected_token_map.set(deleted_token_id,1);
+        this.user_corrected_token_id.push(deleted_token_id);
+      }
+
       var pos=this.question_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
 
       this.question_entity_strings[this.selected_input_index_field]=
@@ -1442,6 +1493,13 @@ pop_token_from_field_entity()
 
     let deleted_token_id=this.answer_entity_ids[this.selected_input_index_field][remain_length-1];
     this.answer_entity_ids[this.selected_input_index_field].pop();
+   
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(deleted_token_id))
+    {
+      this.user_corrected_token_map.set(deleted_token_id,1);
+      this.user_corrected_token_id.push(deleted_token_id);
+    } 
 
     var pos=this.answer_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
 
@@ -1472,6 +1530,13 @@ pop_token_from_field_entity()
 
     let deleted_token_id=this.header_entity_ids[this.selected_input_index_field][remain_length-1];
     this.header_entity_ids[this.selected_input_index_field].pop();
+    
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(deleted_token_id))
+    {
+      this.user_corrected_token_map.set(deleted_token_id,1);
+      this.user_corrected_token_id.push(deleted_token_id);
+    }
 
     var pos=this.header_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
 
@@ -1502,6 +1567,13 @@ pop_token_from_field_entity()
 
     let deleted_token_id=this.other_entity_ids[this.selected_input_index_field][remain_length-1];
     this.other_entity_ids[this.selected_input_index_field].pop();
+    
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(deleted_token_id))
+    {
+      this.user_corrected_token_map.set(deleted_token_id,1);
+      this.user_corrected_token_id.push(deleted_token_id);
+    }
 
     var pos=this.other_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
 

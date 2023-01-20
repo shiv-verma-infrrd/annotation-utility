@@ -89,6 +89,13 @@
                 <rect class="mark-actual-checkbox-on-image"  *ngFor="let ac of c" [attr.x]="token_cord_for_image[ac].box[0]" [attr.y]="token_cord_for_image[ac].box[1]" [attr.height]="token_cord_for_image[ac].box[3]-token_cord_for_image[ac].box[1]" [attr.width]="token_cord_for_image[ac].box[2]-token_cord_for_image[ac].box[0]"/> 
               </ng-container>
             </ng-container>
+
+            <!-- user corrected token -->
+            <ng-container *ngIf="display_user_corrected_token==1">
+               <ng-container *ngFor="let u of user_corrected_token_id;">
+                <rect class="mark-actual-checkbox-on-image"  [attr.x]="token_cord_for_image[u].box[0]" [attr.y]="token_cord_for_image[u].box[1]" [attr.height]="token_cord_for_image[u].box[3]-token_cord_for_image[u].box[1]" [attr.width]="token_cord_for_image[u].box[2]-token_cord_for_image[u].box[0]"/> 
+               </ng-container>
+            </ng-container>
           </svg>
       </div>
 
