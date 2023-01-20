@@ -151,6 +151,26 @@ svg
     stroke-width: 1px;
 }
 
+.mark-checkbox-question-on-image
+{
+    fill: transparent;
+    stroke:red;
+    stroke-width: 1px;
+}
+
+.mark-checkbox-option-on-image
+{
+    fill: transparent;
+    stroke:blue;
+    stroke-width: 1px;
+}
+
+.mark-actual-checkbox-on-image
+{
+    fill: transparent;
+    stroke:orange;
+    stroke-width: 1px;
+}
 
 .image-control-container-background
 {
