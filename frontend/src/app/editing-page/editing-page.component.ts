@@ -111,6 +111,10 @@ export class EditingPageComponent implements AfterViewInit
 
   token_id_to_checkbox_question_index = new Map();
 
+  display_checkbox_question_token:number = 1;
+  display_checkbox_option_token:number = 0;
+  display_actual_checkbox_token:number = 0;
+
   /////////////// image control container variables /////////////////
   image_control_container_open: boolean = true;
   image_control_container_closed: boolean = false;
