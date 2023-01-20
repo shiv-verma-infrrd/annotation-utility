@@ -177,6 +177,13 @@ svg
     stroke-width: 1px;
 }
 
+.mark-token-corrected-by-user-on-image
+{
+    fill: transparent;
+    stroke: aqua;
+    stroke-width: 1px;
+}
+
 .image-control-container-background
 {
     height: 89%;
@@ -363,6 +370,22 @@ svg
     user-select: none;
 }
 
+.display-token-corrected-by-user-field
+{
+    height: 14%;
+    width: 80%;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+    position: absolute;
+    top: 157%;
+    left: 10%;
+    cursor: pointer;
+    user-select: none;
+}
+
 .checkbox-label
 {
     height: 70%;
@@ -371,6 +394,7 @@ svg
     top: 5%;
     left: 0%;
     border-top: 1px solid #23875e;
+    overflow-y: auto;
 }
 
 .display-checkbox-question-on-click
@@ -419,6 +443,22 @@ svg
     color: white;
     position: absolute;
     top: 71.5%;
+    left: 10%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.display-token-corrected-by-user-checkbox
+{
+    height: 14%;
+    width: 80%;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+    position: absolute;
+    top: 100%;
     left: 10%;
     cursor: pointer;
     user-select: none;

@@ -93,7 +93,7 @@
             <!-- user corrected token -->
             <ng-container *ngIf="display_user_corrected_token==1">
                <ng-container *ngFor="let u of user_corrected_token_id;">
-                <rect class="mark-actual-checkbox-on-image"  [attr.x]="token_cord_for_image[u].box[0]" [attr.y]="token_cord_for_image[u].box[1]" [attr.height]="token_cord_for_image[u].box[3]-token_cord_for_image[u].box[1]" [attr.width]="token_cord_for_image[u].box[2]-token_cord_for_image[u].box[0]"/> 
+                <rect class="mark-token-corrected-by-user-on-image"  [attr.x]="token_cord_for_image[u].box[0]" [attr.y]="token_cord_for_image[u].box[1]" [attr.height]="token_cord_for_image[u].box[3]-token_cord_for_image[u].box[1]" [attr.width]="token_cord_for_image[u].box[2]-token_cord_for_image[u].box[0]"/> 
                </ng-container>
             </ng-container>
           </svg>
@@ -116,12 +116,14 @@
             <div class="display-all-header-on-click" (click)="display_category_label('h')">H</div>
             <div class="display-all-other-on-click" (click)="display_category_label('o')">O</div>
             <div class="display-all-field-entity-on-click" (click)="display_category_label('e')">E</div>
+            <div class="display-token-corrected-by-user-field" (click)="display_category_label('uc')">UC</div>
           </div>
 
           <div class="checkbox-label" *ngIf="header_checkbox">
             <div class="display-checkbox-question-on-click" (click)="display_category_label('cq')">Q</div>
             <div class="display-checkbox-option-on-click" (click)="display_category_label('co')">O</div>
             <div class="display-actual-checkbox-on-click" (click)="display_category_label('ac')">C</div>
+            <div class="display-token-corrected-by-user-checkbox" (click)="display_category_label('uc')">UC</div>
           </div>
         </div>
 

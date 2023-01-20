@@ -1028,6 +1028,15 @@ display_category_label(type:string)
     else
     this.display_actual_checkbox_token = 0;
   }
+
+  else if(type == 'uc')
+  {
+    if(this.display_user_corrected_token == 0)
+    this.display_user_corrected_token = 1;
+
+    else
+    this.display_user_corrected_token = 0;
+  }
 }
 
 ////////////////////////////////////////////// Common Functions //////////////////////////////////////////////////////
@@ -1464,24 +1473,20 @@ pop_token_from_field_entity()
         this.user_corrected_token_id.push(deleted_token_id);
       }
 
-      var pos=this.question_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+      let t="";
 
-      this.question_entity_strings[this.selected_input_index_field]=
-      this.question_entity_strings[this.selected_input_index_field].substring(0,pos)
-      +
-      this.question_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.question_entity_strings[this.selected_input_index_field].length);
-
-      //check if only spaces left
-      let space_count=0;
-      for(let k=0;k<this.question_entity_strings[this.selected_input_index_field].length;k++)
+      for(let i = 0; i<this.question_entity_ids[this.selected_input_index_field].length; i++)
       {
-        if(this.question_entity_strings[this.selected_input_index_field][k]==' ')
-        space_count++;
+        if(t == "")
+        t += this.token_cord_for_image[this.question_entity_ids[this.selected_input_index_field][i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.question_entity_ids[this.selected_input_index_field][i]].text;
       }
 
-      if(space_count==this.question_entity_strings[this.selected_input_index_field].length)
-      this.question_entity_strings[this.selected_input_index_field]='';
+      this.question_entity_strings[this.selected_input_index_field] = t;
   } 
+
   else if (this.selected_input_type_field == 'a')
   {
     let remain_length=this.answer_entity_ids[this.selected_input_index_field].length;
@@ -1501,24 +1506,20 @@ pop_token_from_field_entity()
       this.user_corrected_token_id.push(deleted_token_id);
     } 
 
-    var pos=this.answer_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+    let t="";
 
-    this.answer_entity_strings[this.selected_input_index_field]=
-    this.answer_entity_strings[this.selected_input_index_field].substring(0,pos)
-    +
-    this.answer_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.answer_entity_strings[this.selected_input_index_field].length);
+      for(let i = 0; i<this.answer_entity_ids[this.selected_input_index_field].length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.answer_entity_ids[this.selected_input_index_field][i]].text;
 
-    //check if only spaces left
-    let space_count=0;
-    for(let k=0;k<this.answer_entity_strings[this.selected_input_index_field].length;k++)
-    {
-      if(this.answer_entity_strings[this.selected_input_index_field][k]==' ')
-      space_count++;
-    }
+        else
+        t += " " + this.token_cord_for_image[this.answer_entity_ids[this.selected_input_index_field][i]].text;
+      }
 
-    if(space_count==this.answer_entity_strings[this.selected_input_index_field].length)
-    this.answer_entity_strings[this.selected_input_index_field]='';
+      this.answer_entity_strings[this.selected_input_index_field] = t;
   } 
+
   else if (this.selected_input_type_field == 'h') 
   {
     let remain_length=this.header_entity_ids[this.selected_input_index_field].length;
@@ -1538,23 +1539,18 @@ pop_token_from_field_entity()
       this.user_corrected_token_id.push(deleted_token_id);
     }
 
-    var pos=this.header_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+    let t="";
 
-    this.header_entity_strings[this.selected_input_index_field]=
-    this.header_entity_strings[this.selected_input_index_field].substring(0,pos)
-    +
-    this.header_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.header_entity_strings[this.selected_input_index_field].length);
+      for(let i = 0; i<this.header_entity_ids[this.selected_input_index_field].length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.header_entity_ids[this.selected_input_index_field][i]].text;
 
-    //check if only spaces left
-    let space_count=0;
-    for(let k=0;k<this.header_entity_strings[this.selected_input_index_field].length;k++)
-    {
-      if(this.header_entity_strings[this.selected_input_index_field][k]==' ')
-      space_count++;
-    }
+        else
+        t += " " + this.token_cord_for_image[this.header_entity_ids[this.selected_input_index_field][i]].text;
+      }
 
-    if(space_count==this.header_entity_strings[this.selected_input_index_field].length)
-    this.header_entity_strings[this.selected_input_index_field]='';
+      this.header_entity_strings[this.selected_input_index_field] = t;
   } 
   else if (this.selected_input_type_field == 'o')
   {
@@ -1575,23 +1571,18 @@ pop_token_from_field_entity()
       this.user_corrected_token_id.push(deleted_token_id);
     }
 
-    var pos=this.other_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
+    let t="";
 
-    this.other_entity_strings[this.selected_input_index_field]=
-    this.other_entity_strings[this.selected_input_index_field].substring(0,pos)
-    +
-    this.other_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.other_entity_strings[this.selected_input_index_field].length);
+      for(let i = 0; i<this.other_entity_ids[this.selected_input_index_field].length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.other_entity_ids[this.selected_input_index_field][i]].text;
 
-    //check if only spaces left
-    let space_count=0;
-    for(let k=0;k<this.other_entity_strings[this.selected_input_index_field].length;k++)
-    {
-      if(this.other_entity_strings[this.selected_input_index_field][k]==' ')
-      space_count++;
-    }
+        else
+        t += " " + this.token_cord_for_image[this.other_entity_ids[this.selected_input_index_field][i]].text;
+      }
 
-    if(space_count==this.other_entity_strings[this.selected_input_index_field].length)
-    this.other_entity_strings[this.selected_input_index_field]='';
+      this.other_entity_strings[this.selected_input_index_field] = t;
   }
 
   else if(this.selected_input_type_field == 'cq')
