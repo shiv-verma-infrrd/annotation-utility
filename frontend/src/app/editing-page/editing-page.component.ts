@@ -175,8 +175,9 @@ export class EditingPageComponent implements AfterViewInit
         }
 
         else
-        {
+        {  
         this.api_result=JSON.parse(JSON.stringify((data[0].Data.kvpData.form)));
+        console.log(data[0].Data.kvpData.form);
         this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.kvpData.form))));
         this.kvp_label_initialization();
         }    
@@ -232,7 +233,7 @@ kvp_label_initialization()
         this.question_entity_ids.push(t);
 
         if(Object.entries(this.api_result[i].linking[0]).length > 0)
-        {
+        {          
           var z_o_in = 0;
           if (this.api_result[i].linking[0].linking[0] == this.api_result[i].id)
             z_o_in = 1;
@@ -372,6 +373,8 @@ kvp_label_initialization()
       }
     }
   }
+  console.log(this.question_entity_strings);
+  console.log(this.answer_entity_strings);
 }
 
 checkbox_label_initialization()
@@ -931,6 +934,13 @@ image_zoom_out()
     else if(this.selected_input_type_checkbox == 'checkbox_option_string')
     {
       this.used_token_map.set(token_id, 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
+
       this.options_string_id[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox].push(token_id);
       this.options_string[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox] += ' '+this.token_cord_for_image[token_id].text;
     }
@@ -940,6 +950,12 @@ image_zoom_out()
       if(this.selected_input_type_checkbox == 'checkbox_question')
       {
         this.used_token_map.set(token_id, 1)
+          /// token manipulated by user
+          if(!this.user_corrected_token_map.has(token_id))
+          {
+            this.user_corrected_token_map.set(token_id,1);
+            this.user_corrected_token_id.push(token_id);
+          }
         // this.selected_input_ref.value += ' ' + this.token_cord_for_image[token_id].text;
         this.checkbox_question_string[this.selected_input_index_checkbox]+=' ' + this.token_cord_for_image[token_id].text;
         this.checkbox_question_id[this.selected_input_index_checkbox].push(token_id);
@@ -1108,7 +1124,7 @@ show_checkboxes_section(fields_border:any, checkboxes_border:any)
     this.entity_connector_line=undefined;
   }
 }
-//////////////////////////////////////////////////////////Field Functions/////////////////////////////////////////////////////////////
+//////////////////////////////////////////////Field Functions///////////////////////////////////////////
 
 select_field_for_editing(ref: any, type: any, index: number)
 {
@@ -1715,11 +1731,23 @@ delete_field_entity(type:string,index:number)
     for (let i = 0; i < this.question_entity_ids[index].length; i++)
     {
       this.used_token_map.delete(this.question_entity_ids[index][i]);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.question_entity_ids[index][i]))
+        {
+          this.user_corrected_token_map.set(this.question_entity_ids[index][i],1);
+          this.user_corrected_token_id.push(this.question_entity_ids[index][i]);
+        }
     }
     
     for (let j = 0; j < this.answer_entity_ids[index].length; j++) 
     {
       this.used_token_map.delete(this.answer_entity_ids[index][j]);
+      /// token manipulated by user
+      if(!this.user_corrected_token_map.has(this.answer_entity_ids[index][j]))
+      {
+        this.user_corrected_token_map.set(this.answer_entity_ids[index][j],1);
+        this.user_corrected_token_id.push(this.answer_entity_ids[index][j]);
+      }
     }
 
     this.question_entity_strings.splice(index, 1);
@@ -1732,6 +1760,12 @@ delete_field_entity(type:string,index:number)
     for (let i = 0; i < this.header_entity_ids[index].length; i++) 
     {
       this.used_token_map.delete(this.header_entity_ids[index][i]);
+      /// token manipulated by user
+      if(!this.user_corrected_token_map.has(this.header_entity_ids[index][i]))
+      {
+        this.user_corrected_token_map.set(this.header_entity_ids[index][i],1);
+        this.user_corrected_token_id.push(this.header_entity_ids[index][i]);
+      }
     }
 
     this.header_entity_strings.splice(index, 1);
@@ -1742,6 +1776,12 @@ delete_field_entity(type:string,index:number)
     for (let i = 0; i < this.other_entity_ids[index].length; i++) 
     {
       this.used_token_map.delete(this.other_entity_ids[index][i]);
+      /// token manipulated by user
+      if(!this.user_corrected_token_map.has(this.other_entity_ids[index][i]))
+      {
+        this.user_corrected_token_map.set(this.other_entity_ids[index][i],1);
+        this.user_corrected_token_id.push(this.other_entity_ids[index][i]);
+      }
     }
     this.other_entity_strings.splice(index, 1);
     this.other_entity_ids.splice(index, 1);
@@ -1916,64 +1956,67 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
   {
     this.toast.warning({detail:"WARNING",summary:'Fill out all sections of the custom checkbox option properly.',duration:5000});
   }
-
   else
   {
     if(index<this.options_string.length)
     { 
-      let t="";
-      for(let i=0;i<this.custom_option_array1.length;i++)
-      {
-        if(t=="")
+        let t="";
+        for(let i=0;i<this.custom_option_array1.length;i++)
         {
-          t+=this.token_cord_for_image[this.custom_option_array1[i]].text;
-          // console.log('1:' + this.options_string_id[index].length);
-          
-          if(this.options_string_id[index]==undefined)
-          this.options_string_id[index] = [[this.custom_option_array1[i]]];  
+            /// token manipulated by user
+            if(!this.user_corrected_token_map.has(this.custom_option_array1[i]))
+            {
+              this.user_corrected_token_map.set(this.custom_option_array1[i],1);
+              this.user_corrected_token_id.push(this.custom_option_array1[i]);
+            }
 
-          else
-          this.options_string_id[index].push([this.custom_option_array1[i]]);  
+            if(t=="")
+            {
+              t+=this.token_cord_for_image[this.custom_option_array1[i]].text;
+              if(this.options_string_id[index]==undefined)
+              this.options_string_id[index] = [[this.custom_option_array1[i]]];  
+              else
+              this.options_string_id[index].push([this.custom_option_array1[i]]);  
+            }
+            else
+            {
+              t+=" "+this.token_cord_for_image[this.custom_option_array1[i]].text;
+              this.options_string_id[index][this.options_string_id[index].length-1].push(this.custom_option_array1[i]);
+            }
         }
-
-        else
-        {
-          t+=" "+this.token_cord_for_image[this.custom_option_array1[i]].text;
-          // console.log('2:' + this.options_string_id[index].length);
-          this.options_string_id[index][this.options_string_id[index].length-1].push(this.custom_option_array1[i]);
-        }
-      }
       
         if(this.options_string[index] == undefined)
         this.options_string[index] = [t];
-
         else
         this.options_string[index].push(t);
         this.custom_option_array1=[];
     }
-
     else
     {
-      let t="";
+        let t="";
 
-      for(let i=0;i<this.custom_option_array1.length;i++)
-      {
-        if(t=="")
+        for(let i=0;i<this.custom_option_array1.length;i++)
         {
-          t+=this.token_cord_for_image[this.custom_option_array1[i]].text;
+          /// token manipulated by user
+          if(!this.user_corrected_token_map.has(this.custom_option_array1[i]))
+          {
+            this.user_corrected_token_map.set(this.custom_option_array1[i],1);
+            this.user_corrected_token_id.push(this.custom_option_array1[i]);
+          }
+
+          if(t=="")
+          {
+            t+=this.token_cord_for_image[this.custom_option_array1[i]].text;
+          }
+          else
+          {
+            t+=" "+this.token_cord_for_image[this.custom_option_array1[i]].text;
+          }
         }
 
-        else
-        {
-          t+=" "+this.token_cord_for_image[this.custom_option_array1[i]].text;
-        }
-      }
-
-      this.options_string.push([t]);
-
-      this.options_string_id.push([this.custom_option_array1]);
-
-      this.custom_option_array1=[];
+          this.options_string.push([t]);
+          this.options_string_id.push([this.custom_option_array1]);
+          this.custom_option_array1=[];
     }
 
     
@@ -1981,9 +2024,15 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
     {
       for(let i=0;i<this.custom_option_array2.length;i++)
       {
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_option_array2[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_option_array2[i],1);
+          this.user_corrected_token_id.push(this.custom_option_array2[i]);
+        }
+
         if(this.actual_checkbox_id[index] == undefined)
         this.actual_checkbox_id[index] = [this.custom_option_array2[i]];
-
         else
         this.actual_checkbox_id[index].push(this.custom_option_array2[i]);
       }
@@ -1996,9 +2045,19 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
 
       this.custom_option_array2=[];
     }
-
     else
     { 
+      // doubt
+      for(let i=0;i<this.custom_option_array2.length;i++)
+      {
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_option_array2[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_option_array2[i],1);
+          this.user_corrected_token_id.push(this.custom_option_array2[i]);
+        }
+      } 
+
       this.actual_checkbox_id.push(this.custom_option_array2);
 
       this.actual_checkbox_value.push(['Unchecked']);
@@ -2119,11 +2178,17 @@ actual_checkbox_checkbox_clicked(index: number, j:number)
   {
     this.actual_checkbox_value[index][j] = "Checked";
   }
-
   else
   {
     this.actual_checkbox_value[index][j] = "Unchecked";
   }
+
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(this.actual_checkbox_id[index][j]))
+    {
+      this.user_corrected_token_map.set(this.actual_checkbox_id[index][j],1);
+      this.user_corrected_token_id.push(this.actual_checkbox_id[index][j]);
+    }
 
   ////////////////////////////////////Remove leader line//////////////////////////////////////////////
   this.display_entity_rect_ref.nativeElement.style.x = 0;
@@ -2170,6 +2235,13 @@ pop_from_checkbox_entity()
 
     this.checkbox_question_string[this.selected_input_index_checkbox] = "";
 
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(last_index))
+    {
+      this.user_corrected_token_map.set(last_index,1);
+      this.user_corrected_token_id.push(last_index);
+    }
+
 
     let t = "";
 
@@ -2196,6 +2268,13 @@ pop_from_checkbox_entity()
     this.used_token_map.delete(last_index);
 
     this.options_string[this.selected_input_index_checkbox][this.seleceted_input_option_index_checkbox] = "";
+
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(last_index))
+    {
+      this.user_corrected_token_map.set(last_index,1);
+      this.user_corrected_token_id.push(last_index);
+    }
 
       // console.log(this.checkbox_question_string[this.selected_input_index])
 
@@ -2270,9 +2349,22 @@ delete_checkbox_option(question_index:number, checkbox_index:number)
 {
   this.used_token_map.delete(this.actual_checkbox_id[question_index][checkbox_index]);
 
+  /// token manipulated by user
+  if(!this.user_corrected_token_map.has(this.actual_checkbox_id[question_index][checkbox_index]))
+  {
+    this.user_corrected_token_map.set(this.actual_checkbox_id[question_index][checkbox_index],1);
+    this.user_corrected_token_id.push(this.actual_checkbox_id[question_index][checkbox_index]);
+  }
+
   for(let j = 0; j<this.options_string_id[question_index][checkbox_index].length; j++)
   {
     this.used_token_map.delete(this.options_string_id[question_index][checkbox_index][j]);
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(this.options_string_id[question_index][checkbox_index][j]))
+    {
+      this.user_corrected_token_map.set(this.options_string_id[question_index][checkbox_index][j],1);
+      this.user_corrected_token_id.push(this.options_string_id[question_index][checkbox_index][j]);
+    }
   }
 
   this.options_string[question_index].splice(checkbox_index, 1);
@@ -2292,7 +2384,6 @@ delete_checkbox_option(question_index:number, checkbox_index:number)
     this.entity_connector_line.remove();
     this.entity_connector_line=undefined;
   }
-
 }
 
 
@@ -2305,18 +2396,29 @@ delete_checkbox_question(index:number)
     for(let i = 0; i<this.checkbox_question_id[index].length; i++)
     {
       this.used_token_map.delete(this.checkbox_question_id[index][i]);
+      /// token manipulated by user
+      if(!this.user_corrected_token_map.has(this.checkbox_question_id[index][i]))
+      {
+        this.user_corrected_token_map.set(this.checkbox_question_id[index][i],1);
+        this.user_corrected_token_id.push(this.checkbox_question_id[index][i]);
+      }
     }
   }
 
   if(this.options_string_id[index] != undefined)
   {
     
-    
     for(let i = 0; i<this.options_string_id[index].length; i++)
     {
       for(let j = 0; j<this.options_string_id[index][i].length; j++)
       {
         this.used_token_map.delete(this.options_string_id[index][i][j]);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.options_string_id[index][i][j]))
+        {
+          this.user_corrected_token_map.set(this.options_string_id[index][i][j],1);
+          this.user_corrected_token_id.push(this.options_string_id[index][i][j]);
+        }
       }
     }
   }
@@ -2326,6 +2428,12 @@ delete_checkbox_question(index:number)
     for(let i = 0; i<this.actual_checkbox_id[index].length; i++)
     {
       this.used_token_map.delete(this.actual_checkbox_id[index][i]);
+      /// token manipulated by user
+      if(!this.user_corrected_token_map.has(this.actual_checkbox_id[index][i]))
+      {
+        this.user_corrected_token_map.set(this.actual_checkbox_id[index][i],1);
+        this.user_corrected_token_id.push(this.actual_checkbox_id[index][i]);
+      }
     }
   }
 
@@ -2361,13 +2469,7 @@ delete_checkbox_question(index:number)
 
 }
 
-
-
-
-
-
 ///////////////////////////////////////////////Common function//////////////////////////////////////////////
-
 save_all_data(condition: number) 
 {
 
@@ -2446,7 +2548,7 @@ save_all_data(condition: number)
       text: this.question_entity_strings[i],
       label: 'question',
       words: t,
-      linking: [{ linking: [result.length, result.length + 1] }],
+      linking: [{ linking: [result.length, result.length + 1],prob_score:1.0 }],
       id: result.length,
     });
 
@@ -2480,7 +2582,7 @@ save_all_data(condition: number)
       text: this.answer_entity_strings[i],
       label: 'answer',
       words: t,
-      linking: [{ linking: [result.length, result.length - 1] }],
+      linking: [{ linking: [result.length, result.length - 1],prob_score: 1.0 }],
       id: result.length,
     });
   }
@@ -2516,7 +2618,7 @@ save_all_data(condition: number)
       text: this.header_entity_strings[i],
       label: 'header',
       words: t,
-      linking: [{ linking: [] }],
+      linking: [],
       id: result.length,
     });
   }
@@ -2551,7 +2653,7 @@ save_all_data(condition: number)
       text: this.other_entity_strings[i],
       label: 'other',
       words: t,
-      linking: [{ linking: [] }],
+      linking: [],
       id: result.length,
     });
   }
@@ -2676,8 +2778,6 @@ save_all_data(condition: number)
     }
   }
 
-console.log(final);
-   
     
   this.apiData.update_page_data(final).subscribe((data) => 
   {
