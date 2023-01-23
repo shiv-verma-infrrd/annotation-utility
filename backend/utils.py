@@ -30,12 +30,12 @@ def generate_batch_id(db):
     return batch_id + 1
 
 
-def get_batch_type(path):
-    dir_list = os.listdir(path)
-    if len(dir_list) == 2:
-        return 'form'
-    elif len(dir_list) == 3:
-        return 'checkbox'
+# def get_batch_type(path):
+#     dir_list = os.listdir(path)
+#     if len(dir_list) == 2:
+#         return 'form'
+#     elif len(dir_list) == 3:
+#         return 'checkbox'
 
 
 # def image_to_jpg(batch_id, zip_file_name):
@@ -68,13 +68,15 @@ def get_batch_type(path):
 
 
 def remove_filesystem_folder(batch_id,up_dir):
-    
-    checkbox_dir = os.path.join(up_dir,f"{batch_id}/checkboxes")
-    file_dir = os.path.join(up_dir,f"{batch_id}/annotations")
-    if os.path.exists(checkbox_dir):
-       shutil.rmtree(checkbox_dir)
-    shutil.rmtree(file_dir)
+    dirs = [
+        os.path.join(up_dir,f"{batch_id}/checkboxes"),
+        os.path.join(up_dir,f"{batch_id}/annotations"),
+        os.path.join(up_dir,f"{batch_id}/ocrs")
+    ]
 
+    for path in dirs:
+        if os.path.exists(path):
+            shutil.rmtree(path)
 
 def get_checkbox_data(path, file_name):
     file_name = file_name.split('.')[0]+'_checkboxes.json'
@@ -87,80 +89,107 @@ def get_checkbox_data(path, file_name):
             file_data = json.load(file_1)
     return file_data
 
+def get_data(batch_path, filename, filetype):
+    if filetype == 'kvp':
+        filename = filename.split('.')[0]+'.json'
+        path = batch_path+"/annotations/"
+    elif filetype == 'ocr':
+        filename = filename.split('.')[0]+'.json'
+        print('!!!: ', filename)
+        path = batch_path+"/ocrs/"
+    elif filetype == 'checkbox':
+        filename = filename.split('.')[0]+'_checkboxes.json'
+        path = batch_path+"/checkboxes/"
 
-def push_json_data_in_db(batch_id, db, up_dir ):
+    f = os.path.join(path, filename)
+    if os.path.isfile(f):
+        with open(f) as file_1:
+            file_data = json.load(file_1)
+        # print('daa: ', file_data)
+        return file_data
+    else:
+        return {}
+
+def generate_data(batch_id, batch_path, filename):
+    data = {
+            "imgid": str(uuid.uuid4()),
+            "batchId": str(batch_id),
+            "documentId": str(uuid.uuid4()),
+            "batchName": request.form['batch_name'],
+            "document_name": str(os.path.splitext(filename)[0]),
+            "isCorrected": "False",
+            "imageStatus": "Not Corrected",
+            "imagePath": f"/{batch_id}/{os.path.splitext(filename)[0]}",
+            "type": json.loads( request.form['document_type']),
+            "correctedData": {
+                "checkboxData": {},
+                "ocrData": {},
+                "kvpData": {},
+            },
+            "correctedBy": "",
+            "correctedOn": ""
+        }
+
+    if 'fields' in json.loads( request.form['document_type']) and 'checkboxes' in json.loads( request.form['document_type']):
+        image_data = {
+                        "checkboxData": get_data(batch_path, filename, 'checkbox'),
+                        "ocrData": get_data(batch_path, filename, 'ocr'),
+                        "kvpData": get_data(batch_path, filename, 'kvp'),
+                    }
+    elif 'fields' in json.loads(request.form['document_type']):
+    # if type == 'fields':
+        image_data = {
+                        "checkboxData": {},
+                        "ocrData": {},
+                        "kvpData": get_data(batch_path, filename, 'kvp'),
+                    }
+    elif 'checkboxes' in json.loads( request.form['document_type']):
+    # elif type == 'checkboxes':
+        image_data = {
+                        "checkboxData": get_data(batch_path, filename, 'checkbox'),
+                        # "checkboxData": {},
+                        "ocrData": get_data(batch_path, filename, 'ocr'),
+                        "kvpData": {},
+                    }
+    # print('\n^^^^^^^^^^^^',image_data)
+    data['Data'] = image_data
+    return data
+    
+    
+
+def files(path):
+    for file in os.listdir(path):
+        if os.path.isfile(os.path.join(path, file)):
+            yield file
+
+def push_json_data_in_db(batch_id, db, up_dir):
+    print('pushing data')
     doc_cnt = 0
-    checkbox_dir = os.path.join(up_dir,f"{batch_id}/checkboxes")
-    file_dir = os.path.join(up_dir,f"{batch_id}/annotations")
-    doc_type = False
-    if os.path.exists(checkbox_dir):
-         doc_type = True
-    for filename in os.listdir(file_dir):
-        # print('fname: ',filename)
-        f = os.path.join(file_dir, filename)
+    batch_path = os.path.join(up_dir,f"{batch_id}")
+    # print(batch_path)
+
+    for filename in os.listdir(batch_path):
+        # print(filename)
+        f = os.path.join(batch_path, filename)
         if os.path.isfile(f):
-            with open(f) as file_1:
-                file_data = json.load(file_1)
-                # print(file_data)
-                  #  print(os.path.splitext(filename)[0])
-                data = {
-                    "imgid": str(uuid.uuid4()),
-                    "batchId": str(batch_id),
-                    "documentId": str(uuid.uuid4()),
-                    "batchName": request.form['batch_name'],
-                    "document_name": str(os.path.splitext(filename)[0]),
-                    "isCorrected": "False",
-                    "imageStatus": "Not Corrected",
-                    "imagePath": f"/{batch_id}/{os.path.splitext(filename)[0]}",
-                    "correctedData": {
-                        "checkboxData": {},
-                        "ocrData": {},
-                        "kvpData": {},
-                    },
-                    "correctedBy": "",
-                    "correctedOn": ""
+            doc_data = generate_data(batch_id, batch_path, filename)
+            doc_cnt += 1
+            db.pages.insert_one(doc_data)
 
-                }
-                
-                if doc_type:
-                    checkbox_data = get_checkbox_data(file_dir, filename)
-                    image_data = {
-                        "checkboxData": checkbox_data,
-                        "ocrData": file_data,
-                        "kvpData": {},
-                    }
-                    data['type'] = 'checkboxes'
-                else:
-                    image_data = {
-                        "checkboxData": {},
-                        "ocrData": {},
-                        "kvpData": file_data,
-                    }
-                    data['type'] = 'fields'
-                # print(image_data)
-                data['Data'] = image_data
-                doc_cnt += 1
-                db.pages.insert_one(data)
-
-
-##################### Inserting Batches data in Db #######################
-    b_data = {
+    batch_data = {
         "batchId": str(batch_id),
         "batchName": request.form['batch_name'],
         "documentCount": doc_cnt,
         "isCorrected": "False",
         "allocatedBy": "admin",
-        "allocatedTo": request.form['user_id'],
+        "allocatedToUsers": [],
+        "allocatedToTeams":[],
         "allocatedOn": "8/12/2022",
         "createdOn": "8/12/2022",
         "createdBy": "admin"
     }
-    if doc_type:
-        b_data['type'] = "checkboxes"
-    else:
-        b_data['type'] = "fields"     
-    db.batches.insert_one(b_data)
-    # print(b_data)
+    batch_data['type'] = json.loads(request.form['document_type'])
+    db.batches.insert_one(batch_data)
 
 def transform_data(file_data,checkbox_data):
         
@@ -432,12 +461,11 @@ def transform_data_for_corrected_data(data,checkbox_data):
 
         
 def extract_file(my_zip,db,batch_id,up_dir):
-    
-    
     # up_dir = "../assets"
     my_dir = os.path.join(up_dir,str(batch_id))
     checkbox_dir = os.path.join(my_dir,"checkboxes")
     annotations_dir = os.path.join(my_dir,"annotations")
+    ocrs_dir = os.path.join(my_dir,"ocrs")
     image_dir = my_dir
     
     if not os.path.exists(my_dir):
@@ -448,6 +476,7 @@ def extract_file(my_zip,db,batch_id,up_dir):
     with zipfile.ZipFile(my_zip) as zip_file:
         
         for member in zip_file.namelist():
+            # print(zip_file.namelist())
             # print("****kkkkk",uuid.uuid4())
             filename = os.path.basename(member)
             if filename.endswith('_checkboxes.json'):
@@ -462,16 +491,27 @@ def extract_file(my_zip,db,batch_id,up_dir):
                with source, target:
                  shutil.copyfileobj(source, target)
                  
-            if filename.endswith('.json'):
+            if filename.endswith('.json') and not filename.endswith('_checkboxes.json'):
                  
-                 if not filename.endswith('_checkboxes.json'): 
+                if 'annotations' in member: 
                     # print(filename)
                     
                     if not os.path.exists(annotations_dir):
-                            os.mkdir(annotations_dir)
+                        os.mkdir(annotations_dir)
                         
                     source = zip_file.open(member)
                     target = open(os.path.join(annotations_dir, filename), "wb")
+                    with source, target:
+                        shutil.copyfileobj(source, target)
+                elif 'ocrs' in member:
+                    # if not os.path.exists(ocrs_dir):
+                    #     os.mkdir(ocrs_dir)
+                    if not os.path.exists(ocrs_dir):
+                        os.mkdir(ocrs_dir)
+                        
+                    source = zip_file.open(member)
+                    # target = open(os.path.join(ocrs_dir, filename), "wb")
+                    target = open(os.path.join(ocrs_dir, filename), "wb")
                     with source, target:
                         shutil.copyfileobj(source, target)
             if filename.endswith('.jpg') or filename.endswith('.png'): 
@@ -515,46 +555,52 @@ def get_images(img_file,no_img):
     else:
         return send_file(no_img) 
     
+# Need to change
+def write_doc_for_download(document, data_type):
+    if data_type == 'kvp':
+        json_object = json.dumps(document['correctedData']['kvpData'])
+        name = 'annotations/' + document['document_name']
+
+    elif data_type == 'ocr':
+        json_object = json.dumps(document['correctedData']['ocrData'])
+        name = 'ocrs/' + document['document_name']
+
+    elif data_type == 'checkbox':
+        json_object = json.dumps(document['correctedData']['checkboxData'])
+        name = 'checkbox_data/' + document['document_name'] +"_checkboxes"
+
+    os.makedirs(os.path.dirname(name), exist_ok=True)
+    with open("" + name + ".json", "w") as outfile:
+        outfile.write(json_object)
+
+
 def download_batch(data,raw_data):                            
-    
-        name = ""
+        rem = ('annotations', 'ocrs', 'checkbox_data')
         type = data[0]['type']
         # print('type: ', type)
         # print(data)
-        for batch in data:
-            
-            # print(batch['correctedData']['kvpData'])
-            batch['_id'] = str(batch['_id'])
-            if type == 'checkboxes':
-                name = batch['document_name'] +"_checkboxes"
-                json_object = json.dumps(batch['correctedData']['checkboxData'])
-                json_object2 = json.dumps(batch['correctedData']['ocrData'])
-                with open(""+name+".json", "w") as outfile:
-                   outfile.write(json_object)
-                with open(""+batch['document_name']+".json", "w") as outfile:
-                   outfile.write(json_object2)
+        for document in data:
+            document['_id'] = str(document['_id'])
+
+            if 'checkboxes' in type and 'fields' in type:
+                write_doc_for_download(document, 'checkbox')
+                write_doc_for_download(document, 'ocr')
+                write_doc_for_download(document, 'kvp')
+
+            elif 'checkboxes' in type:
+                write_doc_for_download(document, 'checkbox')
+                write_doc_for_download(document, 'ocr')
                 
-            elif type == 'fields':
-                name = batch['document_name']
-                json_object = json.dumps(batch['correctedData']['kvpData'])    
-                with open(""+name+".json", "w") as outfile:
-                   outfile.write(json_object)
+            elif 'fields' in type:
+                write_doc_for_download(document, 'kvp')
 
         path = os.getcwd()
 
         with ZipFile(""+raw_data['batch_name']+'.zip', 'w') as zip:
-            for filename in os.listdir(path):
-                if type == 'fields':
-                    if filename.endswith(".json"):
-                        # print(filename)
-                        zip.write(filename, raw_data['batch_name']+"_output/"+filename, ZIP_DEFLATED)
-                elif type == 'checkboxes':
-                    if filename.endswith("_checkboxes.json"):
-                        # print(filename)
-                        zip.write(filename, "checkbox_data/"+filename, ZIP_DEFLATED)
-                    elif filename.endswith(".json"):
-                        # print(filename)
-                        zip.write(filename, "ocrs/"+filename, ZIP_DEFLATED)
+            for folder in os.listdir(path):
+                if folder in rem:
+                    for filename in os.listdir(os.path.join(path, folder)):
+                        zip.write(folder+ '/' +filename, folder+ '/' +filename, ZIP_DEFLATED)
 
         return_file = BytesIO()
 
@@ -563,8 +609,11 @@ def download_batch(data,raw_data):
 
         return_file.seek(0)
 
-        rem = ('.json', '.zip')
+        # rem = ('.json', '.zip')
+        for dir in rem:
+            if os.path.isdir(os.getcwd() + '/' + dir):
+                shutil.rmtree(dir)
         for filename in os.listdir(path):
-            if filename.endswith(rem):
+            if filename.endswith('.zip'):
                 os.remove(filename)
         return return_file

@@ -47,6 +47,55 @@
                   <rect class="mark-other-on-image"  *ngFor="let oj of o" [attr.x]="token_cord_for_image[oj].box[0]" [attr.y]="token_cord_for_image[oj].box[1]" [attr.height]="token_cord_for_image[oj].box[3]-token_cord_for_image[oj].box[1]" [attr.width]="token_cord_for_image[oj].box[2]-token_cord_for_image[oj].box[0]"/> 
                 </ng-container>
               </ng-container>
+         <!-- display all entity button -->
+              <ng-container *ngIf="display_all_entity_token==1"> 
+                <ng-container *ngFor="let i of other_entity_ids; let in = index;">
+                  <ng-container> {{field_entity_click('o', in, null)}}</ng-container>
+                    <rect  class="mark-all-field-entity-on-image" [attr.x]="cord_for_rect_of_all_entity_display_button[0]" [attr.y]="cord_for_rect_of_all_entity_display_button[1]" [attr.height]="cord_for_rect_of_all_entity_display_button[3]" [attr.width]="cord_for_rect_of_all_entity_display_button[2]"/> 
+                </ng-container>
+
+                <ng-container *ngFor="let i of question_entity_ids; let in = index;">
+                  <ng-container> {{field_entity_click('q', in, null)}}</ng-container>
+                    <rect  class="mark-all-field-entity-on-image" [attr.x]="cord_for_rect_of_all_entity_display_button[0]" [attr.y]="cord_for_rect_of_all_entity_display_button[1]" [attr.height]="cord_for_rect_of_all_entity_display_button[3]" [attr.width]="cord_for_rect_of_all_entity_display_button[2]"/> 
+                </ng-container>
+
+                <ng-container *ngFor="let i of answer_entity_ids; let in = index;">
+                  <ng-container> {{field_entity_click('a', in, null)}}</ng-container>
+                    <rect  class="mark-all-field-entity-on-image" [attr.x]="cord_for_rect_of_all_entity_display_button[0]" [attr.y]="cord_for_rect_of_all_entity_display_button[1]" [attr.height]="cord_for_rect_of_all_entity_display_button[3]" [attr.width]="cord_for_rect_of_all_entity_display_button[2]"/> 
+                </ng-container>
+
+                <ng-container *ngFor="let i of header_entity_ids; let in = index;">
+                  <ng-container> {{field_entity_click('h', in, null)}}</ng-container>
+                    <rect  class="mark-all-field-entity-on-image" [attr.x]="cord_for_rect_of_all_entity_display_button[0]" [attr.y]="cord_for_rect_of_all_entity_display_button[1]" [attr.height]="cord_for_rect_of_all_entity_display_button[3]" [attr.width]="cord_for_rect_of_all_entity_display_button[2]"/> 
+                </ng-container>
+              </ng-container>
+         <!-- display checkbox entity button  -->
+            <ng-container *ngIf="display_checkbox_question_token==1"> 
+              <ng-container *ngFor="let c of checkbox_question_id">
+                <rect class="mark-checkbox-question-on-image"  *ngFor="let cq of c" [attr.x]="token_cord_for_image[cq].box[0]" [attr.y]="token_cord_for_image[cq].box[1]" [attr.height]="token_cord_for_image[cq].box[3]-token_cord_for_image[cq].box[1]" [attr.width]="token_cord_for_image[cq].box[2]-token_cord_for_image[cq].box[0]"/> 
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="display_checkbox_option_token==1"> 
+              <ng-container *ngFor="let c of options_string_id">
+                <ng-container *ngFor="let o of c">
+                  <rect class="mark-checkbox-option-on-image"  *ngFor="let co of o" [attr.x]="token_cord_for_image[co].box[0]" [attr.y]="token_cord_for_image[co].box[1]" [attr.height]="token_cord_for_image[co].box[3]-token_cord_for_image[co].box[1]" [attr.width]="token_cord_for_image[co].box[2]-token_cord_for_image[co].box[0]"/> 
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="display_actual_checkbox_token==1"> 
+              <ng-container *ngFor="let c of actual_checkbox_id">
+                <rect class="mark-actual-checkbox-on-image"  *ngFor="let ac of c" [attr.x]="token_cord_for_image[ac].box[0]" [attr.y]="token_cord_for_image[ac].box[1]" [attr.height]="token_cord_for_image[ac].box[3]-token_cord_for_image[ac].box[1]" [attr.width]="token_cord_for_image[ac].box[2]-token_cord_for_image[ac].box[0]"/> 
+              </ng-container>
+            </ng-container>
+
+            <!-- user corrected token -->
+            <ng-container *ngIf="display_user_corrected_token==1">
+               <ng-container *ngFor="let u of user_corrected_token_id;">
+                <rect class="mark-token-corrected-by-user-on-image"  [attr.x]="token_cord_for_image[u].box[0]" [attr.y]="token_cord_for_image[u].box[1]" [attr.height]="token_cord_for_image[u].box[3]-token_cord_for_image[u].box[1]" [attr.width]="token_cord_for_image[u].box[2]-token_cord_for_image[u].box[0]"/> 
+               </ng-container>
+            </ng-container>
           </svg>
       </div>
 
@@ -61,11 +110,20 @@
             <div (click)="image_zoom_out()" class="zoom-out-button">-</div>
           </div>
 
-          <div class="label-type">
+          <div class="label-type" *ngIf="header_fields">
             <div class="display-all-question-on-click" (click)="display_category_label('q')">Q</div>
             <div class="display-all-answer-on-click" (click)="display_category_label('a')">A</div>
             <div class="display-all-header-on-click" (click)="display_category_label('h')">H</div>
             <div class="display-all-other-on-click" (click)="display_category_label('o')">O</div>
+            <div class="display-all-field-entity-on-click" (click)="display_category_label('e')">E</div>
+            <div class="display-token-corrected-by-user-field" (click)="display_category_label('uc')">UC</div>
+          </div>
+
+          <div class="checkbox-label" *ngIf="header_checkbox">
+            <div class="display-checkbox-question-on-click" (click)="display_category_label('cq')">Q</div>
+            <div class="display-checkbox-option-on-click" (click)="display_category_label('co')">O</div>
+            <div class="display-actual-checkbox-on-click" (click)="display_category_label('ac')">C</div>
+            <div class="display-token-corrected-by-user-checkbox" (click)="display_category_label('uc')">UC</div>
           </div>
         </div>
 

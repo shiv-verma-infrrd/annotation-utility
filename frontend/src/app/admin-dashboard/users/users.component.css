@@ -1,13 +1,4 @@
-/**
-* Template Name: NiceAdmin - v2.5.0
-* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
 
-/*--------------------------------------------------------------
-# General
---------------------------------------------------------------*/
 .ps{
     top:0;
     position:fixed;
@@ -1276,4 +1267,8 @@
     text-align: center;
     font-size: 13px;
     color: #012970;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
   }

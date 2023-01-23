@@ -14,21 +14,47 @@ export class UploadFileComponent implements OnInit {
   shortLink: string = "";
   loading: boolean = false;
   file !: File;
+  uploadtype: any = [];
 
-  user_id:any;
+  user_id: any;
 
   constructor(private uploadFileService: UploadFileService,
     private router: Router,
     private route: ActivatedRoute,
     private toast: NgToastService,
     private tokenStorage: TokenStorageService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
-    
+
     // this.user_id = this.tokenStorage.getUser().userId
     // console.log(this.user_id)
-    
+
+  }
+  selected = false;
+  onSelect(e: any) {
+    let type = e.target.value
+    if (!this.selected) {
+      if (type == 'Both') {
+        this.uploadtype.push('fields', 'checkboxes');
+        this.selected = true;
+      } else {
+        this.uploadtype.push(type);
+        this.selected=true;
+      }
+    }else{
+      this.uploadtype = [];
+      if (type == 'Both') {
+        this.uploadtype.push('fields', 'checkboxes');
+        this.selected = true;
+      } else {
+        this.uploadtype.push(type);
+        this.selected=true;
+      }
+    }
+
+    console.log(this.uploadtype);
+
   }
 
   onChange(event: any) {
@@ -41,7 +67,7 @@ export class UploadFileComponent implements OnInit {
   onUpload() {
     this.loading = true;
     console.log(this.file);
-    this.uploadFileService.upload(this.file, [this.batch_name_input_field.nativeElement.value],this.tokenStorage.getUser().userId)
+    this.uploadFileService.upload(this.file, [this.batch_name_input_field.nativeElement.value], this.tokenStorage.getUser().userId,this.uploadtype)
       .subscribe((data) => {
         this.loading = false;
         console.log(data);
@@ -54,13 +80,13 @@ export class UploadFileComponent implements OnInit {
         this.router.navigate(['./'], {
           relativeTo: this.route
         })
-       }
-      , err => {
-        this.loading = false;
-        console.log(err.message);
-        
-        this.toast.error({ detail: "Error Message", summary: err.Message, duration: 3000 })
       }
+        , err => {
+          this.loading = false;
+          console.log(err.message);
+
+          this.toast.error({ detail: "Error Message", summary: err.Message, duration: 3000 })
+        }
 
       );
 

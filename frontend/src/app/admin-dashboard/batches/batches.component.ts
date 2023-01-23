@@ -22,4 +22,8 @@ export class BatchesComponent {
 
   }
 
+  routeToallocated(batchId:any){
+    window.sessionStorage.setItem('global_batch_id',batchId)
+  }
+
 }

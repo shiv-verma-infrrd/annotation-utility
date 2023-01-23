@@ -23,6 +23,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": ["node_modules/leader-line/leader-line.min.js"]
@@ -32,13 +33,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "800kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1.5mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "15kb",
-                  "maximumError": "15kb"
+                  "maximumWarning": "20kb",
+                  "maximumError": "20kb"
                 }
               ],
               "fileReplacements": [

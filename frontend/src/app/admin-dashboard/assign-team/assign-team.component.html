@@ -1,37 +1,59 @@
-<!-- <div class="container"> -->
 
-  <app-admin-navbar></app-admin-navbar>
+<app-admin-navbar></app-admin-navbar>
 
-  <div class="row">
-    <div class="col">
-      <div class="dash-container" *ngFor="let user of users">
-        <input type="checkbox"><br>
-        <div class="dash-thumbnail">
-          <!-- <img [src]="thumbnail" alt="dash" /> -->
-          <fa-icon [icon]="userimg" style="font-size:50px;">
+<div class="contain">
+<div class="row">
 
-          </fa-icon>
-        </div>
-        <div class="dash-name">
-          {{ user.name }}
-        </div>
+  <div class="col">
+
+    <div class="dash-container" *ngFor="let user of users">
+      <input type="checkbox" (change)="func($event,user.user_id,user.name)" [value]="user.user_id"><br>
+      <div class="dash-thumbnail">
+        <fa-icon [icon]="userimg" style="font-size:50px;">
+
+        </fa-icon>
       </div>
-      
+      <div class="dash-name">
+        {{ user.name }}
+      </div>
     </div>
+
   </div>
-<!-- </div> -->
-
-<div class="btn-group z col-md-3">
-  <button type="button" class=" btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-    Action
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">team 1</a></li>
-    <li><a class="dropdown-item" href="#">Team 2</a></li>
-    <li><a class="dropdown-item" href="#">Team 3</a></li>
-    <!-- <li><hr class="dropdown-divider"></li> -->
-    
-  </ul>
-  <button type="button" class="btn btn-outline-primary m-3">save</button>
-
 </div>
+
+
+  <nav>
+    <section>
+      <div *ngIf="new_team;else other_content" class="temp d-flex justify-content-center">
+        <div class=" temp-box-1" >
+        <input #te type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Make new team">
+        <p class="temp-box-link" style="cursor: pointer;" (click)="togglenewteam()">click to add to existing team</p>
+      </div>
+      <div class="temp-box-2 "> 
+        <button type="button" class="btn btn-outline-primary m-3 dflex" (click)="addTonewTeam()">save</button>
+      </div>  
+    </div>
+   
+      <ng-template #other_content>
+        <div class="temp d-flex justify-content-center">
+        <div class=" temp-box-1">
+        <div class="dropdown">
+          <select name="one" (click)="printname(t)" #t>
+            <option>Teamlist</option>
+            <option *ngFor="let i of teams" value="{{i.team_id}},{{i.team_name}}">{{i.team_name}}</option>
+          </select>
+        
+        </div>
+        <p class="temp-box-link" style="cursor: pointer;" (click)="togglenewteam()">click here to create new team</p>
+      </div>
+      <div class="temp-box-2 ">
+       
+        <button type="button" class="btn btn-outline-primary m-3" (click)="addToTeam()">save</button>
+      </div>
+    </div>
+      </ng-template>
+    </section>
+  </nav>
+</div>
+
+<!-- </div> -->

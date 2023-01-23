@@ -4,9 +4,10 @@ class Config(object):
     
     IMAGE_PATH = os.environ.get("BATCH_IMAGES_PATH")
     PORT = 27017
-    ALLOWED_URL = "http://localhost:8008"
+    ALLOWED_URL = "http://localhost:4200"
     SWAGGER_URL = '/api/docs'
     API_URL = '/static/swagger.yml'
+    BACKEND_IMAGE_PATH = "/src/static/images"
     
     
     ENV = "development"

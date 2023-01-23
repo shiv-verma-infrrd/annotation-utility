@@ -96,8 +96,8 @@ export class DashboardComponent implements OnInit {
     this.closePopup()
     setTimeout(() => {
       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation='reload';
-    this.router.navigate(['./'],{
+      this.router.onSameUrlNavigation='reload';
+      this.router.navigate(['./'],{
       relativeTo:this.route
     })
     this.toast.success({ detail: "Success Message", summary: this.delete_batch_name+" Deleted Successfully", duration: 3000 })

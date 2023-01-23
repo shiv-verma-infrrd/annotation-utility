@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import 'leader-line';
 import { ApiDataService } from '@app/services/api-data.service';
-import { PlatformLocation } from '@angular/common' 
+import { getLocaleFirstDayOfWeek, PlatformLocation } from '@angular/common' 
 import { NgToastService } from 'ng-angular-popup';
 
 declare let LeaderLine: any;
@@ -19,6 +19,8 @@ export class EditingPageComponent implements AfterViewInit
   @ViewChild('custom_answer_input_ref') custom_answer_input_ref: any;
   @ViewChild('custom_other_input_ref') custom_other_input_ref: any;
   @ViewChild('display_entity_rect_ref') display_entity_rect_ref: any;
+  @ViewChild('field') field: any;
+  @ViewChild('checkbox') checkbox:any;
 
 
   imageUrl:any;
@@ -71,11 +73,13 @@ export class EditingPageComponent implements AfterViewInit
   custom_input_array2: number[] = [];
 
   entity_connector_line: any = undefined;
-  some_changes_done:number=0;
-  display_question_token:number=0;
-  display_answer_token:number=0;
-  display_header_token:number=0;
-  display_other_token:number=0;
+  some_changes_done:number = 0;
+
+  display_question_token:number = 0;
+  display_answer_token:number = 0;
+  display_header_token:number = 0;
+  display_other_token:number = 0;
+  display_all_entity_token:number = 0;
 
   custom_token_x:number=0;
   custom_token_y:number=0;
@@ -85,6 +89,9 @@ export class EditingPageComponent implements AfterViewInit
   custom_token_making=0;
 
   saving_data_result:any;
+
+  cord_for_rect_of_all_entity_display_button:number[] = [];
+
 
   ///////////////////////checkbox ka variable hai ye////////////////////////
   checkbox_question_string:string[] = [];
@@ -104,11 +111,18 @@ export class EditingPageComponent implements AfterViewInit
 
   token_id_to_checkbox_question_index = new Map();
 
+  display_checkbox_question_token:number = 0;
+  display_checkbox_option_token:number = 0;
+  display_actual_checkbox_token:number = 0;
+
   /////////////// image control container variables /////////////////
   image_control_container_open: boolean = true;
   image_control_container_closed: boolean = false;
 
-
+  /////////////// user corrected token array ///////////////
+   display_user_corrected_token=0;
+   user_corrected_token_id:number[]=[];
+   user_corrected_token_map=new Map();
 
   constructor(private apiData: ApiDataService, private router:Router, private location:PlatformLocation, private toast:NgToastService)
   {
@@ -132,9 +146,8 @@ export class EditingPageComponent implements AfterViewInit
       this.image_src = data[0].imagePath;
       this.saving_data_result = data[0]
 
-      console.log(data);
 
-      if(data[0].type == 'checkboxes')
+      if(data[0].type.includes('checkboxes'))
       {
         if(data[0].isCorrected == 'true')
         {
@@ -145,7 +158,6 @@ export class EditingPageComponent implements AfterViewInit
 
         else
         {
-          console.log(data[0].Data);
           
           this.api_result=JSON.parse(JSON.stringify((data[0].Data.ocrData)));
           this.token_extractor_from_grouping(JSON.parse(JSON.stringify((data[0].Data.ocrData))));
@@ -181,7 +193,6 @@ export class EditingPageComponent implements AfterViewInit
       }
     });
 
-    console.log(this.api_result);
     
   }
 
@@ -363,14 +374,9 @@ kvp_label_initialization()
   }
 }
 
-
 checkbox_label_initialization()
 {
-
 var dummy_token_id = -1;
-
-console.log(this.cord_id_map);
-console.log(this.token_id_to_checkbox_question_index);
 
   for(let i = 0; i<this.api_result.length; i++)
   {
@@ -387,7 +393,6 @@ console.log(this.token_id_to_checkbox_question_index);
           t.push(this.cord_id_map.get(JSON.stringify(this.api_result[i].words[j].box)));
           this.used_token_map.set(t[t.length-1],1);
         }
-
 
       this.checkbox_question_id.push(t);
 
@@ -537,8 +542,6 @@ console.log(this.token_id_to_checkbox_question_index);
     }
   }   
 }
-
-
 
 token_extractor_from_grouping(data:any)
 {
@@ -755,7 +758,7 @@ image_zoom_out()
 {
   if(this.used_token_map.has(token_id))
   {
-    this.toast.warning({detail:"WARNING",summary:'This token has already been used',duration:5000});
+    this.toast.warning({detail:"WARNING",summary:'This token has been already used.',duration:5000});
 
     var id = "";
 
@@ -853,25 +856,48 @@ image_zoom_out()
         this.used_token_map.set(token_id, 1);
         this.question_entity_ids[this.selected_input_index_field].push(token_id);
         this.question_entity_strings[this.selected_input_index_field]+= ' ' + this.token_cord_for_image[token_id].text;
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
       }
-
       else if (this.selected_input_type_field == 'a') 
       {
         this.used_token_map.set(token_id, 1);
         this.answer_entity_ids[this.selected_input_index_field].push(token_id);
         this.answer_entity_strings[this.selected_input_index_field] += ' ' + this.token_cord_for_image[token_id].text;
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
       }
       else if (this.selected_input_type_field == 'h') 
       {
         this.used_token_map.set(token_id, 1);
         this.header_entity_ids[this.selected_input_index_field].push(token_id);
         this.header_entity_strings[this.selected_input_index_field] += ' ' + this.token_cord_for_image[token_id].text;
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
       }
       else if (this.selected_input_type_field == 'o')
       {
         this.used_token_map.set(token_id, 1);
         this.other_entity_ids[this.selected_input_index_field].push(token_id);
         this.other_entity_strings[this.selected_input_index_field] += ' ' + this.token_cord_for_image[token_id].text;
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(token_id))
+        {
+          this.user_corrected_token_map.set(token_id,1);
+          this.user_corrected_token_id.push(token_id);
+        }
       }
     }
     else if(this.selected_input_type_field == 'cq' || this.selected_input_type_field =='ca' ||this.selected_input_type_field =='ch' ||this.selected_input_type_field == 'co')
@@ -940,31 +966,76 @@ display_category_label(type:string)
 {
   if(type=='q')
   {
-    if(this.display_question_token==0) 
-      this.display_question_token=1;
+    if(this.display_question_token == 0) 
+    this.display_question_token = 1;
     else
-    this.display_question_token=0; 
+    this.display_question_token = 0; 
   }
   else if(type=='a')
   {
-    if(this.display_answer_token==0) 
-      this.display_answer_token=1;
+    if(this.display_answer_token == 0) 
+    this.display_answer_token = 1;
     else
-    this.display_answer_token=0;
+    this.display_answer_token = 0;
   }
   else if(type=='h')
   {
-    if(this.display_header_token==0) 
-      this.display_header_token=1;
+    if(this.display_header_token == 0) 
+    this.display_header_token = 1;
     else
-    this.display_header_token=0;
+    this.display_header_token = 0;
   }
-  else
+  else if(type=='o')
   {
-    if(this.display_other_token==0) 
-      this.display_other_token=1;
+    if(this.display_other_token == 0) 
+    this.display_other_token = 1;
     else
-    this.display_other_token=0;
+    this.display_other_token = 0;
+  }
+
+  else if(type=='e')
+  {
+    if(this.display_all_entity_token == 0)
+    this.display_all_entity_token = 1;
+
+    else
+    this.display_all_entity_token = 0;
+  }
+
+  else if(type=='cq')
+  {
+    if(this.display_checkbox_question_token == 0)
+    this.display_checkbox_question_token = 1;
+
+    else
+    this.display_checkbox_question_token = 0;
+  }
+
+  else if(type=='co')
+  {
+    if(this.display_checkbox_option_token == 0)
+    this.display_checkbox_option_token = 1;
+
+    else
+    this.display_checkbox_option_token = 0;
+  }
+
+  else if(type=='ac')
+  {
+    if(this.display_actual_checkbox_token == 0)
+    this.display_actual_checkbox_token = 1;
+
+    else
+    this.display_actual_checkbox_token = 0;
+  }
+
+  else if(type == 'uc')
+  {
+    if(this.display_user_corrected_token == 0)
+    this.display_user_corrected_token = 1;
+
+    else
+    this.display_user_corrected_token = 0;
   }
 }
 
@@ -1068,7 +1139,7 @@ make_custom_field_entity()
   {
     if (this.custom_header_input_ref.nativeElement.value == '') 
     {
-      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
+      this.toast.warning({detail:"WARNING",summary:'No token selected to make an entity.',duration:5000});
     } 
     else 
     {
@@ -1077,13 +1148,49 @@ make_custom_field_entity()
       for (let i = 0; i < this.custom_input_array1.length; i++) 
       {
         this.used_token_map.set(this.custom_input_array1[i], 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_input_array1[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_input_array1[i],1);
+          this.user_corrected_token_id.push(this.custom_input_array1[i]);
+        }
       }
 
-      // this.header_entity_indexs.push(this.custom_input_array1);
-      // this.header_entity_strings.push(this.custom_header_input_ref.nativeElement.value);
+      let ind=-1;
+      let check=0;
+      let v1:number=-1;
       
-      this.header_entity_ids.unshift(this.custom_input_array1);
-      this.header_entity_strings.unshift(this.custom_header_input_ref.nativeElement.value);
+      for(let i=0;i<this.custom_input_array1.length;i++)
+      {
+        if(v1<this.custom_input_array1[i])
+        v1=this.custom_input_array1[i];
+      }
+
+      let p=-1;
+      let temp=-1;
+
+      for(let i=0;i<this.header_entity_ids.length;i++)
+      {
+         for(let j=0;j<this.header_entity_ids[i].length;j++)
+         {
+          if(temp<this.header_entity_ids[i][j])
+          temp=this.header_entity_ids[i][j];
+         }
+         if(v1<temp&&v1>p)
+         {
+            check=1;
+            ind=i;     
+            break;
+         }
+         p=temp;
+      }
+      if(check==0)
+      {
+        ind=this.header_entity_ids.length;
+      }
+      
+      this.header_entity_ids.splice(ind, 0, this.custom_input_array1);
+      this.header_entity_strings.splice(ind, 0, this.custom_header_input_ref.nativeElement.value);
 
       this.custom_input_array1 = [];
       this.custom_header_input_ref.nativeElement.value = '';
@@ -1094,9 +1201,7 @@ make_custom_field_entity()
   {
     if (this.custom_other_input_ref.nativeElement.value == '') 
     {
-      
-      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
-
+      this.toast.warning({detail:"WARNING",summary:'No token selected to make an entity.',duration:5000});
     }
     else
     {
@@ -1105,25 +1210,58 @@ make_custom_field_entity()
       for (let i = 0; i < this.custom_input_array1.length; i++) 
       {
         this.used_token_map.set(this.custom_input_array1[i], 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_input_array1[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_input_array1[i],1);
+          this.user_corrected_token_id.push(this.custom_input_array1[i]);
+        }
+      }
+      
+      let ind=-1;
+      let check=0;
+      let v1:number=-1;
+      
+      for(let i=0;i<this.custom_input_array1.length;i++)
+      {
+        if(v1<this.custom_input_array1[i])
+        v1=this.custom_input_array1[i];
       }
 
-      // this.other_entity_indexs.push(this.custom_input_array1);
-      // this.other_entity_strings.push(this.custom_other_input_ref.nativeElement.value);
-      
-      this.other_entity_ids.unshift(this.custom_input_array1);
-      this.other_entity_strings.unshift(this.custom_other_input_ref.nativeElement.value);
+      let p=-1;
+      let temp=-1;
+
+      for(let i=0;i<this.other_entity_ids.length;i++)
+      {
+         for(let j=0;j<this.other_entity_ids[i].length;j++)
+         {
+          if(temp<this.other_entity_ids[i][j])
+          temp=this.other_entity_ids[i][j];
+         }
+         if(v1<temp&&v1>p)
+         {
+            check=1;
+            ind=i;     
+            break;
+         }
+         p=temp;
+      }
+      if(check==0)
+      {
+        ind=this.other_entity_ids.length;
+      }
+      this.other_entity_ids.splice(ind, 0, this.custom_input_array1);
+      this.other_entity_strings.splice(ind, 0, this.custom_other_input_ref.nativeElement.value);
 
       this.custom_input_array1 = [];
       this.custom_other_input_ref.nativeElement.value = '';
     }
   } 
-
   else 
   {
     if (this.custom_question_input_ref.nativeElement.value == '' || this.custom_answer_input_ref.nativeElement.value == '') 
     {
-      this.toast.warning({detail:"WARNING",summary:'Select tokens first to make an entity',duration:5000});
-
+      this.toast.warning({detail:"WARNING",summary:'No token selected to make an entity.',duration:5000});
     } 
     else 
     {
@@ -1132,25 +1270,63 @@ make_custom_field_entity()
       for (let i = 0; i < this.custom_input_array1.length; i++) 
       {
         this.used_token_map.set(this.custom_input_array1[i], 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_input_array1[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_input_array1[i],1);
+          this.user_corrected_token_id.push(this.custom_input_array1[i]);
+        }
       }
 
       for (let i = 0; i < this.custom_input_array2.length; i++) 
       {
         this.used_token_map.set(this.custom_input_array2[i], 1);
+        /// token manipulated by user
+        if(!this.user_corrected_token_map.has(this.custom_input_array2[i]))
+        {
+          this.user_corrected_token_map.set(this.custom_input_array2[i],1);
+          this.user_corrected_token_id.push(this.custom_input_array2[i]);
+        }
       }
 
-      // this.question_entity_indexs.push(this.custom_input_array1);
-      // this.question_entity_strings.push(this.custom_question_input_ref.nativeElement.value);
+      let ind=-1;
+      let check=0;
+      let v1:number=-1;
       
-      this.question_entity_ids.unshift(this.custom_input_array1);
-      this.question_entity_strings.unshift(this.custom_question_input_ref.nativeElement.value);
+      for(let i=0;i<this.custom_input_array1.length;i++)
+      {
+        if(v1<this.custom_input_array1[i])
+        v1=this.custom_input_array1[i];
+      }
 
-      // this.answer_entity_indexs.push(this.custom_input_array2);
-      // this.answer_entity_strings.push(this.custom_answer_input_ref.nativeElement.value);
+      let p=-1;
+      let temp=-1;
 
-      this.answer_entity_ids.unshift(this.custom_input_array2);
-      this.answer_entity_strings.unshift(this.custom_answer_input_ref.nativeElement.value);
+      for(let i=0;i<this.question_entity_ids.length;i++)
+      {
+         for(let j=0;j<this.question_entity_ids[i].length;j++)
+         {
+          if(temp<this.question_entity_ids[i][j])
+          temp=this.question_entity_ids[i][j];
+         }
+         if(v1<temp&&v1>p)
+         {
+            check=1;
+            ind=i;     
+            break;
+         }
+         p=temp;
+      }
+      if(check==0)
+      {
+        ind=this.question_entity_ids.length;
+      }
       
+      this.question_entity_ids.splice(ind, 0, this.custom_input_array1);
+      this.question_entity_strings.splice(ind, 0, this.custom_question_input_ref.nativeElement.value);
+      
+      this.answer_entity_ids.splice(ind, 0, this.custom_input_array2);
+      this.answer_entity_strings.splice(ind, 0, this.custom_answer_input_ref.nativeElement.value);
 
       this.custom_input_array1 = [];
       this.custom_input_array2 = [];
@@ -1290,24 +1466,27 @@ pop_token_from_field_entity()
       let deleted_token_id=this.question_entity_ids[this.selected_input_index_field][remain_length-1];
       this.question_entity_ids[this.selected_input_index_field].pop();
 
-      var pos=this.question_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
-
-      this.question_entity_strings[this.selected_input_index_field]=
-      this.question_entity_strings[this.selected_input_index_field].substring(0,pos)
-      +
-      this.question_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.question_entity_strings[this.selected_input_index_field].length);
-
-      //check if only spaces left
-      let space_count=0;
-      for(let k=0;k<this.question_entity_strings[this.selected_input_index_field].length;k++)
+      /// token manipulated by user
+      if(!this.user_corrected_token_map.has(deleted_token_id))
       {
-        if(this.question_entity_strings[this.selected_input_index_field][k]==' ')
-        space_count++;
+        this.user_corrected_token_map.set(deleted_token_id,1);
+        this.user_corrected_token_id.push(deleted_token_id);
       }
 
-      if(space_count==this.question_entity_strings[this.selected_input_index_field].length)
-      this.question_entity_strings[this.selected_input_index_field]='';
+      let t="";
+
+      for(let i = 0; i<this.question_entity_ids[this.selected_input_index_field].length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.question_entity_ids[this.selected_input_index_field][i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.question_entity_ids[this.selected_input_index_field][i]].text;
+      }
+
+      this.question_entity_strings[this.selected_input_index_field] = t;
   } 
+
   else if (this.selected_input_type_field == 'a')
   {
     let remain_length=this.answer_entity_ids[this.selected_input_index_field].length;
@@ -1319,25 +1498,28 @@ pop_token_from_field_entity()
 
     let deleted_token_id=this.answer_entity_ids[this.selected_input_index_field][remain_length-1];
     this.answer_entity_ids[this.selected_input_index_field].pop();
-
-    var pos=this.answer_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
-
-    this.answer_entity_strings[this.selected_input_index_field]=
-    this.answer_entity_strings[this.selected_input_index_field].substring(0,pos)
-    +
-    this.answer_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.answer_entity_strings[this.selected_input_index_field].length);
-
-    //check if only spaces left
-    let space_count=0;
-    for(let k=0;k<this.answer_entity_strings[this.selected_input_index_field].length;k++)
+   
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(deleted_token_id))
     {
-      if(this.answer_entity_strings[this.selected_input_index_field][k]==' ')
-      space_count++;
-    }
+      this.user_corrected_token_map.set(deleted_token_id,1);
+      this.user_corrected_token_id.push(deleted_token_id);
+    } 
 
-    if(space_count==this.answer_entity_strings[this.selected_input_index_field].length)
-    this.answer_entity_strings[this.selected_input_index_field]='';
+    let t="";
+
+      for(let i = 0; i<this.answer_entity_ids[this.selected_input_index_field].length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.answer_entity_ids[this.selected_input_index_field][i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.answer_entity_ids[this.selected_input_index_field][i]].text;
+      }
+
+      this.answer_entity_strings[this.selected_input_index_field] = t;
   } 
+
   else if (this.selected_input_type_field == 'h') 
   {
     let remain_length=this.header_entity_ids[this.selected_input_index_field].length;
@@ -1349,24 +1531,26 @@ pop_token_from_field_entity()
 
     let deleted_token_id=this.header_entity_ids[this.selected_input_index_field][remain_length-1];
     this.header_entity_ids[this.selected_input_index_field].pop();
-
-    var pos=this.header_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
-
-    this.header_entity_strings[this.selected_input_index_field]=
-    this.header_entity_strings[this.selected_input_index_field].substring(0,pos)
-    +
-    this.header_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.header_entity_strings[this.selected_input_index_field].length);
-
-    //check if only spaces left
-    let space_count=0;
-    for(let k=0;k<this.header_entity_strings[this.selected_input_index_field].length;k++)
+    
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(deleted_token_id))
     {
-      if(this.header_entity_strings[this.selected_input_index_field][k]==' ')
-      space_count++;
+      this.user_corrected_token_map.set(deleted_token_id,1);
+      this.user_corrected_token_id.push(deleted_token_id);
     }
 
-    if(space_count==this.header_entity_strings[this.selected_input_index_field].length)
-    this.header_entity_strings[this.selected_input_index_field]='';
+    let t="";
+
+      for(let i = 0; i<this.header_entity_ids[this.selected_input_index_field].length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.header_entity_ids[this.selected_input_index_field][i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.header_entity_ids[this.selected_input_index_field][i]].text;
+      }
+
+      this.header_entity_strings[this.selected_input_index_field] = t;
   } 
   else if (this.selected_input_type_field == 'o')
   {
@@ -1379,24 +1563,26 @@ pop_token_from_field_entity()
 
     let deleted_token_id=this.other_entity_ids[this.selected_input_index_field][remain_length-1];
     this.other_entity_ids[this.selected_input_index_field].pop();
-
-    var pos=this.other_entity_strings[this.selected_input_index_field].lastIndexOf(this.token_cord_for_image[deleted_token_id].text);
-
-    this.other_entity_strings[this.selected_input_index_field]=
-    this.other_entity_strings[this.selected_input_index_field].substring(0,pos)
-    +
-    this.other_entity_strings[this.selected_input_index_field].substring(pos+this.token_cord_for_image[deleted_token_id].text.length,this.other_entity_strings[this.selected_input_index_field].length);
-
-    //check if only spaces left
-    let space_count=0;
-    for(let k=0;k<this.other_entity_strings[this.selected_input_index_field].length;k++)
+    
+    /// token manipulated by user
+    if(!this.user_corrected_token_map.has(deleted_token_id))
     {
-      if(this.other_entity_strings[this.selected_input_index_field][k]==' ')
-      space_count++;
+      this.user_corrected_token_map.set(deleted_token_id,1);
+      this.user_corrected_token_id.push(deleted_token_id);
     }
 
-    if(space_count==this.other_entity_strings[this.selected_input_index_field].length)
-    this.other_entity_strings[this.selected_input_index_field]='';
+    let t="";
+
+      for(let i = 0; i<this.other_entity_ids[this.selected_input_index_field].length; i++)
+      {
+        if(t == "")
+        t += this.token_cord_for_image[this.other_entity_ids[this.selected_input_index_field][i]].text;
+
+        else
+        t += " " + this.token_cord_for_image[this.other_entity_ids[this.selected_input_index_field][i]].text;
+      }
+
+      this.other_entity_strings[this.selected_input_index_field] = t;
   }
 
   else if(this.selected_input_type_field == 'cq')
@@ -1630,6 +1816,8 @@ field_entity_click(type: string, index: number, entity_ref: any)
 
   if (x != 99999) 
   {
+    if(entity_ref!=null)
+    {
     this.display_entity_rect_ref.nativeElement.style.x = x;
     this.display_entity_rect_ref.nativeElement.style.y = y;
 
@@ -1637,20 +1825,27 @@ field_entity_click(type: string, index: number, entity_ref: any)
     this.display_entity_rect_ref.nativeElement.style.width = x2 - x;
 
     //connecting-line stuff
+      if (this.entity_connector_line != undefined) 
+      {
+        this.entity_connector_line.remove();
+        this.entity_connector_line = undefined;
+      }
 
-    if (this.entity_connector_line != undefined) 
-    {
-      this.entity_connector_line.remove();
-      this.entity_connector_line = undefined;
+      this.entity_connector_line = new LeaderLine(entity_ref,this.display_entity_rect_ref.nativeElement);
+      this.entity_connector_line.size = 2.75;
+      this.entity_connector_line.dash = true;
+      this.entity_connector_line.path = 'grid';
+      this.entity_connector_line.color = '#39a87a';
     }
 
-    this.entity_connector_line = new LeaderLine(entity_ref,this.display_entity_rect_ref.nativeElement);
-    this.entity_connector_line.size = 2.75;
-    this.entity_connector_line.dash = true;
-    this.entity_connector_line.path = 'grid';
-    this.entity_connector_line.color = '#39a87a';
-
+    this.cord_for_rect_of_all_entity_display_button = [x, y, x2-x, y2-y];
   }
+
+  else
+  this.cord_for_rect_of_all_entity_display_button = [0, 0, 0, 0];
+
+  console.log(type+" "+index+" "+entity_ref);
+  console.log(this.cord_for_rect_of_all_entity_display_button);
 }
 
 ///////////////////////////////////////////////////Checkbox section/////////////////////////////////////////////////////////////
@@ -1659,9 +1854,9 @@ create_new_checkbox_container()
 {
   if(this.checkbox_question_string.length!= 0)
   {
-    if(this.checkbox_question_string[this.checkbox_question_string.length-1]=="" && (this.options_string.length<this.checkbox_question_string.length || this.actual_checkbox_value.length<this.checkbox_question_string.length))
-    this.toast.warning({detail:"WARNING",summary:'First make the above checkbox',duration:5000});
-
+    if(this.options_string.length<this.checkbox_question_string.length || this.actual_checkbox_value.length<this.checkbox_question_string.length)
+    this.toast.warning({detail:"WARNING",summary:'Complete the last custom checkbox before creating a new one.',duration:5000});
+    
     else
     {
       this.checkbox_question_string.push("");
@@ -1719,7 +1914,7 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
 {
   if(this.custom_option_array1.length==0||this.custom_option_array2.length==0)
   {
-    this.toast.warning({detail:"WARNING",summary:'Select all the tokens first to make checkbox entity',duration:5000});
+    this.toast.warning({detail:"WARNING",summary:'Fill out all sections of the custom checkbox option properly.',duration:5000});
   }
 
   else
@@ -1810,11 +2005,6 @@ add_checkbox_option_container(index:number, input_ref_clicked:any, actual_checkb
       this.custom_option_array2=[];
     }
     
-    console.log(this.checkbox_question_string);
-    console.log(this.checkbox_question_id);
-    
-    console.log(this.options_string);
-    console.log(this.options_string_id);
 
     input_ref_clicked.value = '';
     actual_checkbox.value = '';
@@ -1980,7 +2170,6 @@ pop_from_checkbox_entity()
 
     this.checkbox_question_string[this.selected_input_index_checkbox] = "";
 
-    console.log(this.checkbox_question_string[this.selected_input_index_checkbox])
 
     let t = "";
 
@@ -2121,8 +2310,6 @@ delete_checkbox_question(index:number)
 
   if(this.options_string_id[index] != undefined)
   {
-    console.log(this.options_string[0]);
-    console.log(this.options_string_id[0]);
     
     
     for(let i = 0; i<this.options_string_id[index].length; i++)
@@ -2183,6 +2370,20 @@ delete_checkbox_question(index:number)
 
 save_all_data(condition: number) 
 {
+
+  for(let i = 0; i<this.options_string.length; i++)
+  {
+    if(this.options_string[i] == undefined)
+    {
+      this.toast.error({
+        detail: 'ERROR',
+        summary: 'The data is not corrected properly.',
+        duration: 3000,
+      });
+      return;
+    }
+  }
+
   // if (this.question_entity_strings.find((element) => element == '') !=undefined || this.answer_entity_strings.find((element) => element == '') != undefined) 
   // {
   //   this.toast.error({
@@ -2420,7 +2621,7 @@ save_all_data(condition: number)
     
   let final:any;
 
-  if(this.saving_data_result.type == "checkboxes")
+  if(this.saving_data_result.type.includes('checkboxes'))
   {
 
     final = {
@@ -2475,7 +2676,7 @@ save_all_data(condition: number)
     }
   }
 
-    console.log("#######final",final);
+console.log(final);
    
     
   this.apiData.update_page_data(final).subscribe((data) => 

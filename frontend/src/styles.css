@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+
 @font-face {
     font-family: "GTWalsheim";
     src: local("GTWalsheim"), url(./assets/fonts/GT-Walsheim-Regular.otf) format("truetype");
@@ -26,4 +27,5 @@ input:focus
 body{
     background-color:  #f6f9ff;;
 }
+
 
