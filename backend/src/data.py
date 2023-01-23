@@ -9,10 +9,6 @@ import utils
 
 data = Blueprint('data', __name__)
 
-@data.route('/test')
-def index():
-    return "This is an example app"
-
 @data.route("/batches/<userId>", methods=["GET"])
 @login_required
 def get_batches(userId):
@@ -62,7 +58,7 @@ def get_document_data(batchId, docId):
             {"documentId": str(docId), "batchId": str(batchId)}))
 
         
-        if data[0]['type'] == "checkboxes":    
+        if "checkboxes" in data[0]['type']:    
             if str(data[0]["isCorrected"]).lower() == 'true':
                 # print(data[0]['correctedData']['checkboxData'])
                 form = utils.transform_data(data[0]['correctedData']['ocrData'],data[0]['correctedData']['checkboxData'])
@@ -97,7 +93,7 @@ def put_document_data():
         raw_data = request.json
         
         
-        if raw_data["type"] == "checkboxes":
+        if "checkboxes" in raw_data["type"]:
             data = raw_data['correctedData']['ocrData']
             # print("inside****")
             # print(data)

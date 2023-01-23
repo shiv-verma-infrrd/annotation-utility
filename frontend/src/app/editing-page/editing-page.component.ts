@@ -147,7 +147,7 @@ export class EditingPageComponent implements AfterViewInit
       this.saving_data_result = data[0]
 
 
-      if(data[0].type == 'checkboxes')
+      if(data[0].type.includes('checkboxes'))
       {
         if(data[0].isCorrected == 'true')
         {
@@ -2621,7 +2621,7 @@ save_all_data(condition: number)
     
   let final:any;
 
-  if(this.saving_data_result.type == "checkboxes")
+  if(this.saving_data_result.type.includes('checkboxes'))
   {
 
     final = {

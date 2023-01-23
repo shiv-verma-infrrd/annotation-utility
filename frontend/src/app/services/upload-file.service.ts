@@ -19,7 +19,7 @@ export class UploadFileService extends RootService{
     formData.append("zip_file", file);
     formData.append("batch_name", batch_name)
     formData.append("user_id", user_id)
-    formData.append("document_type",file_type)
+    formData.append("document_type", JSON.stringify(file_type))
     return this.http.post(this.URL+'uploads',formData)
   }
 }

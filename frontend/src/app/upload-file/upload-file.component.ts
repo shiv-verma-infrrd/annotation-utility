@@ -36,7 +36,7 @@ export class UploadFileComponent implements OnInit {
     let type = e.target.value
     if (!this.selected) {
       if (type == 'Both') {
-        this.uploadtype.push('feilds', 'checkbox');
+        this.uploadtype.push('fields', 'checkboxes');
         this.selected = true;
       } else {
         this.uploadtype.push(type);
@@ -45,7 +45,7 @@ export class UploadFileComponent implements OnInit {
     }else{
       this.uploadtype = [];
       if (type == 'Both') {
-        this.uploadtype.push('feilds', 'checkbox');
+        this.uploadtype.push('fields', 'checkboxes');
         this.selected = true;
       } else {
         this.uploadtype.push(type);
